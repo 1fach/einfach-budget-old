@@ -7,11 +7,11 @@ import App from './App'
  * rather than replacing it.
  * https://reactjs.org/docs/react-dom-client.html#hydrateroot
  */
-const redwoodAppElement = document.getElementById('redwood-app')
+const einfachAppElement = document.getElementById('einfach')
 
-if (redwoodAppElement.children?.length > 0) {
-  hydrateRoot(redwoodAppElement, <App />)
+if (einfachAppElement.children?.length > 0) {
+  hydrateRoot(einfachAppElement, <App />)
 } else {
-  const root = createRoot(redwoodAppElement)
+  const root = createRoot(einfachAppElement)
   root.render(<App />)
 }

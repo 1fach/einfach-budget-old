@@ -1,6 +1,7 @@
 datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 generator client {
@@ -8,11 +9,86 @@ generator client {
   binaryTargets = "native"
 }
 
-// Define your own datamodels here and run `yarn redwood prisma migrate dev`
-// to create migrations for them and apply to your dev DB.
-// TODO: Please remove the following example:
-model UserExample {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
+model User {
+  id                  Int       @id @default(autoincrement())
+  name                String?
+  email               String    @unique
+  hashedPassword      String
+  salt                String
+  resetToken          String?
+  resetTokenExpiresAt DateTime?
+  budgets             Budget[]
+}
+
+model Budget {
+  id             Int             @id @default(autoincrement())
+  name           String          @unique
+  accounts       Account[]
+  user           User            @relation(fields: [userId], references: [id])
+  userId         Int
+  monthlyBudgets MonthlyBudget[]
+}
+
+model MonthlyBudget {
+  id               Int                     @id @default(autoincrement())
+  month            Int
+  year             Int
+  budget           Budget                  @relation(fields: [budgetId], references: [id])
+  budgetId         Int
+  budgetCategories MonthlyBudgetCategory[]
+}
+
+model MonthlyBudgetCategory {
+  id               Int            @id @default(autoincrement())
+  assigned         Int            @default(0)
+  activity         Int            @default(0)
+  available        Int            @default(0)
+  monthlyBudget    MonthlyBudget  @relation(fields: [monthlyBudgetId], references: [id])
+  monthlyBudgetId  Int
+  budgetCategory   BudgetCategory @relation(fields: [budgetCategoryId], references: [id])
+  budgetCategoryId Int
+  transactions     Transaction[]
+}
+
+model BudgetCategory {
+  id                    Int                     @id @default(autoincrement())
+  name                  String
+  children              BudgetCategory[]        @relation("ParentChildCategory")
+  parent                BudgetCategory?         @relation("ParentChildCategory", fields: [parentId], references: [id])
+  parentId              Int?
+  monthlyBudgetCategory MonthlyBudgetCategory[]
+}
+
+model Account {
+  id                Int           @id @default(autoincrement())
+  nickname          String        @unique
+  cleared_balance   Int           @default(0)
+  uncleared_balance Int           @default(0)
+  transactions      Transaction[]
+  payee             Payee         @relation(fields: [payeeId], references: [id])
+  payeeId           Int           @unique
+  budget            Budget?       @relation(fields: [budgetId], references: [id])
+  budgetId          Int?
+}
+
+model Payee {
+  id           Int           @id @default(autoincrement())
+  name         String        @unique
+  account      Account?
+  transactions Transaction[]
+}
+
+model Transaction {
+  id               Int                   @id @default(autoincrement())
+  description      String
+  date             DateTime              @default(now())
+  outflow          Int                   @default(0)
+  inflow           Int                   @default(0)
+  account          Account               @relation(fields: [accountId], references: [id])
+  accountId        Int
+  payee            Payee?                @relation(fields: [payeeId], references: [id])
+  payeeId          Int?
+  cleared          Boolean               @default(false)
+  budgetCategory   MonthlyBudgetCategory @relation(fields: [budgetCategoryId], references: [id])
+  budgetCategoryId Int
 }

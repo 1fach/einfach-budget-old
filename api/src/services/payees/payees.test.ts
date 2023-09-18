@@ -1,0 +1,49 @@
+import type { Payee } from '@prisma/client'
+
+import { payees, payee, createPayee, updatePayee, deletePayee } from './payees'
+import type { StandardScenario } from './payees.scenarios'
+
+// Generated boilerplate tests do not account for all circumstances
+// and can fail without adjustments, e.g. Float.
+//           Please refer to the RedwoodJS Testing Docs:
+//       https://redwoodjs.com/docs/testing#testing-services
+// https://redwoodjs.com/docs/testing#jest-expect-type-considerations
+
+describe('payees', () => {
+  scenario('returns all payees', async (scenario: StandardScenario) => {
+    const result = await payees()
+
+    expect(result.length).toEqual(Object.keys(scenario.payee).length)
+  })
+
+  scenario('returns a single payee', async (scenario: StandardScenario) => {
+    const result = await payee({ id: scenario.payee.one.id })
+
+    expect(result).toEqual(scenario.payee.one)
+  })
+
+  scenario('creates a payee', async () => {
+    const result = await createPayee({
+      input: { name: 'String3358766' },
+    })
+
+    expect(result.name).toEqual('String3358766')
+  })
+
+  scenario('updates a payee', async (scenario: StandardScenario) => {
+    const original = (await payee({ id: scenario.payee.one.id })) as Payee
+    const result = await updatePayee({
+      id: original.id,
+      input: { name: 'String79238582' },
+    })
+
+    expect(result.name).toEqual('String79238582')
+  })
+
+  scenario('deletes a payee', async (scenario: StandardScenario) => {
+    const original = (await deletePayee({ id: scenario.payee.one.id })) as Payee
+    const result = await payee({ id: original.id })
+
+    expect(result).toEqual(null)
+  })
+})
