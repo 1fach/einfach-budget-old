@@ -1,13 +1,13 @@
+import type {
+  DeleteTransactionMutationVariables,
+  FindTransactionById,
+} from 'types/graphql'
+
 import { Link, routes, navigate } from '@redwoodjs/router'
 import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 
 import { checkboxInputTag, timeTag } from 'src/lib/formatters'
-
-import type {
-  DeleteTransactionMutationVariables,
-  FindTransactionById,
-} from 'types/graphql'
 
 const DELETE_TRANSACTION_MUTATION = gql`
   mutation DeleteTransactionMutation($id: Int!) {
