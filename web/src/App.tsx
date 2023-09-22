@@ -8,6 +8,8 @@ import Routes from 'src/Routes'
 
 import { theme } from '../config/mantine.config'
 
+import { AuthProvider, useAuth } from './auth'
+
 import '@mantine/core/styles.css'
 import './scaffold.css'
 import './index.css'
@@ -15,12 +17,14 @@ import './index.css'
 const App = () => (
   <FatalErrorBoundary page={FatalErrorPage}>
     <RedwoodProvider titleTemplate="%PageTitle | %AppTitle">
-      <ColorSchemeScript />
-      <MantineProvider theme={theme}>
-        <RedwoodApolloProvider>
-          <Routes />
-        </RedwoodApolloProvider>
-      </MantineProvider>
+      <AuthProvider>
+        <ColorSchemeScript />
+        <MantineProvider theme={theme}>
+          <RedwoodApolloProvider useAuth={useAuth}>
+            <Routes />
+          </RedwoodApolloProvider>
+        </MantineProvider>
+      </AuthProvider>
     </RedwoodProvider>
   </FatalErrorBoundary>
 )
