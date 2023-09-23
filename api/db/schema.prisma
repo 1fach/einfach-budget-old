@@ -5,9 +5,18 @@ datasource db {
 }
 
 generator client {
-  provider      = "prisma-client-js"
-  binaryTargets = "native"
+  provider        = "prisma-client-js"
+  binaryTargets   = "native"
+  previewFeatures = ["views"]
 }
+
+// Don't use unique constaint on primitive type, because the data is
+// designed for multiple-user usecase. For example: budget name can't
+// be the same for the same user. But there could be two user which have
+// different budgets, with the same budget name.
+// Solution: Use multi-fields unique constaint with @@unique([...])
+//
+// On the other hand, unique constraint for reference is allowed.
 
 model User {
   id                  Int       @id @default(autoincrement())
@@ -20,75 +29,118 @@ model User {
   budgets             Budget[]
 }
 
-model Budget {
-  id             Int             @id @default(autoincrement())
-  name           String          @unique
-  accounts       Account[]
-  user           User            @relation(fields: [userId], references: [id])
-  userId         Int
-  monthlyBudgets MonthlyBudget[]
-}
-
-model MonthlyBudget {
-  id               Int                     @id @default(autoincrement())
-  month            Int
-  year             Int
-  budget           Budget                  @relation(fields: [budgetId], references: [id])
-  budgetId         Int
-  budgetCategories MonthlyBudgetCategory[]
-}
-
-model MonthlyBudgetCategory {
-  id               Int            @id @default(autoincrement())
-  assigned         Int            @default(0)
-  activity         Int            @default(0)
-  available        Int            @default(0)
-  monthlyBudget    MonthlyBudget  @relation(fields: [monthlyBudgetId], references: [id])
-  monthlyBudgetId  Int
-  budgetCategory   BudgetCategory @relation(fields: [budgetCategoryId], references: [id])
-  budgetCategoryId Int
-  transactions     Transaction[]
-}
-
-model BudgetCategory {
-  id                    Int                     @id @default(autoincrement())
-  name                  String
-  children              BudgetCategory[]        @relation("ParentChildCategory")
-  parent                BudgetCategory?         @relation("ParentChildCategory", fields: [parentId], references: [id])
-  parentId              Int?
-  monthlyBudgetCategory MonthlyBudgetCategory[]
-}
-
 model Account {
-  id                Int           @id @default(autoincrement())
-  nickname          String        @unique
-  cleared_balance   Int           @default(0)
-  uncleared_balance Int           @default(0)
-  transactions      Transaction[]
-  payee             Payee         @relation(fields: [payeeId], references: [id])
-  payeeId           Int           @unique
-  budget            Budget?       @relation(fields: [budgetId], references: [id])
-  budgetId          Int?
+  // It means money account not user account
+  id       Int    @id @default(autoincrement())
+  nickname String
+
+  payee    Payee  @relation(fields: [payeeId], references: [id])
+  payeeId  Int    @unique // an account should always have an unique payee
+  budget   Budget @relation(fields: [budgetId], references: [id])
+  budgetId Int
+
+  transactions Transaction[]
+
+  @@unique([budgetId, nickname]) // don't use the same name of account inside a same budget
+}
+
+view TotalTransactionsPerAccount {
+  accountId        Int @unique
+  clearedBalance   Int
+  unclearedBalance Int
 }
 
 model Payee {
-  id           Int           @id @default(autoincrement())
-  name         String        @unique
+  id   Int    @id @default(autoincrement())
+  name String
+
   account      Account?
   transactions Transaction[]
 }
 
 model Transaction {
-  id               Int                   @id @default(autoincrement())
-  description      String
-  date             DateTime              @default(now())
-  outflow          Int                   @default(0)
-  inflow           Int                   @default(0)
-  account          Account               @relation(fields: [accountId], references: [id])
-  accountId        Int
-  payee            Payee?                @relation(fields: [payeeId], references: [id])
-  payeeId          Int?
-  cleared          Boolean               @default(false)
-  budgetCategory   MonthlyBudgetCategory @relation(fields: [budgetCategoryId], references: [id])
+  id          Int      @id @default(autoincrement())
+  description String
+  date        DateTime @default(now())
+  outflow     Int      @default(0)
+  inflow      Int      @default(0)
+  cleared     Boolean  @default(false)
+
+  account                    Account                  @relation(fields: [accountId], references: [id])
+  accountId                  Int
+  payee                      Payee?                   @relation(fields: [payeeId], references: [id])
+  payeeId                    Int?
+  monthlyBudgetPerCategory   MonthlyBudgetPerCategory @relation(fields: [monthlyBudgetPerCategoryId], references: [id])
+  monthlyBudgetPerCategoryId Int
+}
+
+model Budget {
+  id   Int    @id @default(autoincrement())
+  name String
+
+  user   User @relation(fields: [userId], references: [id])
+  userId Int
+
+  accounts       Account[]
+  categoryGroups BudgetCategoryGroup[]
+
+  @@unique([userId, name]) // a user can't have budget with the same name
+}
+
+model MonthlyBudgetPerCategory {
+  id        Int @id @default(autoincrement())
+  month     Int
+  year      Int
+  assigned  Int @default(0)
+  activity  Int @default(0)
+  available Int @default(0)
+
+  budgetCategory   BudgetCategory @relation(fields: [budgetCategoryId], references: [id])
   budgetCategoryId Int
+
+  transactions Transaction[]
+
+  @@unique([month, year, budgetCategoryId]) // In a month there shouldn't be two same categories
+}
+
+model BudgetCategoryGroup {
+  id   Int    @id @default(autoincrement())
+  name String
+
+  budget   Budget @relation(fields: [budgetId], references: [id])
+  budgetId Int
+
+  budgetCategory           BudgetCategory[]
+  budgetCategoryGroupOrder BudgetCategoryGroupOrder?
+}
+
+model BudgetCategory {
+  id   Int    @id @default(autoincrement())
+  name String
+
+  group   BudgetCategoryGroup @relation(fields: [groupId], references: [id])
+  groupId Int
+
+  monthlyBudget       MonthlyBudgetPerCategory[]
+  budgetCategoryOrder BudgetCategoryOrder?
+}
+
+model BudgetCategoryGroupOrder {
+  id    Int @id @default(autoincrement())
+  order Int @default(autoincrement())
+
+  categoryGroup   BudgetCategoryGroup @relation(fields: [categoryGroupId], references: [id])
+  categoryGroupId Int                 @unique
+
+  budgetCategoryOrder BudgetCategoryOrder[]
+}
+
+model BudgetCategoryOrder {
+  id    Int @id @default(autoincrement())
+  order Int @default(autoincrement())
+
+  categoryGroupOrder   BudgetCategoryGroupOrder @relation(fields: [categoryGroupOrderId], references: [id])
+  categoryGroupOrderId Int
+  category             BudgetCategory           @relation(fields: [categoryId], references: [id])
+  categoryId           Int                      @unique
 }
