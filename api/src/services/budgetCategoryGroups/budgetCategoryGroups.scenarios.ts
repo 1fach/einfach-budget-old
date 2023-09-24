@@ -1,19 +1,18 @@
-import type { Prisma, MonthlyBudget } from '@prisma/client'
-
+import type { Prisma, BudgetCategoryGroup } from '@prisma/client'
 import type { ScenarioData } from '@redwoodjs/testing/api'
 
-export const standard = defineScenario<Prisma.MonthlyBudgetCreateArgs>({
-  monthlyBudget: {
+export const standard = defineScenario<Prisma.BudgetCategoryGroupCreateArgs>({
+  budgetCategoryGroup: {
     one: {
       data: {
-        month: 193636,
-        year: 5630955,
+        name: 'String',
+        sortOrder: 9887818,
         budget: {
           create: {
-            name: 'String372575',
+            name: 'String',
             user: {
               create: {
-                email: 'String9940892',
+                email: 'String775621',
                 hashedPassword: 'String',
                 salt: 'String',
               },
@@ -24,14 +23,14 @@ export const standard = defineScenario<Prisma.MonthlyBudgetCreateArgs>({
     },
     two: {
       data: {
-        month: 6621800,
-        year: 2952930,
+        name: 'String',
+        sortOrder: 2332743,
         budget: {
           create: {
-            name: 'String3519472',
+            name: 'String',
             user: {
               create: {
-                email: 'String7451286',
+                email: 'String7517571',
                 hashedPassword: 'String',
                 salt: 'String',
               },
@@ -43,4 +42,7 @@ export const standard = defineScenario<Prisma.MonthlyBudgetCreateArgs>({
   },
 })
 
-export type StandardScenario = ScenarioData<MonthlyBudget, 'monthlyBudget'>
+export type StandardScenario = ScenarioData<
+  BudgetCategoryGroup,
+  'budgetCategoryGroup'
+>

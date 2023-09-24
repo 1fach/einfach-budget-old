@@ -8,23 +8,23 @@ import { toast } from '@redwoodjs/web/toast'
 import TransactionForm from 'src/components/Transaction/TransactionForm'
 
 export const QUERY = gql`
-  query EditTransactionById($id: Int!) {
+  query EditTransactionById($id: String!) {
     transaction: transaction(id: $id) {
       id
       description
       date
       outflow
       inflow
+      cleared
       accountId
       payeeId
-      cleared
-      budgetCategoryId
+      monthlyBudgetPerCategoryId
     }
   }
 `
 const UPDATE_TRANSACTION_MUTATION = gql`
   mutation UpdateTransactionMutation(
-    $id: Int!
+    $id: String!
     $input: UpdateTransactionInput!
   ) {
     updateTransaction(id: $id, input: $input) {
@@ -33,10 +33,10 @@ const UPDATE_TRANSACTION_MUTATION = gql`
       date
       outflow
       inflow
+      cleared
       accountId
       payeeId
-      cleared
-      budgetCategoryId
+      monthlyBudgetPerCategoryId
     }
   }
 `

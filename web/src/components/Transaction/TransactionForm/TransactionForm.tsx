@@ -1,15 +1,14 @@
-import type { EditTransactionById, UpdateTransactionInput } from 'types/graphql'
-
 import {
   Form,
   FormError,
   FieldError,
   Label,
   TextField,
-  NumberField,
   CheckboxField,
   Submit,
 } from '@redwoodjs/forms'
+
+import type { EditTransactionById, UpdateTransactionInput } from 'types/graphql'
 import type { RWGqlError } from '@redwoodjs/forms'
 
 type FormTransaction = NonNullable<EditTransactionById['transaction']>
@@ -62,12 +61,12 @@ const TransactionForm = (props: TransactionFormProps) => {
           Outflow
         </Label>
 
-        <NumberField
+        <TextField
           name="outflow"
           defaultValue={props.transaction?.outflow}
           className="rw-input"
           errorClassName="rw-input rw-input-error"
-          validation={{ required: true }}
+          validation={{ valueAsNumber: true, required: true }}
         />
 
         <FieldError name="outflow" className="rw-field-error" />
@@ -80,51 +79,15 @@ const TransactionForm = (props: TransactionFormProps) => {
           Inflow
         </Label>
 
-        <NumberField
+        <TextField
           name="inflow"
           defaultValue={props.transaction?.inflow}
           className="rw-input"
           errorClassName="rw-input rw-input-error"
-          validation={{ required: true }}
+          validation={{ valueAsNumber: true, required: true }}
         />
 
         <FieldError name="inflow" className="rw-field-error" />
-
-        <Label
-          name="accountId"
-          className="rw-label"
-          errorClassName="rw-label rw-label-error"
-        >
-          Account id
-        </Label>
-
-        <NumberField
-          name="accountId"
-          defaultValue={props.transaction?.accountId}
-          className="rw-input"
-          errorClassName="rw-input rw-input-error"
-          validation={{ required: true }}
-        />
-
-        <FieldError name="accountId" className="rw-field-error" />
-
-        <Label
-          name="payeeId"
-          className="rw-label"
-          errorClassName="rw-label rw-label-error"
-        >
-          Payee id
-        </Label>
-
-        <NumberField
-          name="payeeId"
-          defaultValue={props.transaction?.payeeId}
-          className="rw-input"
-          errorClassName="rw-input rw-input-error"
-          emptyAs={'undefined'}
-        />
-
-        <FieldError name="payeeId" className="rw-field-error" />
 
         <Label
           name="cleared"
@@ -144,22 +107,61 @@ const TransactionForm = (props: TransactionFormProps) => {
         <FieldError name="cleared" className="rw-field-error" />
 
         <Label
-          name="budgetCategoryId"
+          name="accountId"
           className="rw-label"
           errorClassName="rw-label rw-label-error"
         >
-          Budget category id
+          Account id
         </Label>
 
-        <NumberField
-          name="budgetCategoryId"
-          defaultValue={props.transaction?.budgetCategoryId}
+        <TextField
+          name="accountId"
+          defaultValue={props.transaction?.accountId}
           className="rw-input"
           errorClassName="rw-input rw-input-error"
           validation={{ required: true }}
         />
 
-        <FieldError name="budgetCategoryId" className="rw-field-error" />
+        <FieldError name="accountId" className="rw-field-error" />
+
+        <Label
+          name="payeeId"
+          className="rw-label"
+          errorClassName="rw-label rw-label-error"
+        >
+          Payee id
+        </Label>
+
+        <TextField
+          name="payeeId"
+          defaultValue={props.transaction?.payeeId}
+          className="rw-input"
+          errorClassName="rw-input rw-input-error"
+          emptyAs={'undefined'}
+        />
+
+        <FieldError name="payeeId" className="rw-field-error" />
+
+        <Label
+          name="monthlyBudgetPerCategoryId"
+          className="rw-label"
+          errorClassName="rw-label rw-label-error"
+        >
+          Monthly budget per category id
+        </Label>
+
+        <TextField
+          name="monthlyBudgetPerCategoryId"
+          defaultValue={props.transaction?.monthlyBudgetPerCategoryId}
+          className="rw-input"
+          errorClassName="rw-input rw-input-error"
+          validation={{ required: true }}
+        />
+
+        <FieldError
+          name="monthlyBudgetPerCategoryId"
+          className="rw-field-error"
+        />
 
         <div className="rw-button-group">
           <Submit disabled={props.loading} className="rw-button rw-button-blue">

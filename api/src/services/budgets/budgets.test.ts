@@ -30,10 +30,10 @@ describe('budgets', () => {
 
   scenario('creates a budget', async (scenario: StandardScenario) => {
     const result = await createBudget({
-      input: { name: 'String7387725', userId: scenario.budget.two.userId },
+      input: { name: 'String', userId: scenario.budget.two.userId },
     })
 
-    expect(result.name).toEqual('String7387725')
+    expect(result.name).toEqual('String')
     expect(result.userId).toEqual(scenario.budget.two.userId)
   })
 
@@ -41,10 +41,10 @@ describe('budgets', () => {
     const original = (await budget({ id: scenario.budget.one.id })) as Budget
     const result = await updateBudget({
       id: original.id,
-      input: { name: 'String91553832' },
+      input: { name: 'String2' },
     })
 
-    expect(result.name).toEqual('String91553832')
+    expect(result.name).toEqual('String2')
   })
 
   scenario('deletes a budget', async (scenario: StandardScenario) => {

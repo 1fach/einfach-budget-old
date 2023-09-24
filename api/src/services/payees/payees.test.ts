@@ -24,20 +24,20 @@ describe('payees', () => {
 
   scenario('creates a payee', async () => {
     const result = await createPayee({
-      input: { name: 'String3358766' },
+      input: { name: 'String' },
     })
 
-    expect(result.name).toEqual('String3358766')
+    expect(result.name).toEqual('String')
   })
 
   scenario('updates a payee', async (scenario: StandardScenario) => {
     const original = (await payee({ id: scenario.payee.one.id })) as Payee
     const result = await updatePayee({
       id: original.id,
-      input: { name: 'String79238582' },
+      input: { name: 'String2' },
     })
 
-    expect(result.name).toEqual('String79238582')
+    expect(result.name).toEqual('String2')
   })
 
   scenario('deletes a payee', async (scenario: StandardScenario) => {

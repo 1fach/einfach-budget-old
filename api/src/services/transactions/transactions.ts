@@ -49,9 +49,9 @@ export const Transaction: TransactionRelationResolvers = {
   payee: (_obj, { root }) => {
     return db.transaction.findUnique({ where: { id: root?.id } }).payee()
   },
-  budgetCategory: (_obj, { root }) => {
+  monthlyBudgetPerCategory: (_obj, { root }) => {
     return db.transaction
       .findUnique({ where: { id: root?.id } })
-      .budgetCategory()
+      .monthlyBudgetPerCategory()
   },
 }

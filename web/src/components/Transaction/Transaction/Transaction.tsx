@@ -1,16 +1,16 @@
-import type {
-  DeleteTransactionMutationVariables,
-  FindTransactionById,
-} from 'types/graphql'
-
 import { Link, routes, navigate } from '@redwoodjs/router'
 import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 
 import { checkboxInputTag, timeTag } from 'src/lib/formatters'
 
+import type {
+  DeleteTransactionMutationVariables,
+  FindTransactionById,
+} from 'types/graphql'
+
 const DELETE_TRANSACTION_MUTATION = gql`
-  mutation DeleteTransactionMutation($id: Int!) {
+  mutation DeleteTransactionMutation($id: String!) {
     deleteTransaction(id: $id) {
       id
     }
@@ -69,6 +69,10 @@ const Transaction = ({ transaction }: Props) => {
               <td>{transaction.inflow}</td>
             </tr>
             <tr>
+              <th>Cleared</th>
+              <td>{checkboxInputTag(transaction.cleared)}</td>
+            </tr>
+            <tr>
               <th>Account id</th>
               <td>{transaction.accountId}</td>
             </tr>
@@ -77,12 +81,8 @@ const Transaction = ({ transaction }: Props) => {
               <td>{transaction.payeeId}</td>
             </tr>
             <tr>
-              <th>Cleared</th>
-              <td>{checkboxInputTag(transaction.cleared)}</td>
-            </tr>
-            <tr>
-              <th>Budget category id</th>
-              <td>{transaction.budgetCategoryId}</td>
+              <th>Monthly budget per category id</th>
+              <td>{transaction.monthlyBudgetPerCategoryId}</td>
             </tr>
           </tbody>
         </table>

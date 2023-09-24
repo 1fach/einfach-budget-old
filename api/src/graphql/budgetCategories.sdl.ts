@@ -1,35 +1,37 @@
 export const schema = gql`
   type BudgetCategory {
-    id: Int!
+    id: String!
     name: String!
-    children: [BudgetCategory]!
-    parent: BudgetCategory
-    parentId: Int
-    monthlyBudgetCategory: [MonthlyBudgetCategory]!
+    sortOrder: Int!
+    group: BudgetCategoryGroup!
+    groupId: String!
+    monthlyBudget: [MonthlyBudgetPerCategory]!
   }
 
   type Query {
     budgetCategories: [BudgetCategory!]! @requireAuth
-    budgetCategory(id: Int!): BudgetCategory @requireAuth
+    budgetCategory(id: String!): BudgetCategory @requireAuth
   }
 
   input CreateBudgetCategoryInput {
     name: String!
-    parentId: Int
+    sortOrder: Int!
+    groupId: String!
   }
 
   input UpdateBudgetCategoryInput {
     name: String
-    parentId: Int
+    sortOrder: Int
+    groupId: String
   }
 
   type Mutation {
     createBudgetCategory(input: CreateBudgetCategoryInput!): BudgetCategory!
       @requireAuth
     updateBudgetCategory(
-      id: Int!
+      id: String!
       input: UpdateBudgetCategoryInput!
     ): BudgetCategory! @requireAuth
-    deleteBudgetCategory(id: Int!): BudgetCategory! @requireAuth
+    deleteBudgetCategory(id: String!): BudgetCategory! @requireAuth
   }
 `

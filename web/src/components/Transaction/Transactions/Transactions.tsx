@@ -1,8 +1,3 @@
-import type {
-  DeleteTransactionMutationVariables,
-  FindTransactions,
-} from 'types/graphql'
-
 import { Link, routes } from '@redwoodjs/router'
 import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
@@ -10,8 +5,13 @@ import { toast } from '@redwoodjs/web/toast'
 import { QUERY } from 'src/components/Transaction/TransactionsCell'
 import { checkboxInputTag, timeTag, truncate } from 'src/lib/formatters'
 
+import type {
+  DeleteTransactionMutationVariables,
+  FindTransactions,
+} from 'types/graphql'
+
 const DELETE_TRANSACTION_MUTATION = gql`
-  mutation DeleteTransactionMutation($id: Int!) {
+  mutation DeleteTransactionMutation($id: String!) {
     deleteTransaction(id: $id) {
       id
     }
@@ -49,10 +49,10 @@ const TransactionsList = ({ transactions }: FindTransactions) => {
             <th>Date</th>
             <th>Outflow</th>
             <th>Inflow</th>
+            <th>Cleared</th>
             <th>Account id</th>
             <th>Payee id</th>
-            <th>Cleared</th>
-            <th>Budget category id</th>
+            <th>Monthly budget per category id</th>
             <th>&nbsp;</th>
           </tr>
         </thead>
@@ -64,10 +64,10 @@ const TransactionsList = ({ transactions }: FindTransactions) => {
               <td>{timeTag(transaction.date)}</td>
               <td>{truncate(transaction.outflow)}</td>
               <td>{truncate(transaction.inflow)}</td>
+              <td>{checkboxInputTag(transaction.cleared)}</td>
               <td>{truncate(transaction.accountId)}</td>
               <td>{truncate(transaction.payeeId)}</td>
-              <td>{checkboxInputTag(transaction.cleared)}</td>
-              <td>{truncate(transaction.budgetCategoryId)}</td>
+              <td>{truncate(transaction.monthlyBudgetPerCategoryId)}</td>
               <td>
                 <nav className="rw-table-actions">
                   <Link

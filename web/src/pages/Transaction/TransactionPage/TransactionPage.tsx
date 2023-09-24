@@ -1,7 +1,7 @@
 import TransactionCell from 'src/components/Transaction/TransactionCell'
 
 type TransactionPageProps = {
-  id: number
+  id: string
 }
 
 const TransactionPage = ({ id }: TransactionPageProps) => {

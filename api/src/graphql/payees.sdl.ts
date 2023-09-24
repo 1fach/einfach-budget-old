@@ -1,6 +1,6 @@
 export const schema = gql`
   type Payee {
-    id: Int!
+    id: String!
     name: String!
     account: Account
     transactions: [Transaction]!
@@ -8,7 +8,7 @@ export const schema = gql`
 
   type Query {
     payees: [Payee!]! @requireAuth
-    payee(id: Int!): Payee @requireAuth
+    payee(id: String!): Payee @requireAuth
   }
 
   input CreatePayeeInput {
@@ -21,7 +21,7 @@ export const schema = gql`
 
   type Mutation {
     createPayee(input: CreatePayeeInput!): Payee! @requireAuth
-    updatePayee(id: Int!, input: UpdatePayeeInput!): Payee! @requireAuth
-    deletePayee(id: Int!): Payee! @requireAuth
+    updatePayee(id: String!, input: UpdatePayeeInput!): Payee! @requireAuth
+    deletePayee(id: String!): Payee! @requireAuth
   }
 `

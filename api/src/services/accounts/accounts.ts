@@ -41,13 +41,13 @@ export const deleteAccount: MutationResolvers['deleteAccount'] = ({ id }) => {
 }
 
 export const Account: AccountRelationResolvers = {
-  transactions: (_obj, { root }) => {
-    return db.account.findUnique({ where: { id: root?.id } }).transactions()
-  },
   payee: (_obj, { root }) => {
     return db.account.findUnique({ where: { id: root?.id } }).payee()
   },
   budget: (_obj, { root }) => {
     return db.account.findUnique({ where: { id: root?.id } }).budget()
+  },
+  transactions: (_obj, { root }) => {
+    return db.account.findUnique({ where: { id: root?.id } }).transactions()
   },
 }

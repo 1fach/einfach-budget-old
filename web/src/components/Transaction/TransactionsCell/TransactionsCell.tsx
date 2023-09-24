@@ -13,10 +13,10 @@ export const QUERY = gql`
       date
       outflow
       inflow
+      cleared
       accountId
       payeeId
-      cleared
-      budgetCategoryId
+      monthlyBudgetPerCategoryId
     }
   }
 `

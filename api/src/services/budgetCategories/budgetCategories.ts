@@ -39,15 +39,12 @@ export const deleteBudgetCategory: MutationResolvers['deleteBudgetCategory'] =
   }
 
 export const BudgetCategory: BudgetCategoryRelationResolvers = {
-  children: (_obj, { root }) => {
-    return db.budgetCategory.findUnique({ where: { id: root?.id } }).children()
+  group: (_obj, { root }) => {
+    return db.budgetCategory.findUnique({ where: { id: root?.id } }).group()
   },
-  parent: (_obj, { root }) => {
-    return db.budgetCategory.findUnique({ where: { id: root?.id } }).parent()
-  },
-  monthlyBudgetCategory: (_obj, { root }) => {
+  monthlyBudget: (_obj, { root }) => {
     return db.budgetCategory
       .findUnique({ where: { id: root?.id } })
-      .monthlyBudgetCategory()
+      .monthlyBudget()
   },
 }

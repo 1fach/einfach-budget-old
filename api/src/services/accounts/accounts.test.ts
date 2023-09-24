@@ -31,23 +31,25 @@ describe('accounts', () => {
   scenario('creates a account', async (scenario: StandardScenario) => {
     const result = await createAccount({
       input: {
-        nickname: 'String9696107',
+        nickname: 'String',
         payeeId: scenario.account.two.payeeId,
+        budgetId: scenario.account.two.budgetId,
       },
     })
 
-    expect(result.nickname).toEqual('String9696107')
+    expect(result.nickname).toEqual('String')
     expect(result.payeeId).toEqual(scenario.account.two.payeeId)
+    expect(result.budgetId).toEqual(scenario.account.two.budgetId)
   })
 
   scenario('updates a account', async (scenario: StandardScenario) => {
     const original = (await account({ id: scenario.account.one.id })) as Account
     const result = await updateAccount({
       id: original.id,
-      input: { nickname: 'String7746812' },
+      input: { nickname: 'String2' },
     })
 
-    expect(result.nickname).toEqual('String7746812')
+    expect(result.nickname).toEqual('String2')
   })
 
   scenario('deletes a account', async (scenario: StandardScenario) => {

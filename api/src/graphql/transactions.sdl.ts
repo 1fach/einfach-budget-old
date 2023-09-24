@@ -1,50 +1,52 @@
 export const schema = gql`
   type Transaction {
-    id: Int!
+    id: String!
     description: String!
     date: DateTime!
-    outflow: Int!
-    inflow: Int!
-    account: Account!
-    accountId: Int!
-    payee: Payee
-    payeeId: Int
+    outflow: Float!
+    inflow: Float!
     cleared: Boolean!
-    budgetCategory: MonthlyBudgetCategory!
-    budgetCategoryId: Int!
+    account: Account!
+    accountId: String!
+    payee: Payee
+    payeeId: String
+    monthlyBudgetPerCategory: MonthlyBudgetPerCategory!
+    monthlyBudgetPerCategoryId: String!
   }
 
   type Query {
     transactions: [Transaction!]! @requireAuth
-    transaction(id: Int!): Transaction @requireAuth
+    transaction(id: String!): Transaction @requireAuth
   }
 
   input CreateTransactionInput {
     description: String!
     date: DateTime!
-    outflow: Int!
-    inflow: Int!
-    accountId: Int!
-    payeeId: Int
+    outflow: Float!
+    inflow: Float!
     cleared: Boolean!
-    budgetCategoryId: Int!
+    accountId: String!
+    payeeId: String
+    monthlyBudgetPerCategoryId: String!
   }
 
   input UpdateTransactionInput {
     description: String
     date: DateTime
-    outflow: Int
-    inflow: Int
-    accountId: Int
-    payeeId: Int
+    outflow: Float
+    inflow: Float
     cleared: Boolean
-    budgetCategoryId: Int
+    accountId: String
+    payeeId: String
+    monthlyBudgetPerCategoryId: String
   }
 
   type Mutation {
     createTransaction(input: CreateTransactionInput!): Transaction! @requireAuth
-    updateTransaction(id: Int!, input: UpdateTransactionInput!): Transaction!
-      @requireAuth
-    deleteTransaction(id: Int!): Transaction! @requireAuth
+    updateTransaction(
+      id: String!
+      input: UpdateTransactionInput!
+    ): Transaction! @requireAuth
+    deleteTransaction(id: String!): Transaction! @requireAuth
   }
 `

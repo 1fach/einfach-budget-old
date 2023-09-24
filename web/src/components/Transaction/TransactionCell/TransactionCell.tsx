@@ -5,17 +5,17 @@ import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 import Transaction from 'src/components/Transaction/Transaction'
 
 export const QUERY = gql`
-  query FindTransactionById($id: Int!) {
+  query FindTransactionById($id: String!) {
     transaction: transaction(id: $id) {
       id
       description
       date
       outflow
       inflow
+      cleared
       accountId
       payeeId
-      cleared
-      budgetCategoryId
+      monthlyBudgetPerCategoryId
     }
   }
 `

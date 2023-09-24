@@ -1,31 +1,31 @@
 export const schema = gql`
   type Budget {
-    id: Int!
+    id: String!
     name: String!
-    accounts: [Account]!
     user: User!
-    userId: Int!
-    monthlyBudgets: [MonthlyBudget]!
+    userId: String!
+    accounts: [Account]!
+    categoryGroups: [BudgetCategoryGroup]!
   }
 
   type Query {
     budgets: [Budget!]! @requireAuth
-    budget(id: Int!): Budget @requireAuth
+    budget(id: String!): Budget @requireAuth
   }
 
   input CreateBudgetInput {
     name: String!
-    userId: Int!
+    userId: String!
   }
 
   input UpdateBudgetInput {
     name: String
-    userId: Int
+    userId: String
   }
 
   type Mutation {
     createBudget(input: CreateBudgetInput!): Budget! @requireAuth
-    updateBudget(id: Int!, input: UpdateBudgetInput!): Budget! @requireAuth
-    deleteBudget(id: Int!): Budget! @requireAuth
+    updateBudget(id: String!, input: UpdateBudgetInput!): Budget! @requireAuth
+    deleteBudget(id: String!): Budget! @requireAuth
   }
 `

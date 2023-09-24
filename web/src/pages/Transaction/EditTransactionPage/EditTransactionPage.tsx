@@ -1,7 +1,7 @@
 import EditTransactionCell from 'src/components/Transaction/EditTransactionCell'
 
 type TransactionPageProps = {
-  id: number
+  id: string
 }
 
 const EditTransactionPage = ({ id }: TransactionPageProps) => {
