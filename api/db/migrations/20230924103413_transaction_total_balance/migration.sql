@@ -9,4 +9,4 @@ SELECT
   SUM(inflow) - SUM(CASE WHEN cleared THEN outflow ELSE 0 END) as clearedBalance,
   SUM(inflow) - SUM(outflow) as unclearedBalance
 FROM "Transaction"
-GROUP BY "accountId"
+GROUP BY "accountId";

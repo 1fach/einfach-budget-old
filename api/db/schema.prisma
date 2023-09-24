@@ -45,9 +45,9 @@ model Account {
 }
 
 view TotalTransactionsPerAccount {
-  accountId        Int @unique
-  clearedBalance   Int
-  unclearedBalance Int
+  accountId        Int     @unique
+  clearedBalance   Decimal @default(0.00) @db.Decimal(12, 2)
+  unclearedBalance Decimal @default(0.00) @db.Decimal(12, 2)
 }
 
 model Payee {
@@ -61,9 +61,9 @@ model Payee {
 model Transaction {
   id          Int      @id @default(autoincrement())
   description String
-  date        DateTime @default(now())
-  outflow     Int      @default(0)
-  inflow      Int      @default(0)
+  date        DateTime @default(now()) @db.Date
+  outflow     Decimal  @default(0.00) @db.Decimal(12, 2)
+  inflow      Decimal  @default(0.00) @db.Decimal(12, 2)
   cleared     Boolean  @default(false)
 
   account                    Account                  @relation(fields: [accountId], references: [id])
@@ -88,12 +88,10 @@ model Budget {
 }
 
 model MonthlyBudgetPerCategory {
-  id        Int @id @default(autoincrement())
-  month     Int
-  year      Int
-  assigned  Int @default(0)
-  activity  Int @default(0)
-  available Int @default(0)
+  id       Int     @id @default(autoincrement())
+  month    Int
+  year     Int
+  assigned Decimal @default(0.00) @db.Decimal(12, 2)
 
   budgetCategory   BudgetCategory @relation(fields: [budgetCategoryId], references: [id])
   budgetCategoryId Int
@@ -103,44 +101,29 @@ model MonthlyBudgetPerCategory {
   @@unique([month, year, budgetCategoryId]) // In a month there shouldn't be two same categories
 }
 
+view MonthlyCategoryOutflow {
+  monthlyBudgetPerCategoryId Int     @unique
+  outflow                    Decimal @default(0.00) @db.Decimal(12, 2)
+}
+
 model BudgetCategoryGroup {
-  id   Int    @id @default(autoincrement())
-  name String
+  id        Int    @id @default(autoincrement())
+  name      String
+  sortOrder Int
 
   budget   Budget @relation(fields: [budgetId], references: [id])
   budgetId Int
 
-  budgetCategory           BudgetCategory[]
-  budgetCategoryGroupOrder BudgetCategoryGroupOrder?
+  budgetCategory BudgetCategory[]
 }
 
 model BudgetCategory {
-  id   Int    @id @default(autoincrement())
-  name String
+  id        Int    @id @default(autoincrement())
+  name      String
+  sortOrder Int
 
   group   BudgetCategoryGroup @relation(fields: [groupId], references: [id])
   groupId Int
 
-  monthlyBudget       MonthlyBudgetPerCategory[]
-  budgetCategoryOrder BudgetCategoryOrder?
-}
-
-model BudgetCategoryGroupOrder {
-  id    Int @id @default(autoincrement())
-  order Int @default(autoincrement())
-
-  categoryGroup   BudgetCategoryGroup @relation(fields: [categoryGroupId], references: [id])
-  categoryGroupId Int                 @unique
-
-  budgetCategoryOrder BudgetCategoryOrder[]
-}
-
-model BudgetCategoryOrder {
-  id    Int @id @default(autoincrement())
-  order Int @default(autoincrement())
-
-  categoryGroupOrder   BudgetCategoryGroupOrder @relation(fields: [categoryGroupOrderId], references: [id])
-  categoryGroupOrderId Int
-  category             BudgetCategory           @relation(fields: [categoryId], references: [id])
-  categoryId           Int                      @unique
+  monthlyBudget MonthlyBudgetPerCategory[]
 }
