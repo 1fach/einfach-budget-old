@@ -4,7 +4,7 @@ import { useEffect } from 'react'
 import {
   Form,
   Label,
-  TextField,
+  EmailField,
   PasswordField,
   FieldError,
   Submit,
@@ -68,7 +68,7 @@ const SignupPage = () => {
                   >
                     Username
                   </Label>
-                  <TextField
+                  <EmailField
                     name="username"
                     className="rw-input"
                     errorClassName="rw-input rw-input-error"

@@ -14,7 +14,7 @@ import {
 import {
   Form,
   Label,
-  TextField,
+  EmailField,
   PasswordField,
   Submit,
   FieldError,
@@ -77,7 +77,7 @@ const LoginPage = () => {
             >
               Username
             </Label>
-            <TextField
+            <EmailField
               name="username"
               className="rw-input"
               errorClassName="rw-input rw-input-error"

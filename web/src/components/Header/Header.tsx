@@ -1,7 +1,11 @@
 import { useState } from 'react'
 
-import { Container, Group, Burger } from '@mantine/core'
+import { Container, Group, Burger, Button } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
+
+import { Link, routes } from '@redwoodjs/router'
+
+import { useAuth } from 'src/auth'
 
 import classes from './Header.module.css'
 
@@ -11,6 +15,51 @@ const links = [
   { link: '/learn', label: 'Learn' },
   { link: '/community', label: 'Community' },
 ]
+
+export const Header = () => {
+  const { isAuthenticated, logOut } = useAuth()
+  const [opened, { toggle }] = useDisclosure(false)
+  const [active, setActive] = useState(links[0].link)
+
+  const items = links.map((link) => (
+    <a
+      key={link.label}
+      href={link.link}
+      className={classes.link}
+      data-active={active === link.link || undefined}
+      onClick={(event) => {
+        event.preventDefault()
+        setActive(link.link)
+      }}
+    >
+      {link.label}
+    </a>
+  ))
+
+  return (
+    <header className={classes.header}>
+      <Container size="md" className={classes.inner}>
+        <MantineLogo />
+        <Group gap={5} visibleFrom="xs">
+          {items}
+          {isAuthenticated ? (
+            <div>
+              <Button variant="default" onClick={logOut}>
+                Logout
+              </Button>
+            </div>
+          ) : (
+            <Button variant="default" component={Link} to={routes.login()}>
+              Login
+            </Button>
+          )}
+        </Group>
+
+        <Burger opened={opened} onClick={toggle} hiddenFrom="xs" size="sm" />
+      </Container>
+    </header>
+  )
+}
 
 const MantineLogo = () => {
   return (
@@ -40,38 +89,5 @@ const MantineLogo = () => {
         ></path>
       </g>
     </svg>
-  )
-}
-
-export const Header = () => {
-  const [opened, { toggle }] = useDisclosure(false)
-  const [active, setActive] = useState(links[0].link)
-
-  const items = links.map((link) => (
-    <a
-      key={link.label}
-      href={link.link}
-      className={classes.link}
-      data-active={active === link.link || undefined}
-      onClick={(event) => {
-        event.preventDefault()
-        setActive(link.link)
-      }}
-    >
-      {link.label}
-    </a>
-  ))
-
-  return (
-    <header className={classes.header}>
-      <Container size="md" className={classes.inner}>
-        <MantineLogo />
-        <Group gap={5} visibleFrom="xs">
-          {items}
-        </Group>
-
-        <Burger opened={opened} onClick={toggle} hiddenFrom="xs" size="sm" />
-      </Container>
-    </header>
   )
 }

@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 
-import { Form, Label, TextField, Submit, FieldError } from '@redwoodjs/forms'
+import { Form, Label, EmailField, Submit, FieldError } from '@redwoodjs/forms'
 import { navigate, routes } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
 import { toast, Toaster } from '@redwoodjs/web/toast'
@@ -62,7 +62,7 @@ const ForgotPasswordPage = () => {
                     >
                       Username
                     </Label>
-                    <TextField
+                    <EmailField
                       name="username"
                       className="rw-input"
                       errorClassName="rw-input rw-input-error"
