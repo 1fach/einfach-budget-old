@@ -19,7 +19,7 @@ const App = () => (
     <RedwoodProvider titleTemplate="%PageTitle | %AppTitle">
       <AuthProvider>
         <ColorSchemeScript />
-        <MantineProvider theme={theme}>
+        <MantineProvider theme={theme} classNamesPrefix="einfach">
           <RedwoodApolloProvider useAuth={useAuth}>
             <Routes />
           </RedwoodApolloProvider>
