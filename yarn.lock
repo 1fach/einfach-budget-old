@@ -1856,12 +1856,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.0.0, @babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.13.10, @babel/runtime@npm:^7.16.3, @babel/runtime@npm:^7.17.8, @babel/runtime@npm:^7.20.13, @babel/runtime@npm:^7.20.7, @babel/runtime@npm:^7.21.0, @babel/runtime@npm:^7.7.6, @babel/runtime@npm:^7.8.4, @babel/runtime@npm:^7.9.2":
+"@babel/runtime@npm:^7.0.0, @babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.13.10, @babel/runtime@npm:^7.16.3, @babel/runtime@npm:^7.17.8, @babel/runtime@npm:^7.20.7, @babel/runtime@npm:^7.21.0, @babel/runtime@npm:^7.7.6, @babel/runtime@npm:^7.8.4, @babel/runtime@npm:^7.9.2":
   version: 7.22.15
   resolution: "@babel/runtime@npm:7.22.15"
   dependencies:
     regenerator-runtime: ^0.14.0
   checksum: 96b74adfd1db812d06ed56d9db12acecfc844d252b93994ce4901433957bd28affba725622a4dc9e7f76384c4cb6cadc3d620d07817c8be9156eaedba5eea059
+  languageName: node
+  linkType: hard
+
+"@babel/runtime@npm:^7.20.13":
+  version: 7.23.1
+  resolution: "@babel/runtime@npm:7.23.1"
+  dependencies:
+    regenerator-runtime: ^0.14.0
+  checksum: e57ab1436d4845efe67c3f76d578508bb584173690ecfeac105bc4e09d64b2aa6a53c1e03bca3c97cc238e5390a804e5a4ded211e6350243b735905ca45a4822
   languageName: node
   linkType: hard
 
@@ -4008,9 +4017,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mantine/core@npm:^7.0.0":
-  version: 7.0.0
-  resolution: "@mantine/core@npm:7.0.0"
+"@mantine/core@npm:^7.0.1":
+  version: 7.0.1
+  resolution: "@mantine/core@npm:7.0.1"
   dependencies:
     "@floating-ui/react": ^0.24.8
     clsx: 2.0.0
@@ -4019,19 +4028,19 @@ __metadata:
     react-textarea-autosize: 8.5.2
     type-fest: ^3.13.1
   peerDependencies:
-    "@mantine/hooks": 7.0.0
+    "@mantine/hooks": 7.0.1
     react: ^18.2.0
     react-dom: ^18.2.0
-  checksum: afaf13f17db278981cfa08878dea41f094925c03aaec6f39e91650e70612dc2b6004b72709bf599653ef191c4c56aada27a3a21eb18ed64f847d891a374fc4e0
+  checksum: 3ad0771727ecf41c0aaabb99712ce828e97aa93f0f6284575dd952ad706b01f21d43e38cadab3bc61bfa943aaa79c73ff4f0417c77ea125fedf864dae6e91a53
   languageName: node
   linkType: hard
 
-"@mantine/hooks@npm:^7.0.0":
-  version: 7.0.0
-  resolution: "@mantine/hooks@npm:7.0.0"
+"@mantine/hooks@npm:^7.0.1":
+  version: 7.0.1
+  resolution: "@mantine/hooks@npm:7.0.1"
   peerDependencies:
     react: ^18.2.0
-  checksum: 2b01600ef623fc1b47e0d82f5f6b9cd3edadc775e0a15b889ab11e4542f262d1d7eeeb019783085ee64da769a67f1181ca29e736af2584e93a7ed00a4ee8c45d
+  checksum: cc46dc811cf24a9941b44014111a192a044588d5e4a7001ee3e4d84529d1954f901da79e0f25d4b6f8a2b72c80fc39635e619c53bd3b8960fa9a1b83cbbe604c
   languageName: node
   linkType: hard
 
@@ -7439,6 +7448,25 @@ __metadata:
   dependencies:
     defer-to-connect: ^1.0.1
   checksum: 0594140e027ce4e98970c6d176457fcbff80900b1b3101ac0d08628ca6d21d70e0b94c6aaada94d4f76c1423fcc7195af83da145ce0fd556fc0595ca74a17b8b
+  languageName: node
+  linkType: hard
+
+"@tabler/icons-react@npm:^2.35.0":
+  version: 2.35.0
+  resolution: "@tabler/icons-react@npm:2.35.0"
+  dependencies:
+    "@tabler/icons": 2.35.0
+    prop-types: ^15.7.2
+  peerDependencies:
+    react: ^16.5.1 || ^17.0.0 || ^18.0.0
+  checksum: 6ad37a79dc3b1cbb56da3755f0a4dce6aa59b3fdda5b6d596064dbd1be89c869c18a657946675761cb9b92e73ccd833b754e56d9721cbf8f2ecd924cd6ccfe41
+  languageName: node
+  linkType: hard
+
+"@tabler/icons@npm:2.35.0":
+  version: 2.35.0
+  resolution: "@tabler/icons@npm:2.35.0"
+  checksum: 8fc15b926218f10516c80828f6511faffacee740e2a936175986bdcd7ca748d8fed1ac56e7c849300b34b90ecc7d9df23a60c778b8013838b48a82417f86bf0c
   languageName: node
   linkType: hard
 
@@ -27375,14 +27403,15 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "web@workspace:web"
   dependencies:
-    "@mantine/core": ^7.0.0
-    "@mantine/hooks": ^7.0.0
+    "@mantine/core": ^7.0.1
+    "@mantine/hooks": ^7.0.1
     "@pandacss/dev": ^0.15.1
     "@redwoodjs/auth-dbauth-web": 6.3.1
     "@redwoodjs/forms": 6.3.1
     "@redwoodjs/router": 6.3.1
     "@redwoodjs/vite": 6.3.1
     "@redwoodjs/web": 6.3.1
+    "@tabler/icons-react": ^2.35.0
     humanize-string: 2.1.0
     postcss-preset-mantine: ^1.7.0
     postcss-simple-vars: ^7.0.1
