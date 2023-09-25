@@ -1,3 +1,5 @@
+import type { EditTransactionById, UpdateTransactionInput } from 'types/graphql'
+
 import {
   Form,
   FormError,
@@ -7,8 +9,6 @@ import {
   CheckboxField,
   Submit,
 } from '@redwoodjs/forms'
-
-import type { EditTransactionById, UpdateTransactionInput } from 'types/graphql'
 import type { RWGqlError } from '@redwoodjs/forms'
 
 type FormTransaction = NonNullable<EditTransactionById['transaction']>
