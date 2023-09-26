@@ -5,7 +5,21 @@ import { v4 as uuidv4 } from 'uuid'
 
 import { hashPassword } from '@redwoodjs/auth-dbauth-api'
 
+type TestDataType = {
+  users?: Prisma.UserCreateManyInput[]
+  budgets?: Prisma.BudgetCreateManyInput[]
+  accounts?: Prisma.AccountCreateManyInput[]
+  payees?: Prisma.PayeeCreateManyInput[]
+  categoryGroups?: Prisma.BudgetCategoryGroupCreateManyInput[]
+  categories?: Prisma.BudgetCategoryCreateManyInput[]
+  monthlyBudgets?: Prisma.MonthlyBudgetPerCategoryCreateManyInput[]
+  transactions?: Prisma.TransactionCreateManyInput[]
+}
+
+const testData: TestDataType = {}
+
 const deleteAllTablesData = async () => {
+  console.log('========= START CLEARING TABLES =========')
   await db.transaction.deleteMany()
   console.log('Deleted records in transaction table')
 
@@ -29,193 +43,283 @@ const deleteAllTablesData = async () => {
 
   await db.user.deleteMany()
   console.log('Deleted records in user table')
+  console.log('========= END CLEARING TABLES =========')
+  console.log()
 }
 
 const populateTable = async () => {
-  console.log('========= START POPULATING TABLES =========')
-  for (let i = 0; i < 10; i++) {
+  console.log('========= START PREPARING TESTDATA =========')
+  testData.users = createUserData(5)
+  console.log(testData.users.length + ' users are prepared')
+
+  testData.budgets = createBudgetsForUser(3)
+  console.log(testData.budgets.length + ' budgets are prepared')
+
+  const { accounts, payees } = createAccountsPayeesForBudget(3)
+  testData.accounts = accounts
+  console.log(testData.accounts.length + ' accounts are prepared')
+
+  testData.payees = payees
+  console.log(testData.payees.length + ' payees are prepared')
+
+  testData.categoryGroups = createBudgetCategoryGroupForBudget(3)
+  console.log(testData.categoryGroups.length + ' category groups are prepared')
+
+  testData.categories = createBudgetCategoryForGroup(4)
+  console.log(testData.categories.length + ' categories are prepared')
+
+  testData.monthlyBudgets = createMonthlyBudgetPerCategoryForCategory(
+    9,
+    12,
+    2023
+  )
+  console.log(testData.monthlyBudgets.length + ' monthly budgets are prepared')
+
+  testData.transactions = createTransactionFromAllAccounts(4)
+  console.log(testData.transactions.length + ' transactions are prepared')
+  console.log('========= END PREPARING TESTDATA =========')
+  console.log()
+
+  console.log('========= START IMPORTING USERS =========')
+  console.log(testData.users.length + ' users are going to be imported.')
+  const userRes = await db.user.createMany({ data: testData.users })
+  console.log(userRes.count + ' users have been successfully imported.')
+  console.log('========= END IMPORTING USERS =========')
+  console.log()
+
+  console.log('========= START IMPORTING BUDGETS =========')
+  console.log(testData.budgets.length + ' budgets are going to be imported.')
+  const budgetRes = await db.budget.createMany({ data: testData.budgets })
+  console.log(budgetRes.count + ' budgets have been successfully imported.')
+  console.log('========= END IMPORTING BUDGETS =========')
+  console.log()
+
+  console.log('========= START IMPORTING PAYEES =========')
+  console.log(testData.payees.length + ' payees are going to be imported.')
+  const payeeRes = await db.payee.createMany({ data: testData.payees })
+  console.log(payeeRes.count + ' payees have been successfully imported.')
+  console.log('========= END IMPORTING PAYEES =========')
+  console.log()
+
+  console.log('========= START IMPORTING ACCOUNTS =========')
+  console.log(testData.accounts.length + ' accounts are going to be imported.')
+  const accountRes = await db.account.createMany({ data: testData.accounts })
+  console.log(accountRes.count + ' accounts have been successfully imported.')
+  console.log('========= END IMPORTING ACCOUNTS =========')
+  console.log()
+
+  console.log('========= START IMPORTING CATEGORY GROUPS =========')
+  console.log(
+    testData.categoryGroups.length +
+      ' category groups are going to be imported.'
+  )
+  const categoryGroupRes = await db.budgetCategoryGroup.createMany({
+    data: testData.categoryGroups,
+  })
+  console.log(
+    categoryGroupRes.count + ' category groups have been successfully imported.'
+  )
+  console.log('========= END IMPORTING CATEGORY GROUPS =========')
+  console.log()
+
+  console.log('========= START IMPORTING CATEGORY =========')
+  console.log(
+    testData.categories.length + ' categories are going to be imported.'
+  )
+  const categoryRes = await db.budgetCategory.createMany({
+    data: testData.categories,
+  })
+  console.log(
+    categoryRes.count + ' categories have been successfully imported.'
+  )
+  console.log('========= END IMPORTING CATEGORY =========')
+  console.log()
+
+  console.log('========= START IMPORTING MONTHLY BUDGETS =========')
+  console.log(
+    testData.monthlyBudgets.length +
+      ' monthly budgets are going to be imported.'
+  )
+  const monthlyBudgetRes = await db.monthlyBudgetPerCategory.createMany({
+    data: testData.monthlyBudgets,
+  })
+  console.log(
+    monthlyBudgetRes.count + ' monthly budgets have been successfully imported.'
+  )
+  console.log('========= END IMPORTING MONTHLY BUDGETS =========')
+  console.log()
+
+  console.log('========= START IMPORTING TRANSACTIONS =========')
+  console.log(
+    testData.transactions.length + ' transactions are going to be imported.'
+  )
+  const transactionRes = await db.transaction.createMany({
+    data: testData.transactions,
+  })
+  console.log(
+    transactionRes.count + ' transactions have been successfully imported.'
+  )
+  console.log('========= END IMPORTING TRANSACTIONS =========')
+  console.log()
+}
+
+function createUserData(count) {
+  const users: Prisma.UserCreateManyInput[] = []
+  for (let i = 0; i < count; i++) {
     const [hashedPassword, salt] = hashPassword(faker.internet.password())
-    const data: Prisma.UserCreateInput = {
+    const user: Prisma.UserCreateManyInput = {
+      id: uuidv4(),
       name: faker.person.fullName(),
       email: faker.internet.email(),
       hashedPassword,
       salt,
     }
-    const user = await db.user.create({ data: data })
-    console.log('Created user ' + user.id)
-
-    await createBudgetsForUser(user.id, 2)
+    users.push(user)
   }
-  console.log('========= END POPULATING TABLES =========')
+
+  return users
 }
 
-const createBudgetsForUser = async (userId, count) => {
-  for (let i = 0; i < count; i++) {
-    const data: Prisma.BudgetUncheckedCreateInput = {
-      name: faker.lorem.words(3),
-      userId: userId,
-    }
-
-    const budget = await db.budget.create({ data: data })
-    console.log('Created budget ' + budget.id)
-
-    const accounts = await createAccountsForBudget(budget.id, 3)
-
-    const monthlyBudgets = await createBudgetCategoryGroupForBudget(
-      budget.id,
-      2
-    )
-
-    for (const monthlyBudget of monthlyBudgets) {
-      await createTransactionFromAllAccounts(monthlyBudget.id, accounts, 2)
-    }
-  }
-}
-
-async function createTransactionFromAllAccounts(
-  monthlyBudgetId,
-  accounts,
-  count
-) {
-  console.log('== Start Create Transactions ==')
-  const datas: Prisma.TransactionCreateManyInput[] = []
-  for (const account of accounts) {
-    const balance = 100000
-    const inflow: Prisma.TransactionCreateManyInput = {
-      id: uuidv4(),
-      description: 'Inflow Balance',
-      date: faker.date.between({
-        from: '2023-09-01T00:00:00.000Z',
-        to: '2023-12-31T00:00:00.000Z',
-      }),
-      outflow: 0,
-      inflow: balance,
-      cleared: true,
-      monthlyBudgetPerCategoryId: monthlyBudgetId,
-      accountId: account.id,
-    }
-    datas.push(inflow)
-    console.log(
-      'Created inflow with transaction ' +
-        inflow.id +
-        ' for account ' +
-        account.id
-    )
-
+function createBudgetsForUser(count) {
+  const budgets: Prisma.BudgetCreateManyInput[] = []
+  for (const user of testData.users) {
     for (let i = 0; i < count; i++) {
-      const data: Prisma.TransactionCreateManyInput = {
+      const budget: Prisma.BudgetCreateManyInput = {
         id: uuidv4(),
-        description: faker.finance.transactionDescription(),
+        name: faker.lorem.words(3),
+        userId: user.id,
+      }
+      budgets.push(budget)
+    }
+  }
+
+  return budgets
+}
+
+function createTransactionFromAllAccounts(count) {
+  const transactions: Prisma.TransactionCreateManyInput[] = []
+
+  for (const monthlyBudget of testData.monthlyBudgets) {
+    for (const account of testData.accounts) {
+      const balance = 100000
+      const inflow: Prisma.TransactionCreateManyInput = {
+        id: uuidv4(),
+        description: 'Inflow Balance',
         date: faker.date.between({
           from: '2023-09-01T00:00:00.000Z',
           to: '2023-12-31T00:00:00.000Z',
         }),
-        outflow: faker.finance.amount({
-          min: balance / (count + 5),
-          max: balance / count,
-        }),
-        inflow: 0,
-        cleared: faker.datatype.boolean(0.25),
-        monthlyBudgetPerCategoryId: monthlyBudgetId,
+        outflow: 0,
+        inflow: balance,
+        cleared: true,
+        monthlyBudgetPerCategoryId: monthlyBudget.id,
         accountId: account.id,
       }
-      console.log('Created transaction ' + data.id)
-      datas.push(data)
+      transactions.push(inflow)
+
+      for (let i = 0; i < count; i++) {
+        const outflow: Prisma.TransactionCreateManyInput = {
+          id: uuidv4(),
+          description: faker.finance.transactionDescription(),
+          date: faker.date.between({
+            from: '2023-09-01T00:00:00.000Z',
+            to: '2023-12-31T00:00:00.000Z',
+          }),
+          outflow: faker.finance.amount({
+            min: balance / (count + 5),
+            max: balance / count,
+          }),
+          inflow: 0,
+          cleared: faker.datatype.boolean(0.25),
+          monthlyBudgetPerCategoryId: monthlyBudget.id,
+          accountId: account.id,
+        }
+        transactions.push(outflow)
+      }
     }
   }
-  await db.transaction.createMany({ data: datas })
-  console.log('== End Create Transactions ==')
+
+  return transactions
 }
 
-async function createBudgetCategoryGroupForBudget(budgetId, count) {
-  const created = []
-  for (let i = 0; i < count; i++) {
-    const data: Prisma.BudgetCategoryGroupUncheckedCreateInput = {
-      name: faker.commerce.department(),
-      sortOrder: faker.number.int(10000),
-      budgetId: budgetId,
+function createBudgetCategoryGroupForBudget(count) {
+  const categoryGroups: Prisma.BudgetCategoryGroupCreateManyInput[] = []
+  for (const budget of testData.budgets) {
+    for (let i = 0; i < count; i++) {
+      const group: Prisma.BudgetCategoryGroupCreateManyInput = {
+        id: uuidv4(),
+        name: faker.commerce.department(),
+        sortOrder: faker.number.int(10000),
+        budgetId: budget.id,
+      }
+      categoryGroups.push(group)
     }
-
-    const group = await db.budgetCategoryGroup.create({ data: data })
-    console.log('Created category group ' + group.id)
-
-    const monthlyBudgets = await createBudgetCategoryForGroup(group.id, 2)
-    created.push(...monthlyBudgets)
   }
 
-  return created
+  return categoryGroups
 }
 
-async function createBudgetCategoryForGroup(categoryGroupId, count) {
-  const created = []
-  for (let i = 0; i < count; i++) {
-    const data: Prisma.BudgetCategoryUncheckedCreateInput = {
-      name: faker.commerce.department(),
-      sortOrder: faker.number.int(10000),
-      groupId: categoryGroupId,
+function createBudgetCategoryForGroup(count) {
+  const categories: Prisma.BudgetCategoryCreateManyInput[] = []
+  for (const categoryGroup of testData.categoryGroups) {
+    for (let i = 0; i < count; i++) {
+      const category: Prisma.BudgetCategoryCreateManyInput = {
+        id: uuidv4(),
+        name: faker.commerce.department(),
+        sortOrder: faker.number.int(10000),
+        groupId: categoryGroup.id,
+      }
+      categories.push(category)
     }
-
-    const category = await db.budgetCategory.create({ data: data })
-    console.log('Created category ' + category.id)
-
-    const monthlyBudgets = await createMonthlyBudgetPerCategoryForCategory(
-      category.id
-    )
-
-    created.push(...monthlyBudgets)
   }
 
-  return created
+  return categories
 }
 
-async function createMonthlyBudgetPerCategoryForCategory(categoryId) {
+function createMonthlyBudgetPerCategoryForCategory(monthStart, monthEnd, year) {
   const monthlyBudgets: Prisma.MonthlyBudgetPerCategoryCreateManyInput[] = []
 
-  for (let i = 9; i <= 12; i++) {
-    const monthlyBudget: Prisma.MonthlyBudgetPerCategoryCreateManyInput = {
-      id: uuidv4(),
-      month: i,
-      year: 2023,
-      assigned: faker.finance.amount(),
-      budgetCategoryId: categoryId,
+  for (const category of testData.categories) {
+    for (let i = monthStart; i <= monthEnd; i++) {
+      const monthlyBudget: Prisma.MonthlyBudgetPerCategoryCreateManyInput = {
+        id: uuidv4(),
+        month: i,
+        year: year,
+        assigned: faker.finance.amount(),
+        budgetCategoryId: category.id,
+      }
+      monthlyBudgets.push(monthlyBudget)
     }
-    console.log('Created monthly budget ' + monthlyBudget.id)
-    monthlyBudgets.push(monthlyBudget)
   }
-
-  await db.monthlyBudgetPerCategory.createMany({
-    data: monthlyBudgets,
-  })
 
   return monthlyBudgets
 }
 
-async function createAccountsForBudget(budgetId, count) {
+function createAccountsPayeesForBudget(count) {
   const payees: Prisma.PayeeCreateManyInput[] = []
   const accounts: Prisma.AccountCreateManyInput[] = []
-  for (let i = 0; i < count; i++) {
-    const accName = faker.lorem.words(3)
 
-    const payee: Prisma.PayeeCreateManyInput = {
-      id: uuidv4(),
-      name: accName,
-    }
-    console.log('Created payee ' + payee.id)
-    payees.push(payee)
+  for (const budget of testData.budgets) {
+    for (let i = 0; i < count; i++) {
+      const accName = faker.lorem.words(3)
 
-    const account: Prisma.AccountCreateManyInput = {
-      id: uuidv4(),
-      nickname: accName,
-      budgetId: budgetId,
-      payeeId: payee.id,
+      const payee: Prisma.PayeeCreateManyInput = {
+        id: uuidv4(),
+        name: accName,
+      }
+      payees.push(payee)
+
+      const account: Prisma.AccountCreateManyInput = {
+        id: uuidv4(),
+        nickname: accName,
+        budgetId: budget.id,
+        payeeId: payee.id,
+      }
+      accounts.push(account)
     }
-    console.log('Created account ' + account.id)
-    accounts.push(account)
   }
 
-  await db.payee.createMany({ data: payees })
-  await db.account.createMany({ data: accounts })
-  return accounts
+  return { accounts, payees }
 }
 
 export default async () => {
