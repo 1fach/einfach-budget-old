@@ -20,6 +20,8 @@ import {
 import { useAuth } from 'src/auth'
 import UserCell from 'src/components/UserCell'
 
+import classes from './Sidebar.module.css'
+
 const links = [
   { icon: IconBulb, label: 'Activity', notifications: 3 },
   { icon: IconCheckbox, label: 'Tasks', notifications: 4 },
@@ -43,17 +45,13 @@ export function Sidebar() {
 
   console.log(useAuth())
   const mainLinks = links.map((link) => (
-    <UnstyledButton key={link.label} className="one-Sidebar-mainLink">
-      <div className="one-Sidebar-mainLinkInner">
-        <link.icon
-          size={20}
-          className="one-Sidebar-mainLinkIcon"
-          stroke={1.5}
-        />
+    <UnstyledButton key={link.label} className={classes.mainLink}>
+      <div className={classes.mainLinkInner}>
+        <link.icon size={20} className={classes.mainLinkIcon} stroke={1.5} />
         <span>{link.label}</span>
       </div>
       {link.notifications > 0 && (
-        <Badge size="sm" variant="filled" className="one-Sidebar-mainLinkBadge">
+        <Badge size="sm" variant="filled" className={classes.mainLinkBadge}>
           {link.notifications}
         </Badge>
       )}
@@ -64,7 +62,7 @@ export function Sidebar() {
     <UnstyledButton
       onClick={(event) => event.preventDefault()}
       key={collection.label}
-      className="one-Sidebar-collectionLink"
+      className={classes.collectionLink}
     >
       <span style={{ marginRight: rem(9), fontSize: rem(16) }}>
         {collection.emoji}
@@ -75,7 +73,7 @@ export function Sidebar() {
 
   return (
     <>
-      <div className="one-Sidebar-section">
+      <div className={classes.section}>
         <UserCell id={currentUser?.id} />
       </div>
 
@@ -89,20 +87,17 @@ export function Sidebar() {
           />
         }
         rightSectionWidth={70}
-        rightSection={<Code className="one-Sidebar-searchCode">Ctrl + K</Code>}
+        rightSection={<Code className={classes.searchCode}>Ctrl + K</Code>}
         styles={{ section: { pointerEvents: 'none' } }}
         mb="sm"
       />
 
-      <div className="one-Sidebar-section">
-        <div className="one-Sidebar-mainLinks">{mainLinks}</div>
+      <div className={classes.section}>
+        <div className={classes.mainLinks}>{mainLinks}</div>
       </div>
 
-      <div className="one-Sidebar-section">
-        <Group
-          className="one-Sidebar-collectionsHeader"
-          justify="space-between"
-        >
+      <div className={classes.section}>
+        <Group className={classes.collectionsHeader} justify="space-between">
           <Text size="xs" fw={500} c="dimmed">
             Collections
           </Text>
@@ -115,7 +110,7 @@ export function Sidebar() {
             </ActionIcon>
           </Tooltip>
         </Group>
-        <div className="one-Sidebar-collections">{collectionLinks}</div>
+        <div className={classes.collections}>{collectionLinks}</div>
       </div>
     </>
   )

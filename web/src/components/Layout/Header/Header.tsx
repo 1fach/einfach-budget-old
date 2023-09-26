@@ -5,6 +5,8 @@ import { Link, routes } from '@redwoodjs/router'
 
 import { useAuth } from 'src/auth'
 
+import classes from './Header.module.css'
+
 const links = [
   { link: '/about', label: 'Features' },
   { link: '/pricing', label: 'Pricing' },
@@ -17,13 +19,13 @@ export const Header = () => {
   const [opened, { toggle }] = useDisclosure(false)
 
   const items = links.map((link) => (
-    <a key={link.label} href={link.link} className="one-Header-link">
+    <a key={link.label} href={link.link} className={classes.link}>
       {link.label}
     </a>
   ))
 
   return (
-    <Container fluid className="one-Header-container">
+    <Container fluid className={classes.inner}>
       <MantineLogo />
       <Group gap={5} visibleFrom="xs">
         {items}
@@ -50,7 +52,6 @@ const MantineLogo = () => {
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 623 163"
-      className="m-2075ec07"
       style={{ height: '28px' }}
     >
       <g fill="none" fillRule="evenodd">

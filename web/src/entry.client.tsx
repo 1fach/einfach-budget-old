@@ -1,6 +1,10 @@
 import { hydrateRoot, createRoot } from 'react-dom/client'
 
+import '@mantine/core/styles.css'
+import './scaffold.css'
+import './index.css'
 import App from './App'
+
 /**
  * When `#redwood-app` isn't empty then it's very likely that you're using
  * prerendering. So React attaches event listeners to the existing markup

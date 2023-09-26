@@ -10,10 +10,6 @@ import { theme } from '../config/mantine.config'
 
 import { AuthProvider, useAuth } from './auth'
 
-import '@mantine/core/styles.css'
-import './scaffold.css'
-import './index.css'
-
 const App = () => (
   <FatalErrorBoundary page={FatalErrorPage}>
     <RedwoodProvider titleTemplate="%PageTitle | %AppTitle">
