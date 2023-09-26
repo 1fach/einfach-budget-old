@@ -17,9 +17,8 @@ import {
   IconPlus,
 } from '@tabler/icons-react'
 
-import { UserButton } from 'src/components/UserButton/UserButton'
-
-import classes from './Sidebar.module.css'
+import { useAuth } from 'src/auth'
+import UserCell from 'src/components/UserCell'
 
 const links = [
   { icon: IconBulb, label: 'Activity', notifications: 3 },
@@ -39,15 +38,22 @@ const collections = [
   { emoji: '💁‍♀️', label: 'Customers' },
 ]
 
-export function NavbarSearch() {
+export function Sidebar() {
+  const { currentUser } = useAuth()
+
+  console.log(useAuth())
   const mainLinks = links.map((link) => (
-    <UnstyledButton key={link.label} className={classes.mainLink}>
-      <div className={classes.mainLinkInner}>
-        <link.icon size={20} className={classes.mainLinkIcon} stroke={1.5} />
+    <UnstyledButton key={link.label} className="one-Sidebar-mainLink">
+      <div className="one-Sidebar-mainLinkInner">
+        <link.icon
+          size={20}
+          className="one-Sidebar-mainLinkIcon"
+          stroke={1.5}
+        />
         <span>{link.label}</span>
       </div>
       {link.notifications > 0 && (
-        <Badge size="sm" variant="filled" className={classes.mainLinkBadge}>
+        <Badge size="sm" variant="filled" className="one-Sidebar-mainLinkBadge">
           {link.notifications}
         </Badge>
       )}
@@ -55,22 +61,22 @@ export function NavbarSearch() {
   ))
 
   const collectionLinks = collections.map((collection) => (
-    <button
+    <UnstyledButton
       onClick={(event) => event.preventDefault()}
       key={collection.label}
-      className={classes.collectionLink}
+      className="one-Sidebar-collectionLink"
     >
       <span style={{ marginRight: rem(9), fontSize: rem(16) }}>
         {collection.emoji}
       </span>{' '}
       {collection.label}
-    </button>
+    </UnstyledButton>
   ))
 
   return (
-    <nav className={classes.navbar}>
-      <div className={classes.section}>
-        <UserButton />
+    <>
+      <div className="one-Sidebar-section">
+        <UserCell id={currentUser?.id} />
       </div>
 
       <TextInput
@@ -83,17 +89,20 @@ export function NavbarSearch() {
           />
         }
         rightSectionWidth={70}
-        rightSection={<Code className={classes.searchCode}>Ctrl + K</Code>}
+        rightSection={<Code className="one-Sidebar-searchCode">Ctrl + K</Code>}
         styles={{ section: { pointerEvents: 'none' } }}
         mb="sm"
       />
 
-      <div className={classes.section}>
-        <div className={classes.mainLinks}>{mainLinks}</div>
+      <div className="one-Sidebar-section">
+        <div className="one-Sidebar-mainLinks">{mainLinks}</div>
       </div>
 
-      <div className={classes.section}>
-        <Group className={classes.collectionsHeader} justify="space-between">
+      <div className="one-Sidebar-section">
+        <Group
+          className="one-Sidebar-collectionsHeader"
+          justify="space-between"
+        >
           <Text size="xs" fw={500} c="dimmed">
             Collections
           </Text>
@@ -106,8 +115,8 @@ export function NavbarSearch() {
             </ActionIcon>
           </Tooltip>
         </Group>
-        <div className={classes.collections}>{collectionLinks}</div>
+        <div className="one-Sidebar-collections">{collectionLinks}</div>
       </div>
-    </nav>
+    </>
   )
 }

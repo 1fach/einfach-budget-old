@@ -1,1 +1,130 @@
 @layer reset, base, tokens, recipes, utilities;
+
+
+/* --- Layout CSS --- */
+/* Header */
+.one-Header-container {
+  height: rem(56px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.one-Header-link {
+  display: block;
+  line-height: 1;
+  padding: rem(8px) rem(12px);
+  border-radius: var(--mantine-radius-sm);
+  text-decoration: none;
+  color: light-dark(var(--mantine-color-gray-7), var(--mantine-color-dark-0));
+  font-size: var(--mantine-font-size-sm);
+  font-weight: 500;
+
+  @mixin hover {
+    background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-6));
+  }
+
+  [data-mantine-color-scheme] &[data-active] {
+    background-color: var(--mantine-color-blue-filled);
+    color: var(--mantine-color-white);
+  }
+}
+
+/* Sidebar */
+.one-UserButton {
+  display: block;
+  width: 100%;
+  padding: var(--mantine-spacing-md);
+  color: light-dark(var(--mantine-color-black), var(--mantine-color-dark-0));
+
+  @mixin hover {
+    background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-8));
+  }
+}
+
+.one-Sidebar-section {
+  margin-left: calc(var(--mantine-spacing-md) * -1);
+  margin-right: calc(var(--mantine-spacing-md) * -1);
+  margin-bottom: var(--mantine-spacing-md);
+
+  &:not(:last-of-type) {
+    border-bottom: rem(1px) solid
+      light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
+  }
+}
+
+.one-Sidebar-searchCode {
+  font-weight: 700;
+  font-size: rem(10px);
+  background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-7));
+  border: rem(1px) solid light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-7));
+}
+
+.one-Sidebar-mainLinks {
+  padding-left: calc(var(--mantine-spacing-md) - var(--mantine-spacing-xs));
+  padding-right: calc(var(--mantine-spacing-md) - var(--mantine-spacing-xs));
+  padding-bottom: var(--mantine-spacing-md);
+}
+
+.one-Sidebar-mainLink {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  font-size: var(--mantine-font-size-xs);
+  padding: rem(8px) var(--mantine-spacing-xs);
+  border-radius: var(--mantine-radius-sm);
+  font-weight: 500;
+  color: light-dark(var(--mantine-color-gray-7), var(--mantine-color-dark-0));
+
+  &:hover {
+    background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-6));
+    color: light-dark(var(--mantine-color-gray-7), var(--mantine-color-dark-0));
+  }
+}
+
+.one-Sidebar-mainLinkInner {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.one-Sidebar-mainLinkIcon {
+  margin-right: var(--mantine-spacing-sm);
+  color: light-dark(var(--mantine-color-gray-6), var(--mantine-color-dark-2));
+}
+
+.one-Sidebar-mainLinkBadge {
+  padding: 0;
+  width: rem(20px);
+  height: rem(20px);
+  pointer-events: none;
+}
+
+.one-Sidebar-collections {
+  padding-left: calc(var(--mantine-spacing-md) - rem(6px));
+  padding-right: calc(var(--mantine-spacing-md) - rem(6px));
+  padding-bottom: var(--mantine-spacing-md);
+}
+
+.one-Sidebar-collectionsHeader {
+  padding-left: calc(var(--mantine-spacing-md) + rem(2px));
+  padding-right: var(--mantine-spacing-md);
+  margin-bottom: rem(5px);
+}
+
+.one-Sidebar-collectionLink {
+  display: block;
+  padding: rem(8px) var(--mantine-spacing-xs);
+  text-decoration: none;
+  border-radius: var(--mantine-radius-sm);
+  font-size: var(--mantine-font-size-xs);
+  color: light-dark(var(--mantine-color-gray-7), var(--mantine-color-dark-0));
+  line-height: 1;
+  font-weight: 500;
+  width: 100%;
+
+  &:hover {
+    background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-6));
+    color: light-dark(var(--mantine-color-gray-7), var(--mantine-color-dark-0));
+  }
+}

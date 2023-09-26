@@ -1,14 +1,11 @@
 import { Link, routes } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
 
-import { Header } from 'src/components/Header/Header'
-
 const HomePage = () => {
   return (
     <>
       <MetaTags title="Home" description="Home page" />
 
-      <Header />
       <h1>HomePage</h1>
       <p>
         Find me in <code>./web/src/pages/HomePage/HomePage.tsx</code>
