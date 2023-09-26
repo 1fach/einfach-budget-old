@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker'
 import { Prisma } from '@prisma/client'
 import { db } from 'api/src/lib/db'
+import { v4 as uuidv4 } from 'uuid'
 
 import { hashPassword } from '@redwoodjs/auth-dbauth-api'
 
@@ -64,9 +65,8 @@ const createBudgetsForUser = async (userId, count) => {
       budget.id,
       2
     )
-    const flatMonthlyBudgets = monthlyBudgets.flat(4)
 
-    for (const monthlyBudget of flatMonthlyBudgets) {
+    for (const monthlyBudget of monthlyBudgets) {
       await createTransactionFromAllAccounts(monthlyBudget.id, accounts, 2)
     }
   }
@@ -78,9 +78,11 @@ async function createTransactionFromAllAccounts(
   count
 ) {
   console.log('== Start Create Transactions ==')
+  const datas: Prisma.TransactionCreateManyInput[] = []
   for (const account of accounts) {
     const balance = 100000
-    const inflow: Prisma.TransactionUncheckedCreateInput = {
+    const inflow: Prisma.TransactionCreateManyInput = {
+      id: uuidv4(),
       description: 'Inflow Balance',
       date: faker.date.between({
         from: '2023-09-01T00:00:00.000Z',
@@ -92,11 +94,17 @@ async function createTransactionFromAllAccounts(
       monthlyBudgetPerCategoryId: monthlyBudgetId,
       accountId: account.id,
     }
-    await db.transaction.create({ data: inflow })
-    console.log('Created inflow for a account ' + account.id)
+    datas.push(inflow)
+    console.log(
+      'Created inflow with transaction ' +
+        inflow.id +
+        ' for account ' +
+        account.id
+    )
 
     for (let i = 0; i < count; i++) {
-      const data: Prisma.TransactionUncheckedCreateInput = {
+      const data: Prisma.TransactionCreateManyInput = {
+        id: uuidv4(),
         description: faker.finance.transactionDescription(),
         date: faker.date.between({
           from: '2023-09-01T00:00:00.000Z',
@@ -111,11 +119,11 @@ async function createTransactionFromAllAccounts(
         monthlyBudgetPerCategoryId: monthlyBudgetId,
         accountId: account.id,
       }
-
-      const transaction = await db.transaction.create({ data: data })
-      console.log('Created transaction ' + transaction.id)
+      console.log('Created transaction ' + data.id)
+      datas.push(data)
     }
   }
+  await db.transaction.createMany({ data: datas })
   console.log('== End Create Transactions ==')
 }
 
@@ -132,7 +140,7 @@ async function createBudgetCategoryGroupForBudget(budgetId, count) {
     console.log('Created category group ' + group.id)
 
     const monthlyBudgets = await createBudgetCategoryForGroup(group.id, 2)
-    created.push(monthlyBudgets)
+    created.push(...monthlyBudgets)
   }
 
   return created
@@ -154,57 +162,60 @@ async function createBudgetCategoryForGroup(categoryGroupId, count) {
       category.id
     )
 
-    created.push(monthlyBudgets)
+    created.push(...monthlyBudgets)
   }
 
   return created
 }
 
 async function createMonthlyBudgetPerCategoryForCategory(categoryId) {
-  const created = []
+  const monthlyBudgets: Prisma.MonthlyBudgetPerCategoryCreateManyInput[] = []
+
   for (let i = 9; i <= 12; i++) {
-    const data: Prisma.MonthlyBudgetPerCategoryUncheckedCreateInput = {
+    const monthlyBudget: Prisma.MonthlyBudgetPerCategoryCreateManyInput = {
+      id: uuidv4(),
       month: i,
       year: 2023,
       assigned: faker.finance.amount(),
       budgetCategoryId: categoryId,
     }
-
-    const monthlyBudget = await db.monthlyBudgetPerCategory.create({
-      data: data,
-    })
     console.log('Created monthly budget ' + monthlyBudget.id)
-
-    created.push(monthlyBudget)
+    monthlyBudgets.push(monthlyBudget)
   }
 
-  return created
+  await db.monthlyBudgetPerCategory.createMany({
+    data: monthlyBudgets,
+  })
+
+  return monthlyBudgets
 }
 
 async function createAccountsForBudget(budgetId, count) {
-  const created = []
+  const payees: Prisma.PayeeCreateManyInput[] = []
+  const accounts: Prisma.AccountCreateManyInput[] = []
   for (let i = 0; i < count; i++) {
     const accName = faker.lorem.words(3)
 
-    const payee = await db.payee.create({
-      data: {
-        name: accName,
-      },
-    })
+    const payee: Prisma.PayeeCreateManyInput = {
+      id: uuidv4(),
+      name: accName,
+    }
     console.log('Created payee ' + payee.id)
+    payees.push(payee)
 
-    const data: Prisma.AccountUncheckedCreateInput = {
+    const account: Prisma.AccountCreateManyInput = {
+      id: uuidv4(),
       nickname: accName,
       budgetId: budgetId,
       payeeId: payee.id,
     }
-
-    const account = await db.account.create({ data: data })
     console.log('Created account ' + account.id)
-    created.push(account)
+    accounts.push(account)
   }
 
-  return created
+  await db.payee.createMany({ data: payees })
+  await db.account.createMany({ data: accounts })
+  return accounts
 }
 
 export default async () => {
