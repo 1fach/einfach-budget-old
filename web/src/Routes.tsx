@@ -10,7 +10,6 @@
 import { Set, Router, Route, Private } from '@redwoodjs/router'
 
 import AppLayout from 'src/layouts/AppLayout/AppLayout'
-import ScaffoldLayout from 'src/layouts/ScaffoldLayout'
 
 import { useAuth } from './auth'
 
@@ -25,13 +24,6 @@ const Routes = () => {
       <Private unauthenticated="login">
         <Set wrap={AppLayout}>
           <Route path="/" page={HomePage} name="home" />
-        </Set>
-
-        <Set wrap={ScaffoldLayout} title="Transactions" titleTo="transactions" buttonLabel="New Transaction" buttonTo="newTransaction">
-          <Route path="/transactions/new" page={TransactionNewTransactionPage} name="newTransaction" />
-          <Route path="/transactions/{id}/edit" page={TransactionEditTransactionPage} name="editTransaction" />
-          <Route path="/transactions/{id}" page={TransactionTransactionPage} name="transaction" />
-          <Route path="/transactions" page={TransactionTransactionsPage} name="transactions" />
         </Set>
       </Private>
       <Route notfound page={NotFoundPage} />
