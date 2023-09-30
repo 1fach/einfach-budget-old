@@ -1,8 +1,8 @@
 import { hydrateRoot, createRoot } from 'react-dom/client'
 
-import '@mantine/core/styles.css'
-import './scaffold.css'
 import './index.css'
+import './scaffold.css'
+import '@mantine/core/styles.layer.css'
 import App from './App'
 
 /**
