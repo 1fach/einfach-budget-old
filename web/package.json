@@ -11,20 +11,21 @@
     ]
   },
   "dependencies": {
-    "@mantine/core": "^7.0.1",
-    "@mantine/hooks": "^7.0.1",
+    "@mantine/core": "^7.1.0",
+    "@mantine/hooks": "^7.1.0",
     "@redwoodjs/auth-dbauth-web": "6.3.1",
     "@redwoodjs/forms": "6.3.1",
     "@redwoodjs/router": "6.3.1",
     "@redwoodjs/web": "6.3.1",
     "@tabler/icons-react": "^2.35.0",
+    "@tanstack/react-table": "^8.10.3",
     "humanize-string": "2.1.0",
     "prop-types": "15.8.1",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },
   "devDependencies": {
-    "@pandacss/dev": "^0.15.1",
+    "@pandacss/dev": "^0.15.4",
     "@redwoodjs/vite": "6.3.1",
     "postcss-preset-mantine": "^1.7.0",
     "postcss-simple-vars": "^7.0.1",
