@@ -1,4 +1,4 @@
-import { Root, Header, Sidebar } from 'src/components/Layout/AppLayout'
+import { Root, Sidebar } from 'src/components/Layout/AppLayout'
 
 type AppLayoutProps = {
   children?: React.ReactNode
@@ -7,16 +7,12 @@ type AppLayoutProps = {
 const AppLayout = ({ children }: AppLayoutProps) => {
   return (
     <Root
-      header={{ height: 60 }}
       navbar={{
         width: 300,
         breakpoint: 'sm',
       }}
-      padding="md"
+      padding={0}
     >
-      <Root.Header>
-        <Header />
-      </Root.Header>
       <Root.Navbar px="md">
         <Sidebar />
       </Root.Navbar>

@@ -42,8 +42,6 @@ const collections = [
 
 export function Sidebar() {
   const { currentUser } = useAuth()
-
-  console.log(useAuth())
   const mainLinks = links.map((link) => (
     <UnstyledButton key={link.label} className={classes.mainLink}>
       <div className={classes.mainLinkInner}>

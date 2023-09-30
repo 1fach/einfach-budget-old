@@ -1,0 +1,15 @@
+.tableHead {
+  text-transform: uppercase;
+}
+
+.expandAll {
+  width: 1.5rem;
+}
+
+.checkAll {
+  width: 1.5rem;
+}
+
+.tableRow[data-expandable="true"] {
+  background-color: #f9f8fb;
+}
