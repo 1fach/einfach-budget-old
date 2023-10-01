@@ -114,7 +114,7 @@ model BudgetCategoryGroup {
   budget   Budget @relation(fields: [budgetId], references: [id])
   budgetId String
 
-  budgetCategory BudgetCategory[]
+  budgetCategories BudgetCategory[]
 }
 
 model BudgetCategory {
@@ -125,5 +125,5 @@ model BudgetCategory {
   group   BudgetCategoryGroup @relation(fields: [groupId], references: [id])
   groupId String
 
-  monthlyBudget MonthlyBudgetPerCategory[]
+  monthlyBudgets MonthlyBudgetPerCategory[]
 }

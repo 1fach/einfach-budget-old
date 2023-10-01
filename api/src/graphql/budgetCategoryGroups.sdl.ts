@@ -5,7 +5,7 @@ export const schema = gql`
     sortOrder: Int!
     budget: Budget!
     budgetId: String!
-    budgetCategory: [BudgetCategory]!
+    budgetCategories: [BudgetCategory]!
   }
 
   type Query {

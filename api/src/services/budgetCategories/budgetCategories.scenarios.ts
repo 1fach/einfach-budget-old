@@ -1,5 +1,4 @@
 import type { Prisma, BudgetCategory } from '@prisma/client'
-
 import type { ScenarioData } from '@redwoodjs/testing/api'
 
 export const standard = defineScenario<Prisma.BudgetCategoryCreateArgs>({
@@ -7,17 +6,17 @@ export const standard = defineScenario<Prisma.BudgetCategoryCreateArgs>({
     one: {
       data: {
         name: 'String',
-        sortOrder: 9684060,
+        sortOrder: 9932988,
         group: {
           create: {
             name: 'String',
-            sortOrder: 8904097,
+            sortOrder: 726087,
             budget: {
               create: {
                 name: 'String',
                 user: {
                   create: {
-                    email: 'String8995528',
+                    email: 'String6708199',
                     hashedPassword: 'String',
                     salt: 'String',
                   },
@@ -31,17 +30,17 @@ export const standard = defineScenario<Prisma.BudgetCategoryCreateArgs>({
     two: {
       data: {
         name: 'String',
-        sortOrder: 2303764,
+        sortOrder: 4477204,
         group: {
           create: {
             name: 'String',
-            sortOrder: 6590853,
+            sortOrder: 7433194,
             budget: {
               create: {
                 name: 'String',
                 user: {
                   create: {
-                    email: 'String7467264',
+                    email: 'String9821217',
                     hashedPassword: 'String',
                     salt: 'String',
                   },
