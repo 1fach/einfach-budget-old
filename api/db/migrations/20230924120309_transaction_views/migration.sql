@@ -7,17 +7,21 @@
 -- CreateView
 CREATE VIEW "TotalTransactionsPerAccount" AS
 SELECT
-  "accountId",
-  SUM(inflow) - SUM(CASE WHEN cleared THEN outflow ELSE 0 END) as clearedBalance,
-  SUM(inflow) - SUM(outflow) as unclearedBalance
-FROM "Transaction"
-GROUP BY "accountId";
+  "Account".id AS "accountId",
+  SUM(inflow) - SUM(CASE WHEN cleared THEN outflow ELSE 0 END) AS "clearedBalance",
+  0 - SUM(CASE WHEN cleared THEN 0 ELSE outflow END) AS "unclearedBalance"
+FROM "Account"
+LEFT JOIN "Transaction"
+  ON "Transaction"."accountId" = "Account".id
+GROUP BY "Account".id;
 
 
 -- CreateView
 CREATE VIEW "MonthlyCategoryOutflow" AS
 SELECT
-  "monthlyBudgetPerCategoryId",
-  SUM(outflow) as outflow
-FROM "Transaction"
-GROUP BY "monthlyBudgetPerCategoryId";
+  "MonthlyBudgetPerCategory".id AS "monthlyBudgetPerCategoryId",
+  COALESCE(SUM("Transaction".outflow), 0) AS outflow
+FROM "MonthlyBudgetPerCategory"
+LEFT JOIN "Transaction"
+  ON "Transaction"."monthlyBudgetPerCategoryId" = "MonthlyBudgetPerCategory".id
+GROUP BY "MonthlyBudgetPerCategory".id
