@@ -1,5 +1,4 @@
 import type { Prisma, MonthlyBudgetPerCategory } from '@prisma/client'
-
 import type { ScenarioData } from '@redwoodjs/testing/api'
 
 export const standard =
@@ -7,22 +6,22 @@ export const standard =
     monthlyBudgetPerCategory: {
       one: {
         data: {
-          month: 2792091,
-          year: 667135,
+          month: 5701250,
+          year: 1129885,
           budgetCategory: {
             create: {
               name: 'String',
-              sortOrder: 4259853,
+              sortOrder: 3291508,
               group: {
                 create: {
                   name: 'String',
-                  sortOrder: 7891830,
+                  sortOrder: 2257137,
                   budget: {
                     create: {
                       name: 'String',
                       user: {
                         create: {
-                          email: 'String9755420',
+                          email: 'String4339610',
                           hashedPassword: 'String',
                           salt: 'String',
                         },
@@ -37,22 +36,22 @@ export const standard =
       },
       two: {
         data: {
-          month: 3956920,
-          year: 9821122,
+          month: 7216392,
+          year: 4294965,
           budgetCategory: {
             create: {
               name: 'String',
-              sortOrder: 1981623,
+              sortOrder: 9092253,
               group: {
                 create: {
                   name: 'String',
-                  sortOrder: 8310343,
+                  sortOrder: 6181272,
                   budget: {
                     create: {
                       name: 'String',
                       user: {
                         create: {
-                          email: 'String6377353',
+                          email: 'String397109',
                           hashedPassword: 'String',
                           salt: 'String',
                         },

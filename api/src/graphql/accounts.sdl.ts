@@ -7,6 +7,7 @@ export const schema = gql`
     budget: Budget!
     budgetId: String!
     transactions: [Transaction]!
+    accountBalance: AccountBalance
   }
 
   type Query {
