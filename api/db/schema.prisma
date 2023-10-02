@@ -39,15 +39,19 @@ model Account {
   budget   Budget @relation(fields: [budgetId], references: [id])
   budgetId String
 
-  transactions Transaction[]
+  transactions   Transaction[]
+  accountBalance AccountBalance?
 
   @@unique([budgetId, nickname]) // don't use the same name of account inside a same budget
 }
 
-view TotalTransactionsPerAccount {
-  accountId        String  @unique
+view AccountBalance {
   clearedBalance   Decimal @default(0.00) @db.Decimal(12, 2)
   unclearedBalance Decimal @default(0.00) @db.Decimal(12, 2)
+  workingBalance   Decimal @default(0.00) @db.Decimal(12, 2)
+
+  account   Account @relation(fields: [accountId], references: [id])
+  accountId String  @id
 }
 
 model Payee {
@@ -96,14 +100,18 @@ model MonthlyBudgetPerCategory {
   budgetCategory   BudgetCategory @relation(fields: [budgetCategoryId], references: [id])
   budgetCategoryId String
 
-  transactions Transaction[]
+  transactions   Transaction[]
+  budgetActivity MonthlyCategoryActivity?
 
   @@unique([month, year, budgetCategoryId]) // In a month there shouldn't be two same categories
 }
 
-view MonthlyCategoryOutflow {
-  monthlyBudgetPerCategoryId String  @unique
-  outflow                    Decimal @default(0.00) @db.Decimal(12, 2)
+view MonthlyCategoryActivity {
+  activity  Decimal @default(0.00) @db.Decimal(12, 2)
+  available Decimal @default(0.00) @db.Decimal(12, 2)
+
+  monthlyBudgetPerCategory   MonthlyBudgetPerCategory @relation(fields: [monthlyBudgetPerCategoryId], references: [id])
+  monthlyBudgetPerCategoryId String                   @id
 }
 
 model BudgetCategoryGroup {
