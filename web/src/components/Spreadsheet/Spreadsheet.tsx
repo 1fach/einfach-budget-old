@@ -1,13 +1,17 @@
 import { styled } from 'styled/jsx'
 
-import { Table } from './Table'
+import MonthlyBudgetsCell from 'src/components/MonthlyBudgetsCell'
 
-export const Spreadsheet = () => {
+import { TableSkeleton } from './TableSkeleton'
+
+type Props = { budgetId?: string }
+
+export const Spreadsheet = ({ budgetId }: Props) => {
   return (
     <styled.div height="100dvh" overflow="hidden">
       <Header />
       <styled.div display="flex" width="full" height="full">
-        <BudgetTable />
+        <BudgetTable budgetId={budgetId} />
         <Inspector />
       </styled.div>
     </styled.div>
@@ -25,10 +29,16 @@ const Header = () => {
   )
 }
 
-const BudgetTable = () => {
+const BudgetTable = ({ budgetId }: Props) => {
+  const { month, year } = { month: 10, year: 2023 }
+
   return (
     <styled.section flex={1}>
-      <Table />
+      {budgetId == null ? (
+        <TableSkeleton />
+      ) : (
+        <MonthlyBudgetsCell budgetId={budgetId} month={month} year={year} />
+      )}
     </styled.section>
   )
 }

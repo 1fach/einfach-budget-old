@@ -2,7 +2,7 @@ import { Checkbox, UnstyledButton } from '@mantine/core'
 import { IconChevronDown, IconChevronRight } from '@tabler/icons-react'
 import { type Table } from '@tanstack/react-table'
 
-import { type Budget } from './makeData'
+import type { Budget } from './Table'
 
 export const HCheckbox = ({ table }: { table: Table<Budget> }) => {
   return (

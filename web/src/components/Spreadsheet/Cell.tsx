@@ -2,7 +2,7 @@ import { Checkbox, UnstyledButton } from '@mantine/core'
 import { IconChevronDown, IconChevronRight } from '@tabler/icons-react'
 import { type Row, type Getter } from '@tanstack/react-table'
 
-import { type Budget } from './makeData'
+import type { Budget } from './Table'
 
 export const CCheckbox = ({ row }: { row: Row<Budget> }) => {
   return (

@@ -18,6 +18,7 @@ import {
 } from '@tabler/icons-react'
 
 import { useAuth } from 'src/auth'
+import UserBudgetsCell from 'src/components/UserBudgetsCell'
 import UserCell from 'src/components/UserCell'
 
 import classes from './Sidebar.module.css'
@@ -26,18 +27,6 @@ const links = [
   { icon: IconBulb, label: 'Activity', notifications: 3 },
   { icon: IconCheckbox, label: 'Tasks', notifications: 4 },
   { icon: IconUser, label: 'Contacts' },
-]
-
-const collections = [
-  { emoji: '👍', label: 'Sales' },
-  { emoji: '🚚', label: 'Deliveries' },
-  { emoji: '💸', label: 'Discounts' },
-  { emoji: '💰', label: 'Profits' },
-  { emoji: '✨', label: 'Reports' },
-  { emoji: '🛒', label: 'Orders' },
-  { emoji: '📅', label: 'Events' },
-  { emoji: '🙈', label: 'Debts' },
-  { emoji: '💁‍♀️', label: 'Customers' },
 ]
 
 export function Sidebar() {
@@ -53,19 +42,6 @@ export function Sidebar() {
           {link.notifications}
         </Badge>
       )}
-    </UnstyledButton>
-  ))
-
-  const collectionLinks = collections.map((collection) => (
-    <UnstyledButton
-      onClick={(event) => event.preventDefault()}
-      key={collection.label}
-      className={classes.collectionLink}
-    >
-      <span style={{ marginRight: rem(9), fontSize: rem(16) }}>
-        {collection.emoji}
-      </span>{' '}
-      {collection.label}
     </UnstyledButton>
   ))
 
@@ -97,7 +73,7 @@ export function Sidebar() {
       <div className={classes.section}>
         <Group className={classes.collectionsHeader} justify="space-between">
           <Text size="xs" fw={500} c="dimmed">
-            Collections
+            Budgets
           </Text>
           <Tooltip label="Create collection" withArrow position="right">
             <ActionIcon variant="default" size={18}>
@@ -108,7 +84,9 @@ export function Sidebar() {
             </ActionIcon>
           </Tooltip>
         </Group>
-        <div className={classes.collections}>{collectionLinks}</div>
+        <div className={classes.collections}>
+          <UserBudgetsCell userId={currentUser?.id} />
+        </div>
       </div>
     </>
   )

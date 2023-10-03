@@ -11,14 +11,21 @@ import {
 
 import { CExpand, CCheckbox, CCategory } from './Cell'
 import { HExpand, HCheckbox } from './Header'
-import { makeData, type Budget } from './makeData'
 import classes from './Table.module.css'
 
-export const Table = () => {
+export type Budget = {
+  category: string
+  assigned: number
+  activity: number
+  available: number
+  subRows?: Budget[]
+}
+
+export const Table = ({ budgets }: { budgets: Budget[] }) => {
   const columnHelper = createColumnHelper<Budget>()
 
   const [expanded, setExpanded] = React.useState<ExpandedState>(true)
-  const [data] = React.useState(() => makeData(2, 2))
+  const [data] = React.useState(budgets)
   const [columns] = React.useState<ColumnDef<Budget>[]>(() => [
     columnHelper.display({
       id: 'checkAll',
@@ -36,15 +43,15 @@ export const Table = () => {
     }),
     columnHelper.accessor('assigned', {
       header: () => <span>Assigned</span>,
-      cell: ({ getValue }) => <span>€ {getValue()}.00</span>,
+      cell: ({ getValue }) => <span>€ {getValue()}</span>,
     }),
     columnHelper.accessor('activity', {
       header: () => <span>Activity</span>,
-      cell: ({ getValue }) => <span>€ {getValue()}.00</span>,
+      cell: ({ getValue }) => <span>€ {getValue()}</span>,
     }),
     columnHelper.accessor('available', {
       header: () => <span>Available</span>,
-      cell: ({ getValue }) => <span>€ {getValue()}.00</span>,
+      cell: ({ getValue }) => <span>€ {getValue()}</span>,
     }),
   ])
 
