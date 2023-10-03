@@ -267,7 +267,7 @@ function createBudgetCategoryForGroup(count) {
         id: uuidv4(),
         name: faker.commerce.department(),
         sortOrder: faker.number.int(10000),
-        groupId: categoryGroup.id,
+        budgetCategoryGroupId: categoryGroup.id,
       }
       categories.push(category)
     }
@@ -285,7 +285,7 @@ function createMonthlyBudgetPerCategoryForCategory(monthStart, monthEnd, year) {
         id: uuidv4(),
         month: i,
         year: year,
-        assigned: faker.finance.amount(),
+        assigned: new Prisma.Decimal(faker.finance.amount(10000, 10000, 2)),
         budgetCategoryId: category.id,
       }
       monthlyBudgets.push(monthlyBudget)

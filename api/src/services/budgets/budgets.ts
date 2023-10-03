@@ -6,12 +6,44 @@ import type {
 
 import { db } from 'src/lib/db'
 
-export const budgets: QueryResolvers['budgets'] = () => {
-  return db.budget.findMany()
+export const budgetsByUser: QueryResolvers['budgetsByUser'] = ({ userId }) => {
+  return db.budget.findMany({ where: { userId } })
 }
 
 export const budget: QueryResolvers['budget'] = ({ id }) => {
   return db.budget.findUnique({
+    where: { id },
+  })
+}
+
+export const budgetByMonth: QueryResolvers['budgetByMonth'] = ({
+  id,
+  month,
+  year,
+}) => {
+  return db.budget.findUnique({
+    include: {
+      budgetCategoryGroups: {
+        include: {
+          budgetCategories: {
+            include: {
+              monthlyBudgetPerCategories: {
+                where: {
+                  month: month,
+                  year: year,
+                },
+              },
+            },
+            orderBy: {
+              sortOrder: 'asc',
+            },
+          },
+        },
+        orderBy: {
+          sortOrder: 'asc',
+        },
+      },
+    },
     where: { id },
   })
 }
@@ -45,7 +77,9 @@ export const Budget: BudgetRelationResolvers = {
   accounts: (_obj, { root }) => {
     return db.budget.findUnique({ where: { id: root?.id } }).accounts()
   },
-  categoryGroups: (_obj, { root }) => {
-    return db.budget.findUnique({ where: { id: root?.id } }).categoryGroups()
+  budgetCategoryGroups: (_obj, { root }) => {
+    return db.budget
+      .findUnique({ where: { id: root?.id } })
+      .budgetCategoryGroups()
   },
 }

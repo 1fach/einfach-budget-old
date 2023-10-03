@@ -43,16 +43,15 @@ describe('monthlyBudgetPerCategories', () => {
     async (scenario: StandardScenario) => {
       const result = await createMonthlyBudgetPerCategory({
         input: {
-          assigned: 1000000,
-          month: 7947810,
-          year: 4286586,
+          month: 2027188,
+          year: 7023450,
           budgetCategoryId:
             scenario.monthlyBudgetPerCategory.two.budgetCategoryId,
         },
       })
 
-      expect(result.month).toEqual(7947810)
-      expect(result.year).toEqual(4286586)
+      expect(result.month).toEqual(2027188)
+      expect(result.year).toEqual(7023450)
       expect(result.budgetCategoryId).toEqual(
         scenario.monthlyBudgetPerCategory.two.budgetCategoryId
       )
@@ -67,10 +66,10 @@ describe('monthlyBudgetPerCategories', () => {
       })) as MonthlyBudgetPerCategory
       const result = await updateMonthlyBudgetPerCategory({
         id: original.id,
-        input: { month: 6505550 },
+        input: { month: 9824828 },
       })
 
-      expect(result.month).toEqual(6505550)
+      expect(result.month).toEqual(9824828)
     }
   )
 

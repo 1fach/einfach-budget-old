@@ -8,7 +8,6 @@ export const schema = gql`
 
   type Query {
     monthlyCategoryActivities: [MonthlyCategoryActivity!]! @requireAuth
-    monthlyCategoryActivity(id: String!): MonthlyCategoryActivity @requireAuth
   }
 
   input CreateMonthlyCategoryActivityInput {
@@ -21,17 +20,5 @@ export const schema = gql`
     activity: Float
     available: Float
     monthlyBudgetPerCategoryId: String
-  }
-
-  type Mutation {
-    createMonthlyCategoryActivity(
-      input: CreateMonthlyCategoryActivityInput!
-    ): MonthlyCategoryActivity! @requireAuth
-    updateMonthlyCategoryActivity(
-      id: String!
-      input: UpdateMonthlyCategoryActivityInput!
-    ): MonthlyCategoryActivity! @requireAuth
-    deleteMonthlyCategoryActivity(id: String!): MonthlyCategoryActivity!
-      @requireAuth
   }
 `

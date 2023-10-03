@@ -6,22 +6,22 @@ export const standard =
     monthlyBudgetPerCategory: {
       one: {
         data: {
-          month: 5701250,
-          year: 1129885,
+          month: 2419089,
+          year: 7548281,
           budgetCategory: {
             create: {
               name: 'String',
-              sortOrder: 3291508,
-              group: {
+              sortOrder: 5589645,
+              budgetCategoryGroup: {
                 create: {
                   name: 'String',
-                  sortOrder: 2257137,
+                  sortOrder: 1550088,
                   budget: {
                     create: {
                       name: 'String',
                       user: {
                         create: {
-                          email: 'String4339610',
+                          email: 'String706659',
                           hashedPassword: 'String',
                           salt: 'String',
                         },
@@ -36,22 +36,22 @@ export const standard =
       },
       two: {
         data: {
-          month: 7216392,
-          year: 4294965,
+          month: 2213810,
+          year: 1446592,
           budgetCategory: {
             create: {
               name: 'String',
-              sortOrder: 9092253,
-              group: {
+              sortOrder: 7474690,
+              budgetCategoryGroup: {
                 create: {
                   name: 'String',
-                  sortOrder: 6181272,
+                  sortOrder: 8815101,
                   budget: {
                     create: {
                       name: 'String',
                       user: {
                         create: {
-                          email: 'String397109',
+                          email: 'String8757961',
                           hashedPassword: 'String',
                           salt: 'String',
                         },

@@ -1,4 +1,5 @@
 import type { Prisma, MonthlyCategoryActivity } from '@prisma/client'
+
 import type { ScenarioData } from '@redwoodjs/testing/api'
 
 export const standard =
@@ -8,22 +9,22 @@ export const standard =
         data: {
           monthlyBudgetPerCategory: {
             create: {
-              month: 4402389,
-              year: 7704031,
+              month: 5205938,
+              year: 3959816,
               budgetCategory: {
                 create: {
                   name: 'String',
-                  sortOrder: 2793846,
-                  group: {
+                  sortOrder: 8688470,
+                  budgetCategoryGroup: {
                     create: {
                       name: 'String',
-                      sortOrder: 9320586,
+                      sortOrder: 5806731,
                       budget: {
                         create: {
                           name: 'String',
                           user: {
                             create: {
-                              email: 'String6530505',
+                              email: 'String2847542',
                               hashedPassword: 'String',
                               salt: 'String',
                             },
@@ -42,22 +43,22 @@ export const standard =
         data: {
           monthlyBudgetPerCategory: {
             create: {
-              month: 7252241,
-              year: 7562683,
+              month: 5166833,
+              year: 3298251,
               budgetCategory: {
                 create: {
                   name: 'String',
-                  sortOrder: 2568381,
-                  group: {
+                  sortOrder: 5134249,
+                  budgetCategoryGroup: {
                     create: {
                       name: 'String',
-                      sortOrder: 6821419,
+                      sortOrder: 9941462,
                       budget: {
                         create: {
                           name: 'String',
                           user: {
                             create: {
-                              email: 'String6091368',
+                              email: 'String6706599',
                               hashedPassword: 'String',
                               salt: 'String',
                             },

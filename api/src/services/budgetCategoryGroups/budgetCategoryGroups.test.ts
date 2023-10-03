@@ -44,13 +44,13 @@ describe('budgetCategoryGroups', () => {
       const result = await createBudgetCategoryGroup({
         input: {
           name: 'String',
-          sortOrder: 731872,
+          sortOrder: 5238888,
           budgetId: scenario.budgetCategoryGroup.two.budgetId,
         },
       })
 
       expect(result.name).toEqual('String')
-      expect(result.sortOrder).toEqual(731872)
+      expect(result.sortOrder).toEqual(5238888)
       expect(result.budgetId).toEqual(scenario.budgetCategoryGroup.two.budgetId)
     }
   )

@@ -6,17 +6,17 @@ export const standard = defineScenario<Prisma.BudgetCategoryCreateArgs>({
     one: {
       data: {
         name: 'String',
-        sortOrder: 9932988,
-        group: {
+        sortOrder: 5451937,
+        budgetCategoryGroup: {
           create: {
             name: 'String',
-            sortOrder: 726087,
+            sortOrder: 566090,
             budget: {
               create: {
                 name: 'String',
                 user: {
                   create: {
-                    email: 'String6708199',
+                    email: 'String4029508',
                     hashedPassword: 'String',
                     salt: 'String',
                   },
@@ -30,17 +30,17 @@ export const standard = defineScenario<Prisma.BudgetCategoryCreateArgs>({
     two: {
       data: {
         name: 'String',
-        sortOrder: 4477204,
-        group: {
+        sortOrder: 4390020,
+        budgetCategoryGroup: {
           create: {
             name: 'String',
-            sortOrder: 7433194,
+            sortOrder: 5013990,
             budget: {
               create: {
                 name: 'String',
                 user: {
                   create: {
-                    email: 'String9821217',
+                    email: 'String39836',
                     hashedPassword: 'String',
                     salt: 'String',
                   },

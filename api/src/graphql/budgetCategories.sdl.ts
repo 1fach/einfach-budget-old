@@ -3,9 +3,9 @@ export const schema = gql`
     id: String!
     name: String!
     sortOrder: Int!
-    group: BudgetCategoryGroup!
-    groupId: String!
-    monthlyBudgets: [MonthlyBudgetPerCategory]!
+    budgetCategoryGroup: BudgetCategoryGroup!
+    budgetCategoryGroupId: String!
+    monthlyBudgetPerCategories: [MonthlyBudgetPerCategory]!
   }
 
   type Query {
@@ -16,13 +16,13 @@ export const schema = gql`
   input CreateBudgetCategoryInput {
     name: String!
     sortOrder: Int!
-    groupId: String!
+    budgetCategoryGroupId: String!
   }
 
   input UpdateBudgetCategoryInput {
     name: String
     sortOrder: Int
-    groupId: String
+    budgetCategoryGroupId: String
   }
 
   type Mutation {

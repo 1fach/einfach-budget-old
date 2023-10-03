@@ -6,6 +6,7 @@ export const schema = gql`
     budget: Budget!
     budgetId: String!
     budgetCategories: [BudgetCategory]!
+    monthlyCategoryGroupActivities: [MonthlyCategoryGroupActivity]!
   }
 
   type Query {

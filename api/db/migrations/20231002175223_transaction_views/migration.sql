@@ -1,6 +1,7 @@
 /*
   - Creates the view to get the sum of all transactions, which belongs to an account.
-  - Creates the view to get the outflows per category in a month.
+  - Creates the view to get the sum of all outflows per category in a month.
+  - Creates the view to get the sum of all outflows per category group in a month.
 */
 
 
@@ -43,3 +44,20 @@ SELECT
   activity,
   assigned - activity AS available
 FROM outflows;
+
+
+-- CreateView
+CREATE VIEW "MonthlyCategoryGroupActivity" AS
+SELECT
+  "budgetCategoryGroupId",
+  "month",
+  "year",
+  SUM("MonthlyBudgetPerCategory".assigned) as assigned,
+  SUM(activity) as activity,
+  SUM(available) as available
+FROM "MonthlyCategoryActivity"
+LEFT JOIN "MonthlyBudgetPerCategory"
+  ON "monthlyBudgetPerCategoryId" = "MonthlyBudgetPerCategory".id
+LEFT JOIN "BudgetCategory"
+  ON "MonthlyBudgetPerCategory"."budgetCategoryId" = "BudgetCategory".id
+GROUP BY "budgetCategoryGroupId", "month", "year"

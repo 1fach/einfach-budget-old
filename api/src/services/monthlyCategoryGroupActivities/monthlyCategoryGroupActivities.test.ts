@@ -1,5 +1,5 @@
-import { monthlyCategoryActivities } from './monthlyCategoryActivities'
-import type { StandardScenario } from './monthlyCategoryActivities.scenarios'
+import { monthlyCategoryGroupActivities } from './monthlyCategoryGroupActivities'
+import type { StandardScenario } from './monthlyCategoryGroupActivities.scenarios'
 
 // Generated boilerplate tests do not account for all circumstances
 // and can fail without adjustments, e.g. Float.
@@ -7,14 +7,14 @@ import type { StandardScenario } from './monthlyCategoryActivities.scenarios'
 //       https://redwoodjs.com/docs/testing#testing-services
 // https://redwoodjs.com/docs/testing#jest-expect-type-considerations
 
-describe('monthlyCategoryActivities', () => {
+describe('monthlyCategoryGroupActivities', () => {
   scenario(
-    'returns all monthlyCategoryActivities',
+    'returns all monthlyCategoryGroupActivities',
     async (scenario: StandardScenario) => {
-      const result = await monthlyCategoryActivities()
+      const result = await monthlyCategoryGroupActivities()
 
       expect(result.length).toEqual(
-        Object.keys(scenario.monthlyCategoryActivity).length
+        Object.keys(scenario.monthlyCategoryGroupActivity).length
       )
     }
   )

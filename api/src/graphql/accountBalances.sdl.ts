@@ -9,7 +9,6 @@ export const schema = gql`
 
   type Query {
     accountBalances: [AccountBalance!]! @requireAuth
-    accountBalance(id: String!): AccountBalance @requireAuth
   }
 
   input CreateAccountBalanceInput {
@@ -24,15 +23,5 @@ export const schema = gql`
     unclearedBalance: Float
     workingBalance: Float
     accountId: String
-  }
-
-  type Mutation {
-    createAccountBalance(input: CreateAccountBalanceInput!): AccountBalance!
-      @requireAuth
-    updateAccountBalance(
-      id: String!
-      input: UpdateAccountBalanceInput!
-    ): AccountBalance! @requireAuth
-    deleteAccountBalance(id: String!): AccountBalance! @requireAuth
   }
 `

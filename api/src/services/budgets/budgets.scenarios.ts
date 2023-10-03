@@ -1,5 +1,4 @@
 import type { Prisma, Budget } from '@prisma/client'
-
 import type { ScenarioData } from '@redwoodjs/testing/api'
 
 export const standard = defineScenario<Prisma.BudgetCreateArgs>({
@@ -9,7 +8,7 @@ export const standard = defineScenario<Prisma.BudgetCreateArgs>({
         name: 'String',
         user: {
           create: {
-            email: 'String2289661',
+            email: 'String6000265',
             hashedPassword: 'String',
             salt: 'String',
           },
@@ -21,7 +20,7 @@ export const standard = defineScenario<Prisma.BudgetCreateArgs>({
         name: 'String',
         user: {
           create: {
-            email: 'String6465097',
+            email: 'String5408441',
             hashedPassword: 'String',
             salt: 'String',
           },

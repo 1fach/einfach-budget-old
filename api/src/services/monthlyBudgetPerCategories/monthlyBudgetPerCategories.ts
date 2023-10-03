@@ -52,9 +52,9 @@ export const MonthlyBudgetPerCategory: MonthlyBudgetPerCategoryRelationResolvers
         .findUnique({ where: { id: root?.id } })
         .transactions()
     },
-    budgetActivity: (_obj, { root }) => {
+    monthlyCategoryActivity: (_obj, { root }) => {
       return db.monthlyBudgetPerCategory
         .findUnique({ where: { id: root?.id } })
-        .budgetActivity()
+        .monthlyCategoryActivity()
     },
   }

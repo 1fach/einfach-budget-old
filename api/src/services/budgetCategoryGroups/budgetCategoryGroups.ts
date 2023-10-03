@@ -52,4 +52,9 @@ export const BudgetCategoryGroup: BudgetCategoryGroupRelationResolvers = {
       .findUnique({ where: { id: root?.id } })
       .budgetCategories()
   },
+  monthlyCategoryGroupActivities: (_obj, { root }) => {
+    return db.budgetCategoryGroup
+      .findUnique({ where: { id: root?.id } })
+      .monthlyCategoryGroupActivities()
+  },
 }

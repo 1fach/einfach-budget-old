@@ -1,4 +1,5 @@
 import type { Prisma, AccountBalance } from '@prisma/client'
+
 import type { ScenarioData } from '@redwoodjs/testing/api'
 
 export const standard = defineScenario<Prisma.AccountBalanceCreateArgs>({
@@ -14,7 +15,7 @@ export const standard = defineScenario<Prisma.AccountBalanceCreateArgs>({
                 name: 'String',
                 user: {
                   create: {
-                    email: 'String4642528',
+                    email: 'String4621832',
                     hashedPassword: 'String',
                     salt: 'String',
                   },
@@ -36,7 +37,7 @@ export const standard = defineScenario<Prisma.AccountBalanceCreateArgs>({
                 name: 'String',
                 user: {
                   create: {
-                    email: 'String7225152',
+                    email: 'String2873320',
                     hashedPassword: 'String',
                     salt: 'String',
                   },

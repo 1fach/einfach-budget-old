@@ -85,8 +85,8 @@ model Budget {
   user   User   @relation(fields: [userId], references: [id])
   userId String
 
-  accounts       Account[]
-  categoryGroups BudgetCategoryGroup[]
+  accounts             Account[]
+  budgetCategoryGroups BudgetCategoryGroup[]
 
   @@unique([userId, name]) // a user can't have budget with the same name
 }
@@ -100,8 +100,8 @@ model MonthlyBudgetPerCategory {
   budgetCategory   BudgetCategory @relation(fields: [budgetCategoryId], references: [id])
   budgetCategoryId String
 
-  transactions   Transaction[]
-  budgetActivity MonthlyCategoryActivity?
+  transactions            Transaction[]
+  monthlyCategoryActivity MonthlyCategoryActivity?
 
   @@unique([month, year, budgetCategoryId]) // In a month there shouldn't be two same categories
 }
@@ -114,6 +114,17 @@ view MonthlyCategoryActivity {
   monthlyBudgetPerCategoryId String                   @id
 }
 
+view MonthlyCategoryGroupActivity {
+  month     Int
+  year      Int
+  assigned  Decimal @default(0.00) @db.Decimal(12, 2)
+  activity  Decimal @default(0.00) @db.Decimal(12, 2)
+  available Decimal @default(0.00) @db.Decimal(12, 2)
+
+  budgetCategoryGroup   BudgetCategoryGroup @relation(fields: [budgetCategoryGroupId], references: [id])
+  budgetCategoryGroupId String              @id
+}
+
 model BudgetCategoryGroup {
   id        String @id @default(uuid())
   name      String
@@ -122,7 +133,8 @@ model BudgetCategoryGroup {
   budget   Budget @relation(fields: [budgetId], references: [id])
   budgetId String
 
-  budgetCategories BudgetCategory[]
+  budgetCategories               BudgetCategory[]
+  monthlyCategoryGroupActivities MonthlyCategoryGroupActivity[]
 }
 
 model BudgetCategory {
@@ -130,8 +142,8 @@ model BudgetCategory {
   name      String
   sortOrder Int
 
-  group   BudgetCategoryGroup @relation(fields: [groupId], references: [id])
-  groupId String
+  budgetCategoryGroup   BudgetCategoryGroup @relation(fields: [budgetCategoryGroupId], references: [id])
+  budgetCategoryGroupId String
 
-  monthlyBudgets MonthlyBudgetPerCategory[]
+  monthlyBudgetPerCategories MonthlyBudgetPerCategory[]
 }
