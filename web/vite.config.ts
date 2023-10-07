@@ -14,7 +14,7 @@ const viteConfig: UserConfig = {
   plugins: [redwood(), tsconfigPaths()],
   css: {
     modules: {
-      generateScopedName: 'one-[local]__[hash:base64:5]',
+      generateScopedName: 'one-[hash:base64:5]',
     },
   },
 }
