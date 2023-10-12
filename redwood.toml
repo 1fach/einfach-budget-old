@@ -19,3 +19,13 @@
   open = true
 [notifications]
   versionUpdates = ["latest"]
+
+[experimental.studio]
+  enabled = true
+  inMemory = false
+[experimental.studio.graphiql]
+  endpoint = "graphql"
+[experimental.studio.graphiql.authImpersonation]
+  authProvider = "dbAuth"
+  email = "testrw@einfach.com"
+  userId = "4c360cad-9581-4df7-8e62-f2617ff732fd"

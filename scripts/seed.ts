@@ -49,23 +49,23 @@ const deleteAllTablesData = async () => {
 
 const populateTable = async () => {
   console.log('========= START PREPARING TESTDATA =========')
-  testData.users = createUserData(5)
+  testData.users = createUserData(2)
   console.log(testData.users.length + ' users are prepared')
 
-  testData.budgets = createBudgetsForUser(3)
+  testData.budgets = createBudgetsForUser(2)
   console.log(testData.budgets.length + ' budgets are prepared')
 
-  const { accounts, payees } = createAccountsPayeesForBudget(3)
+  const { accounts, payees } = createAccountsPayeesForBudget(2)
   testData.accounts = accounts
   console.log(testData.accounts.length + ' accounts are prepared')
 
   testData.payees = payees
   console.log(testData.payees.length + ' payees are prepared')
 
-  testData.categoryGroups = createBudgetCategoryGroupForBudget(3)
+  testData.categoryGroups = createBudgetCategoryGroupForBudget(2)
   console.log(testData.categoryGroups.length + ' category groups are prepared')
 
-  testData.categories = createBudgetCategoryForGroup(4)
+  testData.categories = createBudgetCategoryForGroup(3)
   console.log(testData.categories.length + ' categories are prepared')
 
   testData.monthlyBudgets = createMonthlyBudgetPerCategoryForCategory(
@@ -176,6 +176,15 @@ function createUserData(count) {
     }
     users.push(user)
   }
+
+  const [hashedPassword, salt] = hashPassword('test123')
+  users.push({
+    id: '4c360cad-9581-4df7-8e62-f2617ff732fd',
+    name: faker.person.fullName(),
+    email: 'testrw@einfach.com',
+    hashedPassword,
+    salt,
+  })
 
   return users
 }

@@ -8,9 +8,10 @@
   },
   "devDependencies": {
     "@faker-js/faker": "^8.1.0",
-    "@redwoodjs/auth-dbauth-setup": "6.3.1",
-    "@redwoodjs/cli-storybook": "6.3.1",
-    "@redwoodjs/core": "6.3.1"
+    "@redwoodjs/auth-dbauth-setup": "6.3.2",
+    "@redwoodjs/cli-storybook": "6.3.2",
+    "@redwoodjs/core": "6.3.2",
+    "@redwoodjs/studio": "6.3.2"
   },
   "eslintConfig": {
     "extends": "@redwoodjs/eslint-config",
