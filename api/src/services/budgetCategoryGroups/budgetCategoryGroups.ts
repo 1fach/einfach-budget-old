@@ -50,7 +50,11 @@ export const BudgetCategoryGroup: BudgetCategoryGroupRelationResolvers = {
   budgetCategories: (_obj, { root }) => {
     return db.budgetCategoryGroup
       .findUnique({ where: { id: root?.id } })
-      .budgetCategories()
+      .budgetCategories({
+        orderBy: {
+          sortOrder: 'asc',
+        },
+      })
   },
   monthlyCategoryGroupActivities: (_obj, { root }) => {
     return db.budgetCategoryGroup

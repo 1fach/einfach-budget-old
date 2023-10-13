@@ -1,7 +1,7 @@
 import type { Budget } from '@prisma/client'
 
 import {
-  budgets,
+  budgetsByUser,
   budget,
   createBudget,
   updateBudget,
@@ -16,11 +16,14 @@ import type { StandardScenario } from './budgets.scenarios'
 // https://redwoodjs.com/docs/testing#jest-expect-type-considerations
 
 describe('budgets', () => {
-  scenario('returns all budgets', async (scenario: StandardScenario) => {
-    const result = await budgets()
+  scenario(
+    'returns all budgets of a user',
+    async (scenario: StandardScenario) => {
+      const result = await budgetsByUser({ userId: scenario.budget.two.userId })
 
-    expect(result.length).toEqual(Object.keys(scenario.budget).length)
-  })
+      expect(result).toEqual(scenario.budget.two)
+    }
+  )
 
   scenario('returns a single budget', async (scenario: StandardScenario) => {
     const result = await budget({ id: scenario.budget.one.id })

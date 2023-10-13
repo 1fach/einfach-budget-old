@@ -80,6 +80,10 @@ export const Budget: BudgetRelationResolvers = {
   budgetCategoryGroups: (_obj, { root }) => {
     return db.budget
       .findUnique({ where: { id: root?.id } })
-      .budgetCategoryGroups()
+      .budgetCategoryGroups({
+        orderBy: {
+          sortOrder: 'asc',
+        },
+      })
   },
 }
