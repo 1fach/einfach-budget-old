@@ -11,7 +11,6 @@ export const schema = gql`
   type Query {
     budgetsByUser(userId: String!): [Budget!]! @requireAuth
     budget(id: String!): Budget @requireAuth
-    budgetByMonth(id: String!, month: Int!, year: Int!): Budget @requireAuth
   }
 
   input CreateBudgetInput {

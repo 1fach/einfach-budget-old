@@ -14,21 +14,20 @@ export const convertBudgetGQLIntoDisplayable: BudgetGQLIntoDisplayable = (
     const subRows = categories.map((category) => {
       return {
         category: category.name,
-        assigned: category.monthlyBudgetPerCategories[0].assigned,
+        assigned: category.monthlyBudgetPerCategory[0].assigned,
         activity:
-          category.monthlyBudgetPerCategories[0].monthlyCategoryActivity
-            .activity,
+          category.monthlyBudgetPerCategory[0].monthlyCategoryActivity.activity,
         available:
-          category.monthlyBudgetPerCategories[0].monthlyCategoryActivity
+          category.monthlyBudgetPerCategory[0].monthlyCategoryActivity
             .available,
       }
     })
 
     return {
       category: group.name,
-      assigned: group.monthlyCategoryGroupActivities[0].assigned,
-      activity: group.monthlyCategoryGroupActivities[0].activity,
-      available: group.monthlyCategoryGroupActivities[0].available,
+      assigned: group.monthlyCategoryGroupActivity[0].assigned,
+      activity: group.monthlyCategoryGroupActivity[0].activity,
+      available: group.monthlyCategoryGroupActivity[0].available,
       subRows,
     }
   })

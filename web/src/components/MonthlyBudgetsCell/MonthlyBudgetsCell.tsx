@@ -10,13 +10,13 @@ import { convertBudgetGQLIntoDisplayable } from './convertData'
 
 export const QUERY = gql`
   query FindBudgetByMonth($budgetId: String!, $month: Int!, $year: Int!) {
-    budget: budgetByMonth(id: $budgetId, month: $month, year: $year) {
+    budget(id: $budgetId) {
       id
       name
       budgetCategoryGroups {
         name
         sortOrder
-        monthlyCategoryGroupActivities {
+        monthlyCategoryGroupActivity(month: $month, year: $year) {
           assigned
           activity
           available
@@ -24,7 +24,7 @@ export const QUERY = gql`
         budgetCategories {
           name
           sortOrder
-          monthlyBudgetPerCategories {
+          monthlyBudgetPerCategory(month: $month, year: $year) {
             month
             year
             assigned

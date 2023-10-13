@@ -16,38 +16,6 @@ export const budget: QueryResolvers['budget'] = ({ id }) => {
   })
 }
 
-export const budgetByMonth: QueryResolvers['budgetByMonth'] = ({
-  id,
-  month,
-  year,
-}) => {
-  return db.budget.findUnique({
-    include: {
-      budgetCategoryGroups: {
-        include: {
-          budgetCategories: {
-            include: {
-              monthlyBudgetPerCategories: {
-                where: {
-                  month: month,
-                  year: year,
-                },
-              },
-            },
-            orderBy: {
-              sortOrder: 'asc',
-            },
-          },
-        },
-        orderBy: {
-          sortOrder: 'asc',
-        },
-      },
-    },
-    where: { id },
-  })
-}
-
 export const createBudget: MutationResolvers['createBudget'] = ({ input }) => {
   return db.budget.create({
     data: input,
