@@ -25,6 +25,8 @@
   inMemory = false
 [experimental.studio.graphiql]
   endpoint = "graphql"
+
+# If not using redwood studio, use Apollo Client Devtools instead
 [experimental.studio.graphiql.authImpersonation]
   authProvider = "dbAuth"
   email = "testrw@einfach.com"
