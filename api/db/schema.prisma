@@ -122,7 +122,9 @@ view MonthlyCategoryGroupActivity {
   available Decimal @default(0.00) @db.Decimal(12, 2)
 
   budgetCategoryGroup   BudgetCategoryGroup @relation(fields: [budgetCategoryGroupId], references: [id])
-  budgetCategoryGroupId String              @id
+  budgetCategoryGroupId String
+
+  @@id([month, year, budgetCategoryGroupId])
 }
 
 model BudgetCategoryGroup {

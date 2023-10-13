@@ -43,6 +43,7 @@ describe('monthlyBudgetPerCategories', () => {
     async (scenario: StandardScenario) => {
       const result = await createMonthlyBudgetPerCategory({
         input: {
+          assigned: 10000,
           month: 2027188,
           year: 7023450,
           budgetCategoryId:

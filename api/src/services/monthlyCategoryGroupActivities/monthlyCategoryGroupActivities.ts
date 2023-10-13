@@ -15,7 +15,11 @@ export const MonthlyCategoryGroupActivity: MonthlyCategoryGroupActivityRelationR
     budgetCategoryGroup: (_obj, { root }) => {
       return db.monthlyCategoryGroupActivity
         .findUnique({
-          where: { budgetCategoryGroupId: root?.budgetCategoryGroupId },
+          where: {
+            budgetCategoryGroupId: root?.budgetCategoryGroupId,
+            month: root?.month,
+            year: root?.year,
+          },
         })
         .budgetCategoryGroup()
     },
