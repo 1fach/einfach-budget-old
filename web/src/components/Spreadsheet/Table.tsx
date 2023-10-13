@@ -13,20 +13,20 @@ import { CExpand, CCheckbox, CCategory } from './Cell'
 import { HExpand, HCheckbox } from './Header'
 import classes from './Table.module.css'
 
-export type Budget = {
+export type MonthlyBudget = {
   category: string
   assigned: number
   activity: number
   available: number
-  subRows?: Budget[]
+  subRows?: MonthlyBudget[]
 }
 
-export const Table = ({ budgets }: { budgets: Budget[] }) => {
-  const columnHelper = createColumnHelper<Budget>()
+export const Table = ({ budgets }: { budgets: MonthlyBudget[] }) => {
+  const columnHelper = createColumnHelper<MonthlyBudget>()
 
   const [expanded, setExpanded] = React.useState<ExpandedState>(true)
   const [data] = React.useState(budgets)
-  const [columns] = React.useState<ColumnDef<Budget>[]>(() => [
+  const [columns] = React.useState<ColumnDef<MonthlyBudget>[]>(() => [
     columnHelper.display({
       id: 'checkAll',
       header: ({ table }) => <HCheckbox table={table} />,

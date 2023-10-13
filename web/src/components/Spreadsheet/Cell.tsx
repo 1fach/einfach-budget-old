@@ -2,9 +2,9 @@ import { Checkbox, UnstyledButton } from '@mantine/core'
 import { IconChevronDown, IconChevronRight } from '@tabler/icons-react'
 import { type Row, type Getter } from '@tanstack/react-table'
 
-import type { Budget } from './Table'
+import type { MonthlyBudget } from './Table'
 
-export const CCheckbox = ({ row }: { row: Row<Budget> }) => {
+export const CCheckbox = ({ row }: { row: Row<MonthlyBudget> }) => {
   return (
     <Checkbox
       size="xs"
@@ -21,7 +21,7 @@ export const CCheckbox = ({ row }: { row: Row<Budget> }) => {
   )
 }
 
-export const CExpand = ({ row }: { row: Row<Budget> }) => {
+export const CExpand = ({ row }: { row: Row<MonthlyBudget> }) => {
   return (
     <>
       {row.getCanExpand() ? (
