@@ -1,1 +1,15 @@
-@layer reset, base, mantine, tokens, recipes, utilities;
+@layer reset, base, tokens, recipes, utilities;
+
+@layer base {
+  *,:after,:before {
+    border: 0 solid #e5e7eb
+  }
+
+  .light {
+    color-scheme: light;
+  }
+
+  .dark {
+    color-scheme: dark;
+  }
+}

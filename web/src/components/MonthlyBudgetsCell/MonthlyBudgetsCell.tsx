@@ -3,8 +3,11 @@ import type { FindBudgetByMonth } from 'types/graphql'
 import { Redirect } from '@redwoodjs/router'
 import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
-import { Table } from 'src/components/Spreadsheet/Table'
-import { TableSkeleton } from 'src/components/Spreadsheet/TableSkeleton'
+import { columns } from 'src/components/Spreadsheet/columns'
+import {
+  DataTable,
+  DataTableSkeleton,
+} from 'src/components/Spreadsheet/data-table'
 
 import { convertBudgetGQLIntoDisplayable } from './convertData'
 
@@ -39,7 +42,7 @@ export const QUERY = gql`
   }
 `
 
-export const Loading = () => <TableSkeleton />
+export const Loading = () => <DataTableSkeleton />
 
 export const Empty = () => <Redirect to="/404" />
 
@@ -48,5 +51,10 @@ export const Failure = ({ error }: CellFailureProps) => (
 )
 
 export const Success = ({ budget }: CellSuccessProps<FindBudgetByMonth>) => {
-  return <Table budgets={convertBudgetGQLIntoDisplayable(budget)} />
+  return (
+    <DataTable
+      columns={columns}
+      data={convertBudgetGQLIntoDisplayable(budget)}
+    />
+  )
 }

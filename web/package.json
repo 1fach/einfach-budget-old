@@ -11,25 +11,33 @@
     ]
   },
   "dependencies": {
-    "@mantine/core": "^7.1.0",
-    "@mantine/hooks": "^7.1.0",
+    "@ark-ui/react": "^0.15.0",
+    "@hookform/resolvers": "^3.3.2",
+    "@one-ui/shared": "workspace:^",
+    "@radix-ui/react-avatar": "^1.0.4",
+    "@radix-ui/react-checkbox": "^1.0.4",
+    "@radix-ui/react-label": "^2.0.2",
+    "@radix-ui/react-menubar": "^1.0.4",
+    "@radix-ui/react-scroll-area": "^1.0.5",
+    "@radix-ui/react-separator": "^1.0.3",
+    "@radix-ui/react-slot": "^1.0.2",
     "@redwoodjs/auth-dbauth-web": "6.3.2",
     "@redwoodjs/forms": "6.3.2",
     "@redwoodjs/router": "6.3.2",
     "@redwoodjs/web": "6.3.2",
-    "@tabler/icons-react": "^2.35.0",
     "@tanstack/react-table": "^8.10.3",
-    "humanize-string": "2.1.0",
-    "prop-types": "15.8.1",
-    "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "clsx": "^2.0.0",
+    "humanize-string": "^3.0.0",
+    "lucide-react": "^0.287.0",
+    "prop-types": "^15.8.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "sonner": "^1.0.3",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@pandacss/dev": "^0.15.4",
     "@redwoodjs/vite": "6.3.2",
-    "postcss-preset-mantine": "^1.7.0",
-    "postcss-simple-vars": "^7.0.1",
-    "uuid": "^9.0.1",
     "vite-tsconfig-paths": "^4.2.1"
   },
   "scripts": {

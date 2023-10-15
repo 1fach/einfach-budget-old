@@ -1,16 +1,17 @@
-import { Checkbox, UnstyledButton } from '@mantine/core'
-import { IconChevronDown, IconChevronRight } from '@tabler/icons-react'
 import { type Row, type Getter } from '@tanstack/react-table'
+import { ChevronDown, ChevronRight } from 'lucide-react'
 
-import type { MonthlyBudget } from './Table'
+import type { MonthlyBudget } from './columns'
+
+import { Checkbox } from '@/ui/checkbox'
 
 export const CCheckbox = ({ row }: { row: Row<MonthlyBudget> }) => {
   return (
     <Checkbox
-      size="xs"
+      borderColor="primary" // actually should already be primary without setting it again
       checked={row.getIsSelected() || row.getIsAllSubRowsSelected()}
       indeterminate={row.getIsSomeSelected()}
-      onChange={() => {
+      onCheckedChange={() => {
         if (row.getCanExpand()) {
           row.toggleSelected(!row.getIsAllSubRowsSelected())
         } else {
@@ -25,16 +26,26 @@ export const CExpand = ({ row }: { row: Row<MonthlyBudget> }) => {
   return (
     <>
       {row.getCanExpand() ? (
-        <UnstyledButton onClick={row.getToggleExpandedHandler()}>
+        <button onClick={row.getToggleExpandedHandler()}>
           {row.getIsExpanded() ? (
-            <IconChevronDown size={12} />
+            <ChevronDown size={12} />
           ) : (
-            <IconChevronRight size={12} />
+            <ChevronRight size={12} />
           )}
-        </UnstyledButton>
+        </button>
       ) : null}
     </>
   )
+}
+
+export const CCurrency = ({ getValue }: { getValue: Getter<number> }) => {
+  const formatted = new Intl.NumberFormat('de-DE', {
+    style: 'currency',
+    currency: 'EUR',
+    minimumFractionDigits: 2,
+  }).format(getValue())
+
+  return <span>{formatted}</span>
 }
 
 export const CCategory = ({ getValue }: { getValue: Getter<string> }) => {

@@ -5,7 +5,7 @@ import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 import {
   UserButton,
   UserButtonSkeleton,
-} from 'src/components/Layout/Sidebar/UserButton/UserButton'
+} from 'src/components/AppLayout/user-button'
 
 export const QUERY = gql`
   query FindUserQuery($id: String!) {

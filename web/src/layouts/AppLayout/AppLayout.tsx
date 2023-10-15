@@ -1,4 +1,7 @@
-import { Root, Sidebar } from 'src/components/Layout/AppLayout'
+import { css } from '@one-ui/styled-system/css'
+import { Grid, GridItem } from '@one-ui/styled-system/jsx'
+
+import { NavigationMenu, Sidebar } from 'src/components/AppLayout'
 
 type AppLayoutProps = {
   children?: React.ReactNode
@@ -6,18 +9,21 @@ type AppLayoutProps = {
 
 const AppLayout = ({ children }: AppLayoutProps) => {
   return (
-    <Root
-      navbar={{
-        width: 300,
-        breakpoint: 'sm',
-      }}
-      padding={0}
-    >
-      <Root.Navbar px="md">
-        <Sidebar />
-      </Root.Navbar>
-      <Root.Main>{children}</Root.Main>
-    </Root>
+    <div className={css({ display: 'none', md: { display: 'block' } })}>
+      <NavigationMenu />
+      <div>
+        <div className={css({ bg: 'background' })}>
+          <Grid gridTemplateColumns={{ lg: '6' }}>
+            <Sidebar
+              className={css({ display: 'none', lg: { display: 'block' } })}
+            />
+            <GridItem colSpan={5} borderLeftWidth={{ lg: '1px' }}>
+              {children}
+            </GridItem>
+          </Grid>
+        </div>
+      </div>
+    </div>
   )
 }
 

@@ -1,41 +1,41 @@
-import { styled } from 'styled/jsx'
+import { css } from '@one-ui/styled-system/css'
+import { styled, Grid, GridItem } from '@one-ui/styled-system/jsx'
 
 import MonthlyBudgetsCell from 'src/components/MonthlyBudgetsCell'
 
-import { TableSkeleton } from './TableSkeleton'
+import { DataTableSkeleton } from './data-table'
 
 type Props = { budgetId?: string }
 
 export const Spreadsheet = ({ budgetId }: Props) => {
   return (
-    <styled.div height="100dvh" overflow="hidden">
-      <Header />
-      <styled.div display="flex" width="full" height="full">
-        <BudgetTable budgetId={budgetId} />
-        <Inspector />
-      </styled.div>
-    </styled.div>
+    <Grid gridTemplateColumns={4} minH="100vh">
+      <GridItem
+        colSpan={3}
+        gridTemplateRows={6}
+        className={css({ display: 'grid' })}
+      >
+        <Header />
+        <GridItem rowSpan={5}>
+          <BudgetTable budgetId={budgetId} />
+        </GridItem>
+      </GridItem>
+      <Inspector />
+    </Grid>
   )
 }
 
 const Header = () => {
-  return (
-    <styled.header
-      height="1/6"
-      bgColor="gray.100"
-      borderBottomWidth="thin"
-      borderBottomColor="gray.200"
-    ></styled.header>
-  )
+  return <styled.header height="full" bg="secondary"></styled.header>
 }
 
 const BudgetTable = ({ budgetId }: Props) => {
-  const { month, year } = { month: 10, year: 2023 }
+  const { month, year } = { month: 11, year: 2023 }
 
   return (
     <styled.section flex={1}>
       {budgetId == null ? (
-        <TableSkeleton />
+        <DataTableSkeleton />
       ) : (
         <MonthlyBudgetsCell budgetId={budgetId} month={month} year={year} />
       )}
@@ -44,12 +44,5 @@ const BudgetTable = ({ budgetId }: Props) => {
 }
 
 const Inspector = () => {
-  return (
-    <styled.aside
-      width="1/3"
-      bgColor="gray.100"
-      borderLeftWidth="thin"
-      borderLeftColor="gray.200"
-    ></styled.aside>
-  )
+  return <styled.aside width="full" bg="secondary"></styled.aside>
 }

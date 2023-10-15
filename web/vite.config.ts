@@ -12,11 +12,6 @@ dns.setDefaultResultOrder('verbatim')
 
 const viteConfig: UserConfig = {
   plugins: [redwood(), tsconfigPaths()],
-  css: {
-    modules: {
-      generateScopedName: 'one-[hash:base64:5]',
-    },
-  },
 }
 
 export default defineConfig(viteConfig)

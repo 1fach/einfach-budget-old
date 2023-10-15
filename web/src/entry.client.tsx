@@ -1,7 +1,6 @@
 import { hydrateRoot, createRoot } from 'react-dom/client'
 
 import './styles/index.css'
-import '@mantine/core/styles.layer.css'
 import App from './App'
 
 /**

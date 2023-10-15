@@ -1,30 +1,32 @@
-import { Checkbox, UnstyledButton } from '@mantine/core'
-import { IconChevronDown, IconChevronRight } from '@tabler/icons-react'
 import { type Table } from '@tanstack/react-table'
+import { ChevronDown, ChevronRight } from 'lucide-react'
 
-import type { MonthlyBudget } from './Table'
+import type { MonthlyBudget } from './columns'
+
+import { Checkbox } from '@/ui/checkbox'
 
 export const HCheckbox = ({ table }: { table: Table<MonthlyBudget> }) => {
+  const checked = table.getIsAllRowsSelected()
   return (
     <Checkbox
-      size="xs"
-      checked={table.getIsAllRowsSelected()}
+      borderColor="primary" // actually should already be primary without setting it again
+      checked={checked}
       indeterminate={
         table.getIsSomeRowsSelected() && !table.getIsAllRowsSelected()
       }
-      onChange={table.getToggleAllRowsSelectedHandler()}
+      onCheckedChange={() => table.toggleAllRowsSelected(!checked)}
     />
   )
 }
 
 export const HExpand = ({ table }: { table: Table<MonthlyBudget> }) => {
   return (
-    <UnstyledButton onClick={table.getToggleAllRowsExpandedHandler()}>
+    <button onClick={table.getToggleAllRowsExpandedHandler()}>
       {table.getIsAllRowsExpanded() ? (
-        <IconChevronDown size={12} />
+        <ChevronDown size={12} />
       ) : (
-        <IconChevronRight size={12} />
+        <ChevronRight size={12} />
       )}
-    </UnstyledButton>
+    </button>
   )
 }

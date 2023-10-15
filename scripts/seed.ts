@@ -195,7 +195,7 @@ function createBudgetsForUser(count) {
     for (let i = 0; i < count; i++) {
       const budget: Prisma.BudgetCreateManyInput = {
         id: uuidv4(),
-        name: faker.lorem.words(3),
+        name: faker.animal.dog(),
         userId: user.id,
       }
       budgets.push(budget)
@@ -210,7 +210,7 @@ function createTransactionFromAllAccounts(count) {
 
   for (const monthlyBudget of testData.monthlyBudgets) {
     for (const account of testData.accounts) {
-      const balance = 100000
+      const balance = 10000
       const inflow: Prisma.TransactionCreateManyInput = {
         id: uuidv4(),
         description: 'Inflow Balance',
@@ -235,8 +235,8 @@ function createTransactionFromAllAccounts(count) {
             to: '2023-12-31T00:00:00.000Z',
           }),
           outflow: faker.finance.amount({
-            min: balance / (count + 5),
-            max: balance / count,
+            min: 10,
+            max: 100,
           }),
           inflow: 0,
           cleared: faker.datatype.boolean(0.25),

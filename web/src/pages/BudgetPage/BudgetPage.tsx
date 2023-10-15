@@ -1,6 +1,6 @@
 import { MetaTags } from '@redwoodjs/web'
 
-import { Spreadsheet } from 'src/components/Spreadsheet/Spreadsheet'
+import { Spreadsheet } from 'src/components/Spreadsheet/spreadsheet'
 
 const BudgetPage = ({ id }: { id: string }) => {
   return (

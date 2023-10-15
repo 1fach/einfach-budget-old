@@ -1,8 +1,9 @@
 import type { UserBudgetsQuery } from 'types/graphql'
 
+import { routes } from '@redwoodjs/router'
 import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
-import { SidebarBudgetLink } from 'src/components/Layout/Sidebar/SidebarBudgetLinks'
+import { SidebarSection } from '../AppLayout/sidebar-section'
 
 export const QUERY = gql`
   query UserBudgetsQuery($userId: String!) {
@@ -24,15 +25,10 @@ export const Failure = ({ error }: CellFailureProps) => (
 export const Success = ({
   userBudgets,
 }: CellSuccessProps<UserBudgetsQuery>) => {
-  return (
-    <>
-      {userBudgets.map((budget) => (
-        <SidebarBudgetLink
-          key={budget.id}
-          name={budget.name}
-          budgetId={budget.id}
-        />
-      ))}
-    </>
-  )
+  const budgetSidebar = userBudgets.map((budget) => ({
+    title: budget.name,
+    link: routes.budget({ id: budget.id }),
+  }))
+
+  return <SidebarSection title="Budgets" items={budgetSidebar} />
 }
