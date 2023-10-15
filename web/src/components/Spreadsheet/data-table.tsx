@@ -23,9 +23,9 @@ import {
   TableRow,
 } from '@/ui/table'
 
-interface DataTableProps<TData> {
-  columns: ColumnDef<TData>[]
-  data: TData[]
+export type DataTableProps<TData> = {
+  readonly columns: ColumnDef<TData>[]
+  readonly data: TData[]
 }
 
 export function DataTable({ columns, data }: DataTableProps<MonthlyBudget>) {

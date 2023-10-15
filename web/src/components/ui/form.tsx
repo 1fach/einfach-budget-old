@@ -67,20 +67,36 @@ const BaseFormField = <
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
 >({
   ...props
-}: ControllerProps<TFieldValues, TName>) => (
-  <FormFieldContext.Provider value={{ name: props.name }}>
-    <Controller {...props} />
-  </FormFieldContext.Provider>
-)
+}: ControllerProps<TFieldValues, TName>) => {
+  const { name } = props
+  const formFieldProviderValue = React.useMemo(
+    () => ({
+      name,
+    }),
+    [name]
+  )
+
+  return (
+    <FormFieldContext.Provider value={formFieldProviderValue}>
+      <Controller {...props} />
+    </FormFieldContext.Provider>
+  )
+}
 
 const BaseFormItem = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >((props, ref) => {
   const id = React.useId()
+  const formItemProviderValue = React.useMemo(
+    () => ({
+      id,
+    }),
+    [id]
+  )
 
   return (
-    <FormItemContext.Provider value={{ id }}>
+    <FormItemContext.Provider value={formItemProviderValue}>
       <div ref={ref} {...props} />
     </FormItemContext.Provider>
   )

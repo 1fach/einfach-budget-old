@@ -6,9 +6,9 @@ import { Avatar, AvatarImage, AvatarFallback } from '@/ui/avatar'
 import { Skeleton } from '@/ui/skeleton'
 import { Muted, Small } from '@/ui/text'
 
-type UserButtonProps = {
-  name: string
-  email: string
+export type UserButtonProps = {
+  readonly name: string
+  readonly email: string
 }
 
 export function UserButton({ name, email }: UserButtonProps) {
