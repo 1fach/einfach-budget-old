@@ -30,7 +30,7 @@ const formSchema = z.object({
     message: 'Please give a password with at least 6 characters.',
   }),
   toc: z.literal(true, {
-    required_error: 'Please accept terms and conditions',
+    errorMap: () => ({ message: 'Please accept terms and conditions' }),
   }),
 })
 
