@@ -10,9 +10,9 @@ export const budgetsByUser: QueryResolvers['budgetsByUser'] = ({ userId }) => {
   return db.budget.findMany({ where: { userId } })
 }
 
-export const budget: QueryResolvers['budget'] = ({ id }) => {
+export const budget: QueryResolvers['budget'] = ({ id, userId }) => {
   return db.budget.findUnique({
-    where: { id },
+    where: { id, userId },
   })
 }
 

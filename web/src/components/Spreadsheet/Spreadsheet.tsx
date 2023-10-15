@@ -1,6 +1,7 @@
 import { css } from '@one-ui/styled-system/css'
 import { styled, Grid, GridItem } from '@one-ui/styled-system/jsx'
 
+import { useAuth } from 'src/auth'
 import MonthlyBudgetsCell from 'src/components/MonthlyBudgetsCell'
 
 import { DataTableSkeleton } from './data-table'
@@ -30,6 +31,8 @@ const Header = () => {
 }
 
 const BudgetTable = ({ budgetId }: Props) => {
+  const { currentUser } = useAuth()
+
   const { month, year } = { month: 11, year: 2023 }
 
   return (
@@ -37,7 +40,12 @@ const BudgetTable = ({ budgetId }: Props) => {
       {budgetId == null ? (
         <DataTableSkeleton />
       ) : (
-        <MonthlyBudgetsCell budgetId={budgetId} month={month} year={year} />
+        <MonthlyBudgetsCell
+          userId={currentUser.id}
+          budgetId={budgetId}
+          month={month}
+          year={year}
+        />
       )}
     </styled.section>
   )
