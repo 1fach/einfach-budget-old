@@ -24,7 +24,7 @@ const Routes = () => {
       <Private unauthenticated="login">
         <Set wrap={AppLayout}>
           <Route path="/" page={HomePage} name="home" />
-          <Route path="/budget/{id}" page={BudgetPage} name="budget" />
+          <Route path="/{id}" page={BudgetPage} name="budget" />
         </Set>
       </Private>
       <Route notfound page={NotFoundPage} />
