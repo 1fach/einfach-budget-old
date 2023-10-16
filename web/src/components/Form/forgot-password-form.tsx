@@ -1,7 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { css, cx } from '@one-ui/styled-system/css'
+import { css } from '@one-ui/styled-system/css'
 import { HStack } from '@one-ui/styled-system/jsx'
-import { muted } from '@one-ui/styled-system/recipes'
 import { ArrowLeft } from 'lucide-react'
 import * as z from 'zod'
 
@@ -22,7 +21,6 @@ import {
   FormMessage,
 } from '@/ui/form'
 import { Input } from '@/ui/input'
-import { Muted } from '@/ui/text'
 import { Toaster, toast } from '@/ui/toaster'
 
 const formSchema = z.object({
@@ -49,14 +47,12 @@ export const ForgotPasswordForm = () => {
   // 2. Define a submit handler.
   const { forgotPassword } = useAuth()
   const onSubmit = async (data: { email: string }) => {
-    await forgotPassword(data.email).then((response) => {
+    await forgotPassword(data.email).then(() => {
       // The function `forgotPassword.handler` in api/src/functions/auth.js has
       // been invoked, let the user know how to get the link to reset their
       // password (sent in email, perhaps?)
       // For the security reasons, don't let user know whether the user exists or not.
-      toast.success(
-        'A link to reset your password was sent to ' + response.email
-      )
+      toast.success('A link to reset your password was sent to ' + data.email)
       form.reset({ email: '' })
     })
   }
@@ -73,10 +69,10 @@ export const ForgotPasswordForm = () => {
           control={form.control}
           name="email"
           render={({ field }) => (
-            <FormItem>
+            <FormItem w="full" fontWeight="thin">
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input placeholder="Enter your email" {...field} />
+                <Input placeholder="Enter your email" h="8" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -95,28 +91,20 @@ export const ForgotPasswordForm = () => {
             },
           })}
         >
-          <Link to={routes.login()} className={cx(muted(), '')}>
-            <HStack alignItems="center">
-              <ArrowLeft
-                className={css({ width: '3', height: '3' })}
-                stroke="1.5"
-              />
-              <Muted ml="5">Back to the login page</Muted>
-            </HStack>
-          </Link>
-          <Button
-            type="submit"
-            className={css({
-              base: {
-                width: 'full',
-                textAlign: 'center',
-              },
-              sm: {
-                width: 'lg',
-                textAlign: 'unset',
-              },
-            })}
+          <Link
+            to={routes.login()}
+            display="flex"
+            alignItems="center"
+            fontSize="sm"
+            textDecoration="none"
+            flexDir="row"
           >
+            <ArrowLeft
+              className={css({ width: '3', height: '3', mr: '1.5' })}
+            />
+            Back to the login page
+          </Link>
+          <Button type="submit" h="8" px="3">
             Reset password
           </Button>
         </HStack>

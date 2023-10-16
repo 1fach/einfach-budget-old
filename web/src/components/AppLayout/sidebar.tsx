@@ -17,7 +17,7 @@ export const Sidebar = ({
   return (
     <div className={cx(css({ pb: '3' }), className)}>
       <div className={css({ py: '4' })}>
-        <UserBudgetsCell userId={currentUser.id} />
+        <UserBudgetsCell userId={currentUser?.id} />
         <div className={css({ pl: '3', pr: '3', pt: '2', pb: '2' })}>
           <h2
             className={css({

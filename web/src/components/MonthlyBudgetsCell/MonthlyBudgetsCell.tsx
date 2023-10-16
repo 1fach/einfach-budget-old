@@ -1,6 +1,6 @@
 import type { FindBudgetByMonth } from 'types/graphql'
 
-import { Redirect } from '@redwoodjs/router'
+import { Redirect, routes } from '@redwoodjs/router'
 import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
 import { columns } from 'src/components/Spreadsheet/columns'
@@ -49,7 +49,9 @@ export const QUERY = gql`
 
 export const Loading = () => <DataTableSkeleton />
 
-export const Empty = () => <Redirect to="/404" />
+export const Empty = () => (
+  <Redirect to={routes.home()} options={{ replace: true }} />
+)
 
 export const Failure = ({ error }: CellFailureProps) => (
   <div style={{ color: 'red' }}>Error: {error?.message}</div>

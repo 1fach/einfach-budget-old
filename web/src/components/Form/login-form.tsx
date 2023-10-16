@@ -10,7 +10,6 @@ import { useAuth } from 'src/auth'
 
 import { Link } from '@/ui/anchor'
 import { Button } from '@/ui/button'
-import { Checkbox } from '@/ui/checkbox'
 import {
   Form,
   FormControl,
@@ -29,7 +28,6 @@ const formSchema = z.object({
   password: z.string().min(6, {
     message: 'Please give a password with at least 6 characters.',
   }),
-  rememberme: z.boolean(),
 })
 
 export const LoginForm = () => {
@@ -39,7 +37,6 @@ export const LoginForm = () => {
     defaultValues: {
       email: '',
       password: '',
-      rememberme: false,
     },
   })
 
@@ -76,62 +73,50 @@ export const LoginForm = () => {
           control={form.control}
           name="email"
           render={({ field }) => (
-            <FormItem>
+            <FormItem w="full" fontWeight="thin">
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input placeholder="Enter your email" {...field} />
+                <Input placeholder="Enter your email" h="8" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
 
-        <Flex position="relative">
-          <Flex position="absolute" top="0" right="0" mt="-2">
-            <Link to={routes.forgotPassword()}>Forgot password?</Link>
-          </Flex>
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem w="full" fontWeight="thin">
+              <FormLabel display="flex" justifyContent="space-between">
+                Password{' '}
+                <Link
+                  fontSize="xs"
+                  textDecoration="none"
+                  _hover={{ textDecoration: 'underline' }}
+                  to={routes.forgotPassword()}
+                >
+                  Forgot password?
+                </Link>
+              </FormLabel>
+              <FormControl>
+                <Input
+                  type="password"
+                  placeholder="Enter your password"
+                  h="8"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Password</FormLabel>
-                <FormControl>
-                  <Input
-                    type="password"
-                    placeholder="Enter your password"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </Flex>
-
-        <Flex justify="start" alignItems="center" gap="2">
-          <FormField
-            control={form.control}
-            name="rememberme"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Remember me</FormLabel>
-                <FormControl>
-                  <Checkbox
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </Flex>
-
-        <Flex justify="end">
-          <Button type="submit">Sign in</Button>
-          <Button variant="secondary" onClick={() => navigate(routes.signup())}>
+        <Flex justify="end" gap="3">
+          <Button variant="secondary" h="8" px="3" type="submit">
+            Sign in
+          </Button>
+          <Button h="8" px="3" onClick={() => navigate(routes.signup())}>
             Create an account
           </Button>
         </Flex>

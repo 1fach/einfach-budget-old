@@ -8,9 +8,7 @@ import { routes, navigate } from '@redwoodjs/router'
 
 import { useAuth } from 'src/auth'
 
-import { Link } from '@/ui/anchor'
 import { Button } from '@/ui/button'
-import { Checkbox } from '@/ui/checkbox'
 import {
   Form,
   FormControl,
@@ -23,6 +21,9 @@ import { Input } from '@/ui/input'
 import { Toaster, toast } from '@/ui/toaster'
 
 const formSchema = z.object({
+  name: z.string().min(2, {
+    message: 'Please give a name with at least 2 characters.',
+  }),
   email: z.string().email({
     message: 'Please give a valid email address.',
   }),
@@ -39,6 +40,7 @@ export const SignUpForm = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      name: '',
       email: '',
       password: '',
     },
@@ -76,61 +78,62 @@ export const SignUpForm = () => {
       >
         <FormField
           control={form.control}
-          name="email"
+          name="name"
           render={({ field }) => (
-            <FormItem>
-              <FormLabel>Email</FormLabel>
+            <FormItem w="full" fontWeight="thin">
+              <FormLabel>Name</FormLabel>
               <FormControl>
-                <Input placeholder="Enter your email" {...field} />
+                <Input placeholder="Enter your name" h="8" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
 
-        <Flex position="relative">
-          <Flex position="absolute" top="0" right="0" mt="-2">
-            <Link to={routes.forgotPassword()}>Forgot password?</Link>
-          </Flex>
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem w="full" fontWeight="thin">
+              <FormLabel>Email</FormLabel>
+              <FormControl>
+                <Input placeholder="Enter your email" h="8" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Password</FormLabel>
-                <FormControl>
-                  <Input placeholder="Enter your password" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </Flex>
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem w="full" fontWeight="thin">
+              <FormLabel>Password</FormLabel>
+              <FormControl>
+                <Input
+                  type="password"
+                  placeholder="Enter your password"
+                  h="8"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
-        <Flex justify="start" alignItems="center" gap="2">
-          <FormField
-            control={form.control}
-            name="toc"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>I accept terms and conditions</FormLabel>
-                <FormControl>
-                  <Checkbox
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </Flex>
-
-        <Flex justify="end">
-          <Button type="submit">Create an account</Button>
-          <Button variant="secondary" onClick={() => navigate(routes.login())}>
+        <Flex justify="end" gap="3" mt="12">
+          <Button
+            variant="secondary"
+            h="8"
+            px="3"
+            onClick={() => navigate(routes.login())}
+          >
             Sign in
+          </Button>
+          <Button type="submit" h="8" px="3">
+            Create an account
           </Button>
         </Flex>
       </Form>
