@@ -15,7 +15,6 @@ CREATE TABLE "User" (
 CREATE TABLE "Account" (
     "id" TEXT NOT NULL,
     "nickname" TEXT NOT NULL,
-    "payeeId" TEXT NOT NULL,
     "budgetId" TEXT NOT NULL,
 
     CONSTRAINT "Account_pkey" PRIMARY KEY ("id")
@@ -25,6 +24,8 @@ CREATE TABLE "Account" (
 CREATE TABLE "Payee" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
+    "budgetId" TEXT NOT NULL,
+    "accountId" TEXT,
 
     CONSTRAINT "Payee_pkey" PRIMARY KEY ("id")
 );
@@ -88,22 +89,46 @@ CREATE TABLE "BudgetCategory" (
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Account_payeeId_key" ON "Account"("payeeId");
+CREATE INDEX "Account_budgetId_idx" ON "Account"("budgetId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Account_budgetId_nickname_key" ON "Account"("budgetId", "nickname");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "Payee_accountId_key" ON "Payee"("accountId");
+
+-- CreateIndex
+CREATE INDEX "Payee_budgetId_idx" ON "Payee"("budgetId");
+
+-- CreateIndex
+CREATE INDEX "Transaction_accountId_idx" ON "Transaction"("accountId");
+
+-- CreateIndex
+CREATE INDEX "Budget_userId_idx" ON "Budget"("userId");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "Budget_userId_name_key" ON "Budget"("userId", "name");
+
+-- CreateIndex
+CREATE INDEX "MonthlyBudgetPerCategory_budgetCategoryId_idx" ON "MonthlyBudgetPerCategory"("budgetCategoryId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "MonthlyBudgetPerCategory_month_year_budgetCategoryId_key" ON "MonthlyBudgetPerCategory"("month", "year", "budgetCategoryId");
 
--- AddForeignKey
-ALTER TABLE "Account" ADD CONSTRAINT "Account_payeeId_fkey" FOREIGN KEY ("payeeId") REFERENCES "Payee"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+-- CreateIndex
+CREATE INDEX "BudgetCategoryGroup_budgetId_idx" ON "BudgetCategoryGroup"("budgetId");
+
+-- CreateIndex
+CREATE INDEX "BudgetCategory_budgetCategoryGroupId_idx" ON "BudgetCategory"("budgetCategoryGroupId");
 
 -- AddForeignKey
-ALTER TABLE "Account" ADD CONSTRAINT "Account_budgetId_fkey" FOREIGN KEY ("budgetId") REFERENCES "Budget"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Account" ADD CONSTRAINT "Account_budgetId_fkey" FOREIGN KEY ("budgetId") REFERENCES "Budget"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Payee" ADD CONSTRAINT "Payee_budgetId_fkey" FOREIGN KEY ("budgetId") REFERENCES "Budget"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Payee" ADD CONSTRAINT "Payee_accountId_fkey" FOREIGN KEY ("accountId") REFERENCES "Account"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Transaction" ADD CONSTRAINT "Transaction_accountId_fkey" FOREIGN KEY ("accountId") REFERENCES "Account"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -112,16 +137,16 @@ ALTER TABLE "Transaction" ADD CONSTRAINT "Transaction_accountId_fkey" FOREIGN KE
 ALTER TABLE "Transaction" ADD CONSTRAINT "Transaction_payeeId_fkey" FOREIGN KEY ("payeeId") REFERENCES "Payee"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Transaction" ADD CONSTRAINT "Transaction_monthlyBudgetPerCategoryId_fkey" FOREIGN KEY ("monthlyBudgetPerCategoryId") REFERENCES "MonthlyBudgetPerCategory"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Transaction" ADD CONSTRAINT "Transaction_monthlyBudgetPerCategoryId_fkey" FOREIGN KEY ("monthlyBudgetPerCategoryId") REFERENCES "MonthlyBudgetPerCategory"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Budget" ADD CONSTRAINT "Budget_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Budget" ADD CONSTRAINT "Budget_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "MonthlyBudgetPerCategory" ADD CONSTRAINT "MonthlyBudgetPerCategory_budgetCategoryId_fkey" FOREIGN KEY ("budgetCategoryId") REFERENCES "BudgetCategory"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "MonthlyBudgetPerCategory" ADD CONSTRAINT "MonthlyBudgetPerCategory_budgetCategoryId_fkey" FOREIGN KEY ("budgetCategoryId") REFERENCES "BudgetCategory"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "BudgetCategoryGroup" ADD CONSTRAINT "BudgetCategoryGroup_budgetId_fkey" FOREIGN KEY ("budgetId") REFERENCES "Budget"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "BudgetCategoryGroup" ADD CONSTRAINT "BudgetCategoryGroup_budgetId_fkey" FOREIGN KEY ("budgetId") REFERENCES "Budget"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "BudgetCategory" ADD CONSTRAINT "BudgetCategory_budgetCategoryGroupId_fkey" FOREIGN KEY ("budgetCategoryGroupId") REFERENCES "BudgetCategoryGroup"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "BudgetCategory" ADD CONSTRAINT "BudgetCategory_budgetCategoryGroupId_fkey" FOREIGN KEY ("budgetCategoryGroupId") REFERENCES "BudgetCategoryGroup"("id") ON DELETE CASCADE ON UPDATE CASCADE;

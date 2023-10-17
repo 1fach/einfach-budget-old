@@ -94,18 +94,18 @@ const populateTable = async () => {
   console.log('========= END IMPORTING BUDGETS =========')
   console.log()
 
-  console.log('========= START IMPORTING PAYEES =========')
-  console.log(testData.payees.length + ' payees are going to be imported.')
-  const payeeRes = await db.payee.createMany({ data: testData.payees })
-  console.log(payeeRes.count + ' payees have been successfully imported.')
-  console.log('========= END IMPORTING PAYEES =========')
-  console.log()
-
   console.log('========= START IMPORTING ACCOUNTS =========')
   console.log(testData.accounts.length + ' accounts are going to be imported.')
   const accountRes = await db.account.createMany({ data: testData.accounts })
   console.log(accountRes.count + ' accounts have been successfully imported.')
   console.log('========= END IMPORTING ACCOUNTS =========')
+  console.log()
+
+  console.log('========= START IMPORTING PAYEES =========')
+  console.log(testData.payees.length + ' payees are going to be imported.')
+  const payeeRes = await db.payee.createMany({ data: testData.payees })
+  console.log(payeeRes.count + ' payees have been successfully imported.')
+  console.log('========= END IMPORTING PAYEES =========')
   console.log()
 
   console.log('========= START IMPORTING CATEGORY GROUPS =========')
@@ -312,19 +312,20 @@ function createAccountsPayeesForBudget(count) {
     for (let i = 0; i < count; i++) {
       const accName = faker.lorem.words(3)
 
-      const payee: Prisma.PayeeCreateManyInput = {
-        id: uuidv4(),
-        name: accName,
-      }
-      payees.push(payee)
-
       const account: Prisma.AccountCreateManyInput = {
         id: uuidv4(),
         nickname: accName,
         budgetId: budget.id,
-        payeeId: payee.id,
       }
       accounts.push(account)
+
+      const payee: Prisma.PayeeCreateManyInput = {
+        id: uuidv4(),
+        name: accName,
+        budgetId: budget.id,
+        accountId: account.id,
+      }
+      payees.push(payee)
     }
   }
 

@@ -34,15 +34,15 @@ model Account {
   id       String @id @default(uuid())
   nickname String
 
-  payee    Payee  @relation(fields: [payeeId], references: [id])
-  payeeId  String @unique // an account should always have an unique payee
-  budget   Budget @relation(fields: [budgetId], references: [id])
+  budget   Budget @relation(fields: [budgetId], references: [id], onDelete: Cascade)
   budgetId String
 
   transactions   Transaction[]
   accountBalance AccountBalance?
+  payee          Payee?
 
   @@unique([budgetId, nickname]) // don't use the same name of account inside a same budget
+  @@index([budgetId])
 }
 
 view AccountBalance {
@@ -58,8 +58,14 @@ model Payee {
   id   String @id @default(uuid())
   name String
 
-  account      Account?
+  budget    Budget   @relation(fields: [budgetId], references: [id], onDelete: Cascade)
+  budgetId  String
+  account   Account? @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  accountId String?  @unique
+
   transactions Transaction[]
+
+  @@index([budgetId])
 }
 
 model Transaction {
@@ -74,21 +80,25 @@ model Transaction {
   accountId                  String
   payee                      Payee?                   @relation(fields: [payeeId], references: [id])
   payeeId                    String?
-  monthlyBudgetPerCategory   MonthlyBudgetPerCategory @relation(fields: [monthlyBudgetPerCategoryId], references: [id])
+  monthlyBudgetPerCategory   MonthlyBudgetPerCategory @relation(fields: [monthlyBudgetPerCategoryId], references: [id], onDelete: Cascade)
   monthlyBudgetPerCategoryId String
+
+  @@index([accountId])
 }
 
 model Budget {
   id   String @id @default(uuid())
   name String
 
-  user   User   @relation(fields: [userId], references: [id])
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
 
   accounts             Account[]
   budgetCategoryGroups BudgetCategoryGroup[]
+  payees               Payee[]
 
   @@unique([userId, name]) // a user can't have budget with the same name
+  @@index([userId])
 }
 
 model MonthlyBudgetPerCategory {
@@ -97,13 +107,14 @@ model MonthlyBudgetPerCategory {
   year     Int
   assigned Decimal @default(0.00) @db.Decimal(12, 2)
 
-  budgetCategory   BudgetCategory @relation(fields: [budgetCategoryId], references: [id])
+  budgetCategory   BudgetCategory @relation(fields: [budgetCategoryId], references: [id], onDelete: Cascade)
   budgetCategoryId String
 
   transactions            Transaction[]
   monthlyCategoryActivity MonthlyCategoryActivity?
 
   @@unique([month, year, budgetCategoryId]) // In a month there shouldn't be two same categories
+  @@index([budgetCategoryId])
 }
 
 view MonthlyCategoryActivity {
@@ -132,11 +143,13 @@ model BudgetCategoryGroup {
   name      String
   sortOrder Int
 
-  budget   Budget @relation(fields: [budgetId], references: [id])
+  budget   Budget @relation(fields: [budgetId], references: [id], onDelete: Cascade)
   budgetId String
 
   budgetCategories               BudgetCategory[]
   monthlyCategoryGroupActivities MonthlyCategoryGroupActivity[]
+
+  @@index([budgetId])
 }
 
 model BudgetCategory {
@@ -144,8 +157,10 @@ model BudgetCategory {
   name      String
   sortOrder Int
 
-  budgetCategoryGroup   BudgetCategoryGroup @relation(fields: [budgetCategoryGroupId], references: [id])
+  budgetCategoryGroup   BudgetCategoryGroup @relation(fields: [budgetCategoryGroupId], references: [id], onDelete: Cascade)
   budgetCategoryGroupId String
 
   monthlyBudgetPerCategories MonthlyBudgetPerCategory[]
+
+  @@index([budgetCategoryGroupId])
 }
