@@ -30,15 +30,10 @@ describe('accounts', () => {
 
   scenario('creates a account', async (scenario: StandardScenario) => {
     const result = await createAccount({
-      input: {
-        nickname: 'String',
-        payeeId: scenario.account.two.payeeId,
-        budgetId: scenario.account.two.budgetId,
-      },
+      input: { nickname: 'String', budgetId: scenario.account.two.budgetId },
     })
 
     expect(result.nickname).toEqual('String')
-    expect(result.payeeId).toEqual(scenario.account.two.payeeId)
     expect(result.budgetId).toEqual(scenario.account.two.budgetId)
   })
 

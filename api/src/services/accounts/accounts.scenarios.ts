@@ -1,5 +1,4 @@
 import type { Prisma, Account } from '@prisma/client'
-
 import type { ScenarioData } from '@redwoodjs/testing/api'
 
 export const standard = defineScenario<Prisma.AccountCreateArgs>({
@@ -7,13 +6,13 @@ export const standard = defineScenario<Prisma.AccountCreateArgs>({
     one: {
       data: {
         nickname: 'String',
-        payee: { create: { name: 'String' } },
         budget: {
           create: {
             name: 'String',
+            slug: 'String',
             user: {
               create: {
-                email: 'String2783308',
+                email: 'String1558365',
                 hashedPassword: 'String',
                 salt: 'String',
               },
@@ -25,13 +24,13 @@ export const standard = defineScenario<Prisma.AccountCreateArgs>({
     two: {
       data: {
         nickname: 'String',
-        payee: { create: { name: 'String' } },
         budget: {
           create: {
             name: 'String',
+            slug: 'String',
             user: {
               create: {
-                email: 'String399376',
+                email: 'String774747',
                 hashedPassword: 'String',
                 salt: 'String',
               },

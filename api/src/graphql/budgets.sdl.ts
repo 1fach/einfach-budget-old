@@ -5,6 +5,7 @@ export const schema = gql`
     user: User!
     userId: String!
     accounts: [Account]!
+    payees: [Payee]!
     budgetCategoryGroups: [BudgetCategoryGroup]!
   }
 

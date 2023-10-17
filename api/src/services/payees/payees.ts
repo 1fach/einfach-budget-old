@@ -39,6 +39,9 @@ export const deletePayee: MutationResolvers['deletePayee'] = ({ id }) => {
 }
 
 export const Payee: PayeeRelationResolvers = {
+  budget: (_obj, { root }) => {
+    return db.payee.findUnique({ where: { id: root?.id } }).budget()
+  },
   account: (_obj, { root }) => {
     return db.payee.findUnique({ where: { id: root?.id } }).account()
   },

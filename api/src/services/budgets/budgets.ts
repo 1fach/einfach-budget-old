@@ -45,6 +45,9 @@ export const Budget: BudgetRelationResolvers = {
   accounts: (_obj, { root }) => {
     return db.budget.findUnique({ where: { id: root?.id } }).accounts()
   },
+  payees: (_obj, { root }) => {
+    return db.budget.findUnique({ where: { id: root?.id } }).payees()
+  },
   budgetCategoryGroups: (_obj, { root }) => {
     return db.budget
       .findUnique({ where: { id: root?.id } })

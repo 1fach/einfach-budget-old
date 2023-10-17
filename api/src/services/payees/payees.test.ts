@@ -22,12 +22,13 @@ describe('payees', () => {
     expect(result).toEqual(scenario.payee.one)
   })
 
-  scenario('creates a payee', async () => {
+  scenario('creates a payee', async (scenario: StandardScenario) => {
     const result = await createPayee({
-      input: { name: 'String' },
+      input: { name: 'String', budgetId: scenario.payee.two.budgetId },
     })
 
     expect(result.name).toEqual('String')
+    expect(result.budgetId).toEqual(scenario.payee.two.budgetId)
   })
 
   scenario('updates a payee', async (scenario: StandardScenario) => {
