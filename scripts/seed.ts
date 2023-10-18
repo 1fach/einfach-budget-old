@@ -294,7 +294,7 @@ function createMonthlyBudgetPerCategoryForCategory(monthStart, monthEnd, year) {
         id: uuidv4(),
         month: i,
         year: year,
-        assigned: new Prisma.Decimal(faker.finance.amount(10000, 10000, 2)),
+        assigned: new Prisma.Decimal(3000),
         budgetCategoryId: category.id,
       }
       monthlyBudgets.push(monthlyBudget)
