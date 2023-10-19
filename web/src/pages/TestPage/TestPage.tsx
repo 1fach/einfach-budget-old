@@ -16,7 +16,9 @@ const TestPage = () => {
         My default route is named <code>test</code>, link to me with `
         <Link to={routes.test()}>Test</Link>`
       </p>
-      <MonthPicker />
+      <div style={{ width: '20%' }}>
+        <MonthPicker />
+      </div>
     </>
   )
 }

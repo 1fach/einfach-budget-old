@@ -7,25 +7,26 @@ export const datePicker = defineSlotRecipe({
   jsx: ['DatePicker', /DatePicker\.+/],
   base: {
     cellTrigger: {
+      minWidth: '10',
       _today: {
         _before: {
-          content: "'−'",
-          color: 'accent.default',
+          content: '"—"',
+          color: 'accent.foreground',
           position: 'absolute',
           marginTop: '6',
         },
       },
       '&[data-in-range]': {
-        background: 'bg.subtle',
+        bg: 'accent',
       },
       _selected: {
         _before: {
-          color: 'accent.fg',
+          color: 'accent.foreground',
         },
       },
     },
     content: {
-      background: 'bg.default',
+      background: 'background',
       borderRadius: 'l3',
       borderWidth: '1px',
       p: '4',
@@ -59,7 +60,7 @@ export const datePicker = defineSlotRecipe({
     },
     columnHeader: {
       alignItems: 'center',
-      color: 'fg.subtle',
+      color: 'accent.foreground',
       display: 'inline-flex',
       fontWeight: 'semibold',
       height: '10',

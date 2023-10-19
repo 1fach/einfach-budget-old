@@ -88,7 +88,7 @@ export const MonthPicker = (props: DatePickerProps) => {
                             {week.map((day, id) => (
                               <DatePickerDayCell key={id} value={day}>
                                 <DatePickerDayCellTrigger asChild>
-                                  <Button variant="ghost" px="0">
+                                  <Button variant="ghost" px="0" rounded="0">
                                     {day.day}
                                   </Button>
                                 </DatePickerDayCellTrigger>
@@ -112,7 +112,7 @@ export const MonthPicker = (props: DatePickerProps) => {
                                   value={month.value}
                                 >
                                   <DatePickerMonthCellTrigger asChild>
-                                    <Button variant="ghost">
+                                    <Button variant="ghost" rounded="0">
                                       {month.label}
                                     </Button>
                                   </DatePickerMonthCellTrigger>
@@ -134,7 +134,9 @@ export const MonthPicker = (props: DatePickerProps) => {
                                 value={year.value}
                               >
                                 <DatePickerYearCellTrigger>
-                                  <Button variant="ghost">{year.label}</Button>
+                                  <Button variant="ghost" rounded="0">
+                                    {year.label}
+                                  </Button>
                                 </DatePickerYearCellTrigger>
                               </DatePickerYearCell>
                             ))}
