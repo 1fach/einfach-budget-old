@@ -1,5 +1,5 @@
 import * as Ark from '@ark-ui/react/date-picker'
-import { createStyleContext } from '@one-ui/shared/style-context/park'
+import { createStyleContext } from '@one-ui/shared/style-context'
 import { styled } from '@one-ui/styled-system/jsx'
 import {
   datePicker,

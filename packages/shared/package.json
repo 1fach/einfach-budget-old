@@ -2,8 +2,7 @@
   "name": "@one-ui/shared",
   "packageManager": "yarn@3.6.3",
   "dependencies": {
-    "@ark-ui/anatomy": "^0.1.0",
-    "@shadow-panda/style-context": "^0.7.1"
+    "@ark-ui/anatomy": "^0.1.0"
   },
   "devDependencies": {
     "@pandacss/dev": "^0.16.0",

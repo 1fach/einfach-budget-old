@@ -4330,7 +4330,6 @@ __metadata:
     "@pandacss/preset-panda": ^0.16.0
     "@pandacss/types": ^0.16.0
     "@shadow-panda/preset": ^0.7.1
-    "@shadow-panda/style-context": ^0.7.1
   languageName: unknown
   linkType: soft
 
@@ -6816,23 +6815,6 @@ __metadata:
   peerDependencies:
     "@pandacss/dev": 0.15.5
   checksum: fa0f37d5c638f0d1aaa661e752240bfac700ca984097074959949ea9c3c6dedeac3c0c6641b389455a3700084ba95408337d4940f88a97b219b5e026041f7e59
-  languageName: node
-  linkType: hard
-
-"@shadow-panda/style-context@npm:^0.7.1":
-  version: 0.7.1
-  resolution: "@shadow-panda/style-context@npm:0.7.1"
-  peerDependencies:
-    "@types/react": ^18.2
-    "@types/react-dom": ^18.2
-    react: ^16.8 || ^17.0 || ^18.0
-    react-dom: ^16.8 || ^17.0 || ^18.0
-  peerDependenciesMeta:
-    "@types/react":
-      optional: true
-    "@types/react-dom":
-      optional: true
-  checksum: 4c5e948476272629a3dcac43895eb39a3b69f994ba1c1ef3b41d2a82bb60b06dd4260cd1edbf8fd43b232d556c029b4eda6036d9c144d56eaac23958a254db81
   languageName: node
   linkType: hard
 
