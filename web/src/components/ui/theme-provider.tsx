@@ -1,8 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 
-import { css } from '@one-ui/styled-system/css'
-import { clsx } from 'clsx'
-
 type Theme = 'dark' | 'light' | 'system'
 
 type ThemeProviderProps = {
@@ -34,11 +31,8 @@ export function ThemeProvider({
   )
 
   useEffect(() => {
-    const root = window.document.body
-    const light = css({ colorScheme: 'light' })
-    const dark = css({ colorScheme: 'dark' })
-
-    root.classList.remove(light, dark)
+    const root = window.document.documentElement
+    root.classList.remove('light', 'dark')
 
     if (theme === 'system') {
       const systemTheme = window.matchMedia('(prefers-color-scheme: dark)')
@@ -46,23 +40,11 @@ export function ThemeProvider({
         ? 'dark'
         : 'light'
 
-      root.classList.add(
-        clsx({
-          [light]: systemTheme === 'light',
-          [dark]: systemTheme === 'dark',
-        })
-      )
-      root.dataset.oneUiTheme = systemTheme
+      root.classList.add(systemTheme)
       return
     }
 
-    root.classList.add(
-      clsx({
-        [light]: theme === 'light',
-        [dark]: theme === 'dark',
-      })
-    )
-    root.dataset.oneUiTheme = theme
+    root.classList.add(theme)
   }, [theme])
 
   const value = React.useMemo(() => {

@@ -8,6 +8,9 @@ export default defineConfig({
   // Classnames prefix
   prefix: 'one',
 
+  // Minify generated css files
+  minify: true,
+
   // Hashes the classnames to make it shorter
   hash: true,
 
@@ -16,12 +19,6 @@ export default defineConfig({
 
   // Where to look for your css declarations
   include: ['./src/**/*.{js,jsx,ts,tsx}'],
-
-  // Light and dark mode
-  conditions: {
-    light: '[data-one-ui-theme=light] &',
-    dark: '[data-one-ui-theme=dark] &',
-  },
 
   // Preset for shadcn/ui
   presets: [oneUiPreset],
