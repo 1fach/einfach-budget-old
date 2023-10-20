@@ -11,8 +11,11 @@ export default defineConfig({
   // Minify generated css files
   minify: true,
 
-  // Hashes the classnames to make it shorter
-  hash: true,
+  // Clean the output directory before build
+  clean: true,
+
+  // Hashes the classnames in the production environment only
+  hash: process.env.NODE_ENV === 'production',
 
   // Uses JSX style props
   jsxFramework: 'react',
