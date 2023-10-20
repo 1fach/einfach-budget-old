@@ -27,6 +27,7 @@
   },
   "packageManager": "yarn@3.6.3",
   "resolutions": {
-    "@ark-ui/react": "0.15.0"
+    "@ark-ui/react": "0.15.0",
+    "vite": "4.5.0"
   }
 }
