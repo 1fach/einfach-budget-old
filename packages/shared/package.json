@@ -5,9 +5,9 @@
     "@ark-ui/anatomy": "^0.1.0"
   },
   "devDependencies": {
-    "@pandacss/dev": "^0.16.0",
-    "@pandacss/preset-panda": "^0.16.0",
-    "@pandacss/types": "^0.16.0",
+    "@pandacss/dev": "^0.17.0",
+    "@pandacss/preset-panda": "^0.17.0",
+    "@pandacss/types": "^0.17.0",
     "@shadow-panda/preset": "^0.7.1"
   }
 }
