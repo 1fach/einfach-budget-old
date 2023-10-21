@@ -19,8 +19,6 @@ export const QUERY = gql`
     $year: Int!
   ) {
     budget(id: $budgetId, userId: $userId) {
-      id
-      name
       budgetCategoryGroups {
         name
         sortOrder
