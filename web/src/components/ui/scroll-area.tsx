@@ -13,9 +13,16 @@ const Viewport = withContext(ScrollAreaPrimitive.Viewport, 'viewport')
 const Corner = withContext(ScrollAreaPrimitive.Corner, 'corner')
 const Thumb = withContext(ScrollAreaPrimitive.ScrollAreaThumb, 'thumb')
 
+interface BaseScrollBarProps
+  extends React.ComponentPropsWithoutRef<
+    typeof ScrollAreaPrimitive.ScrollAreaScrollbar
+  > {
+  orientation?: 'horizontal' | 'vertical'
+}
+
 const BaseScrollBar = React.forwardRef<
   React.ElementRef<typeof ScrollAreaPrimitive.ScrollAreaScrollbar>,
-  React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.ScrollAreaScrollbar>
+  BaseScrollBarProps
 >(({ orientation = 'vertical', ...props }, ref) => (
   <ScrollAreaPrimitive.ScrollAreaScrollbar
     ref={ref}
