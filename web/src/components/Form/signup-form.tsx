@@ -30,9 +30,6 @@ const formSchema = z.object({
   password: z.string().min(6, {
     message: 'Please give a password with at least 6 characters.',
   }),
-  toc: z.literal(true, {
-    errorMap: () => ({ message: 'Please accept terms and conditions' }),
-  }),
 })
 
 export const SignUpForm = () => {
