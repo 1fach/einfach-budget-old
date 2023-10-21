@@ -26,7 +26,10 @@ describe('budgets', () => {
   )
 
   scenario('returns a single budget', async (scenario: StandardScenario) => {
-    const result = await budget({ id: scenario.budget.one.id })
+    const result = await budget({
+      id: scenario.budget.one.id,
+      userId: scenario.budget.one.userId,
+    })
 
     expect(result).toEqual(scenario.budget.one)
   })
@@ -41,7 +44,10 @@ describe('budgets', () => {
   })
 
   scenario('updates a budget', async (scenario: StandardScenario) => {
-    const original = (await budget({ id: scenario.budget.one.id })) as Budget
+    const original = (await budget({
+      id: scenario.budget.one.id,
+      userId: scenario.budget.one.userId,
+    })) as Budget
     const result = await updateBudget({
       id: original.id,
       input: { name: 'String2' },
@@ -54,7 +60,7 @@ describe('budgets', () => {
     const original = (await deleteBudget({
       id: scenario.budget.one.id,
     })) as Budget
-    const result = await budget({ id: original.id })
+    const result = await budget({ id: original.id, userId: original.userId })
 
     expect(result).toEqual(null)
   })

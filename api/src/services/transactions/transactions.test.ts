@@ -36,6 +36,10 @@ describe('transactions', () => {
       input: {
         description: 'String',
         accountId: scenario.transaction.two.accountId,
+        cleared: scenario.transaction.two.cleared,
+        date: scenario.transaction.two.date,
+        inflow: scenario.transaction.two.inflow.toNumber(),
+        outflow: scenario.transaction.two.outflow.toNumber(),
         monthlyBudgetPerCategoryId:
           scenario.transaction.two.monthlyBudgetPerCategoryId,
       },
@@ -43,6 +47,10 @@ describe('transactions', () => {
 
     expect(result.description).toEqual('String')
     expect(result.accountId).toEqual(scenario.transaction.two.accountId)
+    expect(result.cleared).toEqual(scenario.transaction.two.cleared)
+    expect(result.date).toEqual(scenario.transaction.two.date)
+    expect(result.inflow).toEqual(scenario.transaction.two.inflow)
+    expect(result.outflow).toEqual(scenario.transaction.two.outflow)
     expect(result.monthlyBudgetPerCategoryId).toEqual(
       scenario.transaction.two.monthlyBudgetPerCategoryId
     )

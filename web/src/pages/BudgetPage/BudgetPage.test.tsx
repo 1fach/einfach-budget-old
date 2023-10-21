@@ -8,7 +8,7 @@ import BudgetPage from './BudgetPage'
 describe('BudgetPage', () => {
   it('renders successfully', () => {
     expect(() => {
-      render(<BudgetPage />)
+      render(<BudgetPage id="" />)
     }).not.toThrow()
   })
 })

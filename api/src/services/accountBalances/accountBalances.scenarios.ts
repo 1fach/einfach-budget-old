@@ -9,13 +9,12 @@ export const standard = defineScenario<Prisma.AccountBalanceCreateArgs>({
         account: {
           create: {
             nickname: 'String',
-            payee: { create: { name: 'String' } },
             budget: {
               create: {
                 name: 'String',
                 user: {
                   create: {
-                    email: 'String4621832',
+                    email: 'String4260034',
                     hashedPassword: 'String',
                     salt: 'String',
                   },
@@ -31,13 +30,12 @@ export const standard = defineScenario<Prisma.AccountBalanceCreateArgs>({
         account: {
           create: {
             nickname: 'String',
-            payee: { create: { name: 'String' } },
             budget: {
               create: {
                 name: 'String',
                 user: {
                   create: {
-                    email: 'String2873320',
+                    email: 'String6878526',
                     hashedPassword: 'String',
                     salt: 'String',
                   },

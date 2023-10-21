@@ -7,16 +7,18 @@ export const standard = defineScenario<Prisma.TransactionCreateArgs>({
     one: {
       data: {
         description: 'String',
+        date: new Date(),
+        inflow: 0,
+        outflow: 200,
         account: {
           create: {
             nickname: 'String',
-            payee: { create: { name: 'String' } },
             budget: {
               create: {
                 name: 'String',
                 user: {
                   create: {
-                    email: 'String2551246',
+                    email: 'String1612728',
                     hashedPassword: 'String',
                     salt: 'String',
                   },
@@ -27,22 +29,22 @@ export const standard = defineScenario<Prisma.TransactionCreateArgs>({
         },
         monthlyBudgetPerCategory: {
           create: {
-            month: 7591421,
-            year: 9043660,
+            month: 3024158,
+            year: 1527287,
             budgetCategory: {
               create: {
                 name: 'String',
-                sortOrder: 5237746,
-                group: {
+                sortOrder: 6054463,
+                budgetCategoryGroup: {
                   create: {
                     name: 'String',
-                    sortOrder: 5844942,
+                    sortOrder: 4046386,
                     budget: {
                       create: {
                         name: 'String',
                         user: {
                           create: {
-                            email: 'String1645258',
+                            email: 'String9612380',
                             hashedPassword: 'String',
                             salt: 'String',
                           },
@@ -60,16 +62,18 @@ export const standard = defineScenario<Prisma.TransactionCreateArgs>({
     two: {
       data: {
         description: 'String',
+        date: new Date(),
+        inflow: 500,
+        outflow: 0,
         account: {
           create: {
             nickname: 'String',
-            payee: { create: { name: 'String' } },
             budget: {
               create: {
                 name: 'String',
                 user: {
                   create: {
-                    email: 'String135632',
+                    email: 'String2272597',
                     hashedPassword: 'String',
                     salt: 'String',
                   },
@@ -80,22 +84,22 @@ export const standard = defineScenario<Prisma.TransactionCreateArgs>({
         },
         monthlyBudgetPerCategory: {
           create: {
-            month: 6237863,
-            year: 1899546,
+            month: 1201545,
+            year: 6855835,
             budgetCategory: {
               create: {
                 name: 'String',
-                sortOrder: 9292403,
-                group: {
+                sortOrder: 9651400,
+                budgetCategoryGroup: {
                   create: {
                     name: 'String',
-                    sortOrder: 72734,
+                    sortOrder: 9269511,
                     budget: {
                       create: {
                         name: 'String',
                         user: {
                           create: {
-                            email: 'String5782942',
+                            email: 'String6384726',
                             hashedPassword: 'String',
                             salt: 'String',
                           },
