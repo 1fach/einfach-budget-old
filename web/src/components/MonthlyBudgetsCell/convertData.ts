@@ -1,12 +1,13 @@
 import type { FindBudgetByMonth } from 'types/graphql'
 
-import type { MonthlyBudget } from 'src/components/Spreadsheet/Table'
+import type { MonthlyBudget } from 'src/components/Spreadsheet/columns'
 
 type MonthlyBudgetGQL = FindBudgetByMonth['budget']
 type MonthlyBudgetGQLIntoDisplayable = (
   budget: MonthlyBudgetGQL
 ) => MonthlyBudget[]
 
+// TODO do it on the server side
 export const convertBudgetGQLIntoDisplayable: MonthlyBudgetGQLIntoDisplayable =
   (budget: MonthlyBudgetGQL) => {
     const groups = budget.budgetCategoryGroups
