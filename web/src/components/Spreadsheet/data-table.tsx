@@ -1,7 +1,9 @@
+import { useDraggable } from '@dnd-kit/core'
 import { css } from '@one-ui/styled-system/css'
 import {
   ColumnDef,
   ExpandedState,
+  Row,
   flexRender,
   getCoreRowModel,
   useReactTable,
@@ -73,34 +75,9 @@ export function DataTable({ columns, data }: DataTableProps<MonthlyBudget>) {
       </TableHeader>
       <TableBody>
         {table.getRowModel().rows?.length ? (
-          table.getRowModel().rows.map((row) => (
-            <TableRow
-              key={row.id}
-              className={css({
-                '&[data-expandable=true]': {
-                  bg: 'secondary',
-                },
-              })}
-              data-state={row.getIsSelected() && 'selected'}
-              data-expandable={row.getCanExpand()}
-              aria-expanded={row.getIsExpanded()}
-            >
-              {row.getVisibleCells().map((cell) => {
-                return (
-                  <TableCell
-                    key={cell.id}
-                    className={clsx({
-                      [css({ width: '6' })]:
-                        cell.column.id === 'checkAll' ||
-                        cell.column.id === 'expandAll',
-                    })}
-                  >
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                )
-              })}
-            </TableRow>
-          ))
+          table
+            .getRowModel()
+            .rows.map((row) => <DraggableTableRow key={row.id} row={row} />)
         ) : (
           <TableRow>
             <TableCell
@@ -113,6 +90,53 @@ export function DataTable({ columns, data }: DataTableProps<MonthlyBudget>) {
         )}
       </TableBody>
     </Table>
+  )
+}
+
+const DraggableTableRow = ({ row }: { row: Row<MonthlyBudget> }) => {
+  const { attributes, listeners, setNodeRef, transform } = useDraggable({
+    id: row.id,
+    attributes: {
+      role: 'row',
+      roleDescription: row.getCanExpand() ? 'category-group' : 'category',
+    },
+  })
+
+  const style = transform
+    ? {
+        transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
+      }
+    : undefined
+
+  return (
+    <TableRow
+      ref={setNodeRef}
+      style={style}
+      {...listeners}
+      {...attributes}
+      className={css({
+        '&[data-expandable=true]': {
+          bg: 'secondary',
+        },
+      })}
+      data-state={row.getIsSelected() && 'selected'}
+      data-expandable={row.getCanExpand()}
+      aria-expanded={row.getIsExpanded()}
+    >
+      {row.getVisibleCells().map((cell) => {
+        return (
+          <TableCell
+            key={cell.id}
+            className={clsx({
+              [css({ width: '6' })]:
+                cell.column.id === 'checkAll' || cell.column.id === 'expandAll',
+            })}
+          >
+            {flexRender(cell.column.columnDef.cell, cell.getContext())}
+          </TableCell>
+        )
+      })}
+    </TableRow>
   )
 }
 

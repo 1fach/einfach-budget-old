@@ -1,3 +1,5 @@
+import { DndContext } from '@dnd-kit/core'
+import { restrictToVerticalAxis } from '@dnd-kit/modifiers'
 import { css } from '@one-ui/styled-system/css'
 import { styled, Grid, GridItem } from '@one-ui/styled-system/jsx'
 
@@ -40,12 +42,14 @@ const BudgetTable = ({ budgetId }: Props) => {
       {budgetId == null ? (
         <DataTableSkeleton />
       ) : (
-        <MonthlyBudgetsCell
-          userId={currentUser.id}
-          budgetId={budgetId}
-          month={month}
-          year={year}
-        />
+        <DndContext modifiers={[restrictToVerticalAxis]}>
+          <MonthlyBudgetsCell
+            userId={currentUser.id}
+            budgetId={budgetId}
+            month={month}
+            year={year}
+          />
+        </DndContext>
       )}
     </styled.section>
   )
