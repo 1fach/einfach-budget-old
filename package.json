@@ -8,7 +8,7 @@
     ]
   },
   "devDependencies": {
-    "@faker-js/faker": "^8.1.0",
+    "@faker-js/faker": "^8.4.1",
     "@redwoodjs/auth-dbauth-setup": "6.6.4",
     "@redwoodjs/cli-storybook": "6.6.4",
     "@redwoodjs/core": "6.6.4",
@@ -25,9 +25,5 @@
   "prisma": {
     "seed": "yarn rw exec seed"
   },
-  "packageManager": "yarn@4.1.0",
-  "resolutions": {
-    "@ark-ui/react": "0.15.0",
-    "vite": "4.5.0"
-  }
+  "packageManager": "yarn@4.1.0"
 }
