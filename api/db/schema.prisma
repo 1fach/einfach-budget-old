@@ -27,6 +27,8 @@ model User {
   resetToken          String?
   resetTokenExpiresAt DateTime?
   budgets             Budget[]
+
+  @@map("user")
 }
 
 model Account {
@@ -36,13 +38,15 @@ model Account {
 
   budget   Budget @relation(fields: [budgetId], references: [id], onDelete: Cascade)
   budgetId String
+  payee    Payee  @relation(fields: [payeeId], references: [id], onDelete: Cascade)
+  payeeId  String @unique
 
   transactions   Transaction[]
   accountBalance AccountBalance?
-  payee          Payee?
 
   @@unique([budgetId, nickname]) // don't use the same name of account inside a same budget
   @@index([budgetId])
+  @@map("account")
 }
 
 view AccountBalance {
@@ -52,20 +56,22 @@ view AccountBalance {
 
   account   Account @relation(fields: [accountId], references: [id])
   accountId String  @id
+
+  @@map("account_balance")
 }
 
 model Payee {
   id   String @id @default(uuid())
   name String
 
-  budget    Budget   @relation(fields: [budgetId], references: [id], onDelete: Cascade)
-  budgetId  String
-  account   Account? @relation(fields: [accountId], references: [id], onDelete: Cascade)
-  accountId String?  @unique
+  budget   Budget @relation(fields: [budgetId], references: [id], onDelete: Cascade)
+  budgetId String
 
+  Account      Account?
   transactions Transaction[]
 
   @@index([budgetId])
+  @@map("payee")
 }
 
 model Transaction {
@@ -76,14 +82,15 @@ model Transaction {
   inflow      Decimal  @default(0.00) @db.Decimal(12, 2)
   cleared     Boolean  @default(false)
 
-  account                    Account                  @relation(fields: [accountId], references: [id])
+  account                    Account                  @relation(fields: [accountId], references: [id], onDelete: Cascade)
   accountId                  String
-  payee                      Payee?                   @relation(fields: [payeeId], references: [id])
+  payee                      Payee?                   @relation(fields: [payeeId], references: [id], onDelete: SetNull)
   payeeId                    String?
   monthlyBudgetPerCategory   MonthlyBudgetPerCategory @relation(fields: [monthlyBudgetPerCategoryId], references: [id], onDelete: Cascade)
   monthlyBudgetPerCategoryId String
 
   @@index([accountId])
+  @@map("transaction")
 }
 
 model Budget {
@@ -99,6 +106,7 @@ model Budget {
 
   @@unique([userId, name]) // a user can't have budget with the same name
   @@index([userId])
+  @@map("budget")
 }
 
 model MonthlyBudgetPerCategory {
@@ -115,6 +123,7 @@ model MonthlyBudgetPerCategory {
 
   @@unique([month, year, budgetCategoryId]) // In a month there shouldn't be two same categories
   @@index([budgetCategoryId])
+  @@map("monthly_budget_per_category")
 }
 
 view MonthlyCategoryActivity {
@@ -123,6 +132,8 @@ view MonthlyCategoryActivity {
 
   monthlyBudgetPerCategory   MonthlyBudgetPerCategory @relation(fields: [monthlyBudgetPerCategoryId], references: [id])
   monthlyBudgetPerCategoryId String                   @id
+
+  @@map("monthly_category_activity")
 }
 
 view MonthlyCategoryGroupActivity {
@@ -136,6 +147,7 @@ view MonthlyCategoryGroupActivity {
   budgetCategoryGroupId String
 
   @@id([month, year, budgetCategoryGroupId])
+  @@map("monthly_category_group_activity")
 }
 
 model BudgetCategoryGroup {
@@ -150,6 +162,7 @@ model BudgetCategoryGroup {
   monthlyCategoryGroupActivities MonthlyCategoryGroupActivity[]
 
   @@index([budgetId])
+  @@map("budget_category_group")
 }
 
 model BudgetCategory {
@@ -163,4 +176,5 @@ model BudgetCategory {
   monthlyBudgetPerCategories MonthlyBudgetPerCategory[]
 
   @@index([budgetCategoryGroupId])
+  @@map("budget_category")
 }
