@@ -23,10 +23,10 @@
     "@radix-ui/react-scroll-area": "^1.0.5",
     "@radix-ui/react-separator": "^1.0.3",
     "@radix-ui/react-slot": "^1.0.2",
-    "@redwoodjs/auth-dbauth-web": "6.3.2",
-    "@redwoodjs/forms": "6.3.2",
-    "@redwoodjs/router": "6.3.2",
-    "@redwoodjs/web": "6.3.2",
+    "@redwoodjs/auth-dbauth-web": "6.6.4",
+    "@redwoodjs/forms": "6.6.4",
+    "@redwoodjs/router": "6.6.4",
+    "@redwoodjs/web": "6.6.4",
     "@tanstack/react-table": "^8.10.3",
     "clsx": "^2.0.0",
     "humanize-string": "^3.0.0",
@@ -39,7 +39,7 @@
   },
   "devDependencies": {
     "@pandacss/dev": "^0.17.0",
-    "@redwoodjs/vite": "6.3.2",
+    "@redwoodjs/vite": "6.6.4",
     "@types/react": "^18.2.31",
     "@types/react-dom": "^18.2.14",
     "vite-tsconfig-paths": "^4.2.1"
