@@ -4,69 +4,89 @@ import { defineSlotRecipe } from '@pandacss/dev'
 export const datePicker = defineSlotRecipe({
   className: 'datePicker',
   slots: [...datePickerAnatomy.keys()],
-  jsx: ['DatePicker', /DatePicker\.+/],
   base: {
-    cellTrigger: {
-      minWidth: '10',
+    root: {
+      colorPalette: 'accent',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '1.5',
+    },
+    content: {
+      background: 'background',
+      borderRadius: 'lg',
+      boxShadow: 'lg',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '3',
+      p: '4',
+      width: '344px',
+      zIndex: '1000',
+      _open: {
+        animation: 'fadeIn 0.25s ease-out',
+      },
+      _closed: {
+        animation: 'fadeOut 0.2s ease-out',
+      },
+      _hidden: {
+        display: 'none',
+      },
+    },
+    control: {
+      display: 'flex',
+      flexDirection: 'row',
+      gap: '2',
+    },
+    label: {
+      color: 'foreground',
+      fontWeight: 'medium',
+      textStyle: 'small',
+    },
+    tableHeader: {
+      color: 'muted.foreground',
+      fontWeight: 'semibold',
+      height: '10',
+      textStyle: 'small',
+    },
+    viewControl: {
+      display: 'flex',
+      gap: '2',
+      justifyContent: 'space-between',
+    },
+    table: {
+      width: 'full',
+      borderCollapse: 'separate',
+      borderSpacing: '1',
+      m: '-1',
+    },
+    tableCell: {
+      textAlign: 'center',
+    },
+    tableCellTrigger: {
+      width: '100%',
       _today: {
         _before: {
-          content: '"—"',
-          color: 'accent.foreground',
+          content: "'−'",
+          color: 'colorPalette.default',
           position: 'absolute',
           marginTop: '6',
         },
       },
       '&[data-in-range]': {
-        bg: 'accent',
+        background: 'muted',
       },
       _selected: {
         _before: {
-          color: 'accent.foreground',
+          color: 'foreground',
         },
       },
     },
-    content: {
-      background: 'background',
-      borderRadius: 'l3',
-      borderWidth: '1px',
-      p: '4',
-      width: 'fit-content',
-    },
-    grid: {
+    view: {
       display: 'flex',
       flexDirection: 'column',
-      gap: '1',
-      '&[data-type="day"] [data-part="row"]': {
-        gridTemplateColumns: 'repeat(7, 1fr)',
+      gap: '3',
+      _hidden: {
+        display: 'none',
       },
-      '&[data-type="month"] [data-part="row"]': {
-        gridTemplateColumns: 'repeat(4, 1fr)',
-      },
-      '&[data-type="year"] [data-part="row"]': {
-        gridTemplateColumns: 'repeat(4, 1fr)',
-      },
-    },
-    rowGroup: {
-      display: 'flex',
-      flexDirection: 'column',
-      gap: '1',
-    },
-    row: {
-      display: 'grid',
-    },
-    rowHeader: {
-      display: 'grid',
-      gridTemplateColumns: 'repeat(7, 1fr)',
-    },
-    columnHeader: {
-      alignItems: 'center',
-      color: 'accent.foreground',
-      display: 'inline-flex',
-      fontWeight: 'semibold',
-      height: '10',
-      justifyContent: 'center',
-      textStyle: 'sm',
-      width: '10',
     },
   },
 })

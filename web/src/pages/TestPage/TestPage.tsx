@@ -1,12 +1,12 @@
 import { Link, routes } from '@redwoodjs/router'
-import { MetaTags } from '@redwoodjs/web'
+import { Metadata } from '@redwoodjs/web'
 
 import { MonthPicker } from 'src/components/AppLayout/month-picker'
 
 const TestPage = () => {
   return (
     <>
-      <MetaTags title="Test" description="Test page" />
+      <Metadata title="Test" description="Test page" />
 
       <h1>TestPage</h1>
       <p>
