@@ -1,6 +1,12 @@
 import { createColumnHelper, ColumnDef } from '@tanstack/react-table'
 
-import { CExpand, CCheckbox, CCategory, CCurrency } from './cell'
+import {
+  CExpand,
+  CCheckbox,
+  CCategory,
+  CCurrency,
+  CEditableCurrency,
+} from './cell'
 import { HExpand, HCheckbox } from './header'
 
 // This type is used to define the shape of our data.
@@ -32,7 +38,12 @@ export const columns: ColumnDef<MonthlyBudget>[] = [
   }),
   columnHelper.accessor('assigned', {
     header: () => <span>Assigned</span>,
-    cell: ({ getValue }) => <CCurrency getValue={getValue} />,
+    cell: (props) =>
+      props.row.getCanExpand() ? (
+        <CCurrency getValue={props.getValue} />
+      ) : (
+        <CEditableCurrency {...props} />
+      ),
   }),
   columnHelper.accessor('activity', {
     header: () => <span>Activity</span>,

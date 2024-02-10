@@ -1,4 +1,6 @@
-import { type Row, type Getter } from '@tanstack/react-table'
+import { useState, useEffect } from 'react'
+
+import { type Row, type Getter, Column, Table } from '@tanstack/react-table'
 import { ChevronDown, ChevronRight } from 'lucide-react'
 
 import type { MonthlyBudget } from './columns'
@@ -35,6 +37,57 @@ export const CExpand = ({ row }: { row: Row<MonthlyBudget> }) => {
         </button>
       ) : null}
     </>
+  )
+}
+
+export const CEditableCurrency = ({
+  getValue,
+  row,
+  column,
+  table,
+}: {
+  getValue: Getter<number>
+  row: Row<MonthlyBudget>
+  column: Column<MonthlyBudget>
+  table: Table<MonthlyBudget>
+}) => {
+  const format = (str: string) => {
+    let res = parseFloat(str.replace(/[^0-9,]/g, '').replace(',', '.'))
+    res = isNaN(res) ? 0 : res
+
+    return new Intl.NumberFormat('de-DE', {
+      style: 'currency',
+      currency: 'EUR',
+      minimumFractionDigits: 2,
+    }).format(res)
+  }
+
+  const initialValue = format(getValue().toString())
+  const [value, setValue] = useState(initialValue)
+
+  useEffect(() => {
+    setValue(initialValue)
+  }, [initialValue])
+
+  const tableMeta = table.options.meta as {
+    updateData: (rowIndex: number[], columnId: string, value: string) => void
+  }
+
+  const onBlur = () => {
+    tableMeta.updateData(
+      [row.getParentRow().index, row.index],
+      column.id,
+      value
+    )
+    setValue(format(value))
+  }
+
+  return (
+    <input
+      value={value}
+      onChange={(e) => setValue(e.target.value)}
+      onBlur={onBlur}
+    />
   )
 }
 
