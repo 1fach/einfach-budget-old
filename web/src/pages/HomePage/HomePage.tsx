@@ -1,11 +1,11 @@
-import { MetaTags } from '@redwoodjs/web'
+import { Metadata } from '@redwoodjs/web'
 
-import { Spreadsheet } from 'src/components/Spreadsheet/spreadsheet'
+import { Spreadsheet } from 'src/components/Spreadsheet'
 
 const HomePage = () => {
   return (
     <>
-      <MetaTags title="Home" description="Home page" />
+      <Metadata title="Home" description="Home page" />
 
       <Spreadsheet />
     </>

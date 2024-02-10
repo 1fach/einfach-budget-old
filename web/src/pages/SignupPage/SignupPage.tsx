@@ -1,7 +1,7 @@
 import { Container } from '@one-ui/styled-system/jsx'
 
 import { navigate, routes } from '@redwoodjs/router'
-import { MetaTags } from '@redwoodjs/web'
+import { Metadata } from '@redwoodjs/web'
 
 import { useAuth } from 'src/auth'
 import { SignUpForm } from 'src/components/Form'
@@ -19,7 +19,7 @@ const SignupPage = () => {
 
   return (
     <>
-      <MetaTags title="Sign up" />
+      <Metadata title="Sign up" />
 
       <Container
         h="screen"

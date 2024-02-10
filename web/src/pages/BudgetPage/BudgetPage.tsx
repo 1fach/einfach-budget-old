@@ -1,11 +1,11 @@
-import { MetaTags } from '@redwoodjs/web'
+import { Metadata } from '@redwoodjs/web'
 
-import { Spreadsheet } from 'src/components/Spreadsheet/spreadsheet'
+import { Spreadsheet } from 'src/components/Spreadsheet'
 
 const BudgetPage = ({ id }: { id: string }) => {
   return (
     <>
-      <MetaTags title="Budget" description="Budget page" />
+      <Metadata title="Budget" description="Budget page" />
 
       <Spreadsheet budgetId={id} />
     </>

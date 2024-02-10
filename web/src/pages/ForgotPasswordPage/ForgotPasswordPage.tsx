@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import { Container } from '@one-ui/styled-system/jsx'
 
 import { navigate, routes } from '@redwoodjs/router'
-import { MetaTags } from '@redwoodjs/web'
+import { Metadata } from '@redwoodjs/web'
 
 import { useAuth } from 'src/auth'
 import { ForgotPasswordForm } from 'src/components/Form'
@@ -21,7 +21,7 @@ const ForgotPasswordPage = () => {
 
   return (
     <>
-      <MetaTags title="Forgot Password" />
+      <Metadata title="Forgot Password" />
 
       <Container
         h="screen"
