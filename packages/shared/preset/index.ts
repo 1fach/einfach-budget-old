@@ -1,13 +1,13 @@
-import pandaPreset from '@pandacss/preset-panda'
 import type { Config } from '@pandacss/types'
-import shadowPandaPreset from '@shadow-panda/preset'
 
-import { slotRecipes } from './recipes'
+import shadcnPreset from '../../shared/preset/shadcn'
+
+import { slotRecipes } from './slot-recipes'
 
 const defineConfig = <T extends Config>(config: T) => config
 
 export const oneUiPreset = defineConfig({
-  presets: [pandaPreset, shadowPandaPreset],
+  presets: [shadcnPreset],
   theme: {
     extend: {
       slotRecipes,

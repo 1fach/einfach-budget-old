@@ -4143,7 +4143,6 @@ __metadata:
     "@pandacss/dev": "npm:^0.30.2"
     "@pandacss/preset-panda": "npm:^0.30.2"
     "@pandacss/types": "npm:^0.30.2"
-    "@shadow-panda/preset": "npm:^0.7.1"
   languageName: unknown
   linkType: soft
 
@@ -4516,15 +4515,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pandacss/preset-panda@npm:0.15.5":
-  version: 0.15.5
-  resolution: "@pandacss/preset-panda@npm:0.15.5"
-  dependencies:
-    "@pandacss/types": "npm:0.15.5"
-  checksum: 10c0/ef49cbc06762a614bea28146fadb66d3d068409951ef4df45393023449f64d2d5bcc8990c263d6c3ef8d18d089f84c84450f4a1a22d953832ba1375672a2e3f2
-  languageName: node
-  linkType: hard
-
 "@pandacss/preset-panda@npm:0.30.2, @pandacss/preset-panda@npm:^0.30.2":
   version: 0.30.2
   resolution: "@pandacss/preset-panda@npm:0.30.2"
@@ -4550,13 +4540,6 @@ __metadata:
     "@pandacss/types": "npm:0.30.2"
     ts-pattern: "npm:5.0.5"
   checksum: 10c0/af2ece1dedf934d5cf1659f144770e4a4b3776f697b74a8d76156662dfb7757520e446390c4706fbeb099ef899acd5db6592af6cf2e849fc100e0287f426f019
-  languageName: node
-  linkType: hard
-
-"@pandacss/types@npm:0.15.5":
-  version: 0.15.5
-  resolution: "@pandacss/types@npm:0.15.5"
-  checksum: 10c0/cf904526bbfed75a8c32a4d0507c6a9eeb1fb36d71e7149daf43219e023f9ccf1968797a885f44d8e78f4d2179e45fec893a94ab16a6e6a43d077fbcddff846d
   languageName: node
   linkType: hard
 
@@ -6468,17 +6451,6 @@ __metadata:
     domhandler: "npm:^5.0.3"
     selderee: "npm:^0.11.0"
   checksum: 10c0/e938ba9aeb31a9cf30dcb2977ef41685c598bf744bedc88c57aa9e8b7e71b51781695cf99c08aac50773fd7714eba670bd2a079e46db0788abe40c6d220084eb
-  languageName: node
-  linkType: hard
-
-"@shadow-panda/preset@npm:^0.7.1":
-  version: 0.7.1
-  resolution: "@shadow-panda/preset@npm:0.7.1"
-  dependencies:
-    "@pandacss/preset-panda": "npm:0.15.5"
-  peerDependencies:
-    "@pandacss/dev": 0.15.5
-  checksum: 10c0/fa0f37d5c638f0d1aaa661e752240bfac700ca984097074959949ea9c3c6dedeac3c0c6641b389455a3700084ba95408337d4940f88a97b219b5e026041f7e59
   languageName: node
   linkType: hard
 
