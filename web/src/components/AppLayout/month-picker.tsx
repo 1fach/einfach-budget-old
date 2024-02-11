@@ -4,12 +4,13 @@ import { Button } from '@/ui/button'
 import * as DatePicker from '@/ui/date-picker'
 import { Input } from '@/ui/input'
 
-export const MonthPicker = () => {
+export const MonthPicker = (props: DatePicker.RootProps) => {
   return (
     <DatePicker.Root
       positioning={{ sameWidth: true }}
       startOfWeek={1}
       selectionMode="single"
+      {...props}
     >
       <DatePicker.Label>Date Picker</DatePicker.Label>
       <DatePicker.Control>
@@ -29,7 +30,7 @@ export const MonthPicker = () => {
               <>
                 <DatePicker.ViewControl>
                   <DatePicker.PrevTrigger asChild>
-                    <Button variant="ghost" size="sm">
+                    <Button variant="ghost" size="icon">
                       <ChevronLeftIcon />
                     </Button>
                   </DatePicker.PrevTrigger>
@@ -39,7 +40,7 @@ export const MonthPicker = () => {
                     </Button>
                   </DatePicker.ViewTrigger>
                   <DatePicker.NextTrigger asChild>
-                    <Button variant="ghost" size="sm">
+                    <Button variant="ghost" size="icon">
                       <ChevronRightIcon />
                     </Button>
                   </DatePicker.NextTrigger>
@@ -60,7 +61,9 @@ export const MonthPicker = () => {
                         {week.map((day, id) => (
                           <DatePicker.TableCell key={id} value={day}>
                             <DatePicker.TableCellTrigger asChild>
-                              <Button variant="ghost">{day.day}</Button>
+                              <Button variant="ghost" size="icon">
+                                {day.day}
+                              </Button>
                             </DatePicker.TableCellTrigger>
                           </DatePicker.TableCell>
                         ))}

@@ -6,14 +6,13 @@ export const datePicker = defineSlotRecipe({
   slots: [...datePickerAnatomy.keys()],
   base: {
     root: {
-      colorPalette: 'accent',
       display: 'flex',
       flexDirection: 'column',
       gap: '1.5',
     },
     content: {
       background: 'background',
-      borderRadius: 'lg',
+      borderRadius: 'radius',
       boxShadow: 'lg',
       display: 'flex',
       flexDirection: 'column',
@@ -65,18 +64,18 @@ export const datePicker = defineSlotRecipe({
       width: '100%',
       _today: {
         _before: {
-          content: "'−'",
-          color: 'colorPalette.default',
+          content: '"—"',
+          color: 'accent.foreground',
           position: 'absolute',
           marginTop: '6',
         },
       },
       '&[data-in-range]': {
-        background: 'muted',
+        background: 'accent',
       },
       _selected: {
         _before: {
-          color: 'foreground',
+          color: 'accent.foreground',
         },
       },
     },

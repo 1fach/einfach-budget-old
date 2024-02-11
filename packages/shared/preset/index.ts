@@ -13,11 +13,6 @@ export const oneUiPreset = defineConfig({
       slotRecipes,
     },
   },
-  conditions: {
-    extend: {
-      today: '&:is([data-today])',
-    },
-  },
 })
 
 export default oneUiPreset
