@@ -6,6 +6,7 @@ import { ChevronDown, ChevronRight } from 'lucide-react'
 import type { MonthlyBudget } from './columns'
 
 import { Checkbox } from '@/ui/checkbox'
+import { Input } from '@/ui/input'
 
 export const CCheckbox = ({ row }: { row: Row<MonthlyBudget> }) => {
   return (
@@ -51,15 +52,19 @@ export const CEditableCurrency = ({
   column: Column<MonthlyBudget>
   table: Table<MonthlyBudget>
 }) => {
-  const format = (str: string) => {
-    let res = parseFloat(str.replace(/[^0-9,]/g, '').replace(',', '.'))
-    res = isNaN(res) ? 0 : res
+  const convertToFloat = (str: string) => {
+    const res = parseFloat(str.replace(/[^0-9.]/g, ''))
+    return isNaN(res) ? 0 : res
+  }
 
-    return new Intl.NumberFormat('de-DE', {
+  const format = (str: string) => {
+    const dec = convertToFloat(str)
+
+    return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'EUR',
       minimumFractionDigits: 2,
-    }).format(res)
+    }).format(dec)
   }
 
   const initialValue = format(getValue().toString())
@@ -82,17 +87,38 @@ export const CEditableCurrency = ({
     setValue(format(value))
   }
 
+  const onFocus = (e: React.FocusEvent<HTMLInputElement, Element>): void => {
+    e.target.select()
+    setValue(convertToFloat(e.target.value).toString())
+  }
+
+  const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>): void => {
+    if (e.key === 'Enter') {
+      e.currentTarget.blur()
+    }
+  }
+
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>): void =>
+    setValue(e.target.value)
+
   return (
-    <input
+    <Input
       value={value}
-      onChange={(e) => setValue(e.target.value)}
+      onChange={onChange}
       onBlur={onBlur}
+      onFocus={onFocus}
+      onKeyDown={onKeyDown}
+      h="8"
+      w="28"
+      _hover={{ borderColor: 'input', bgColor: 'background' }}
+      borderColor="transparent"
+      bgColor="transparent"
     />
   )
 }
 
 export const CCurrency = ({ getValue }: { getValue: Getter<number> }) => {
-  const formatted = new Intl.NumberFormat('de-DE', {
+  const formatted = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'EUR',
     minimumFractionDigits: 2,
