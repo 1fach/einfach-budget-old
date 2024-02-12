@@ -15,29 +15,25 @@ export const schema = gql`
     monthlyBudgetPerCategory(id: String!): MonthlyBudgetPerCategory @requireAuth
   }
 
-  input CreateMonthlyBudgetPerCategoryInput {
-    month: Int!
-    year: Int!
+  input UpdateAssignedBudgetForCategoryInput {
     assigned: Float!
-    budgetCategoryId: String!
   }
 
-  input UpdateMonthlyBudgetPerCategoryInput {
-    month: Int
-    year: Int
-    assigned: Float
-    budgetCategoryId: String
+  input CreateEmptyBudgetForCategoriesInput {
+    categoryIds: [String!]!
+    month: Int!
+    year: Int!
   }
 
   type Mutation {
-    createMonthlyBudgetPerCategory(
-      input: CreateMonthlyBudgetPerCategoryInput!
+    createEmptyBudgetForCategories(
+      input: CreateEmptyBudgetForCategoriesInput!
+    ): PrismaCreateManyResult! @requireAuth
+    updateAssignedBudgetForCategory(
+      categoryId: String!
+      month: Int!
+      year: Int!
+      input: UpdateAssignedBudgetForCategoryInput!
     ): MonthlyBudgetPerCategory! @requireAuth
-    updateMonthlyBudgetPerCategory(
-      id: String!
-      input: UpdateMonthlyBudgetPerCategoryInput!
-    ): MonthlyBudgetPerCategory! @requireAuth
-    deleteMonthlyBudgetPerCategory(id: String!): MonthlyBudgetPerCategory!
-      @requireAuth
   }
 `

@@ -161,6 +161,7 @@ model BudgetCategoryGroup {
   budgetCategories               BudgetCategory[]
   monthlyCategoryGroupActivities MonthlyCategoryGroupActivity[]
 
+  @@unique([name, budgetId])
   @@index([budgetId])
   @@map("budget_category_group")
 }
@@ -175,6 +176,7 @@ model BudgetCategory {
 
   monthlyBudgetPerCategories MonthlyBudgetPerCategory[]
 
+  @@unique([name, budgetCategoryGroupId])
   @@index([budgetCategoryGroupId])
   @@map("budget_category")
 }

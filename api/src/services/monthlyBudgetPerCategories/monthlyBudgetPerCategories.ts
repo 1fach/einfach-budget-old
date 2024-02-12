@@ -18,25 +18,31 @@ export const monthlyBudgetPerCategory: QueryResolvers['monthlyBudgetPerCategory'
     })
   }
 
-export const createMonthlyBudgetPerCategory: MutationResolvers['createMonthlyBudgetPerCategory'] =
+export const createEmptyBudgetForCategories: MutationResolvers['createEmptyBudgetForCategories'] =
   ({ input }) => {
-    return db.monthlyBudgetPerCategory.create({
-      data: input,
+    const { categoryIds, month, year } = input
+    return db.monthlyBudgetPerCategory.createMany({
+      data: categoryIds.map((budgetCategoryId) => ({
+        budgetCategoryId,
+        month,
+        year,
+        assigned: 0,
+      })),
     })
   }
 
-export const updateMonthlyBudgetPerCategory: MutationResolvers['updateMonthlyBudgetPerCategory'] =
-  ({ id, input }) => {
+export const updateAssignedBudgetForCategory: MutationResolvers['updateAssignedBudgetForCategory'] =
+  ({ categoryId, month, year, input }) => {
+    const { assigned } = input
     return db.monthlyBudgetPerCategory.update({
-      data: input,
-      where: { id },
-    })
-  }
-
-export const deleteMonthlyBudgetPerCategory: MutationResolvers['deleteMonthlyBudgetPerCategory'] =
-  ({ id }) => {
-    return db.monthlyBudgetPerCategory.delete({
-      where: { id },
+      data: { assigned },
+      where: {
+        month_year_budgetCategoryId: {
+          month,
+          year,
+          budgetCategoryId: categoryId,
+        },
+      },
     })
   }
 

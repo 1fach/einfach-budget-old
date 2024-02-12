@@ -15,6 +15,7 @@ export const schema = gql`
   type Query {
     budgetCategories: [BudgetCategory!]! @requireAuth
     budgetCategory(id: String!): BudgetCategory @requireAuth
+    budgetCategoriesWithNoAssignedFor(budgetId:String!, month: Int!, year: Int!): [BudgetCategory!]! @requireAuth
   }
 
   input CreateBudgetCategoryInput {

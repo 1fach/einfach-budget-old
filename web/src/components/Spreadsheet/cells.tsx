@@ -3,6 +3,11 @@ import { useState, useEffect } from 'react'
 import { type Row, type Getter, Column, Table } from '@tanstack/react-table'
 import { ChevronDown, ChevronRight } from 'lucide-react'
 
+import { useMutation } from '@redwoodjs/web'
+
+import { QUERY as FIND_THIS_MONTH_BUDGET } from 'src/components/MonthlyBudgetsCell'
+import { useSelectedMonth, useSelectedYear } from 'src/lib/store'
+
 import type { MonthlyBudget } from './columns'
 
 import { Checkbox } from '@/ui/checkbox'
@@ -41,6 +46,24 @@ export const CExpand = ({ row }: { row: Row<MonthlyBudget> }) => {
   )
 }
 
+const UPDATE_BUDGET = gql`
+  mutation UpdateAssignedBudgetForCategory(
+    $categoryId: String!
+    $month: Int!
+    $year: Int!
+    $input: UpdateAssignedBudgetForCategoryInput!
+  ) {
+    updateAssignedBudgetForCategory(
+      categoryId: $categoryId
+      month: $month
+      year: $year
+      input: $input
+    ) {
+      id
+    }
+  }
+`
+
 export const CEditableCurrency = ({
   getValue,
   row,
@@ -78,6 +101,12 @@ export const CEditableCurrency = ({
     updateData: (rowIndex: number[], columnId: string, value: string) => void
   }
 
+  const [updateAssignedBudgetForCategory] = useMutation(UPDATE_BUDGET, {
+    refetchQueries: [FIND_THIS_MONTH_BUDGET],
+  })
+  const month = useSelectedMonth()
+  const year = useSelectedYear()
+
   const onBlur = () => {
     tableMeta.updateData(
       [row.getParentRow().index, row.index],
@@ -85,6 +114,16 @@ export const CEditableCurrency = ({
       value
     )
     setValue(format(value))
+    if (!row.getCanExpand()) {
+      updateAssignedBudgetForCategory({
+        variables: {
+          categoryId: row.original.id,
+          month,
+          year,
+          input: { assigned: convertToFloat(value) },
+        },
+      })
+    }
   }
 
   const onFocus = (e: React.FocusEvent<HTMLInputElement, Element>): void => {

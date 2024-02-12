@@ -16,6 +16,27 @@ export const budgetCategory: QueryResolvers['budgetCategory'] = ({ id }) => {
   })
 }
 
+export const budgetCategoriesWithNoAssignedFor: QueryResolvers['budgetCategoriesWithNoAssignedFor'] =
+  ({ budgetId, month, year }) => {
+    return db.budgetCategory.findMany({
+      where: {
+        budgetCategoryGroup: {
+          budget: {
+            id: budgetId,
+          },
+        },
+        NOT: {
+          monthlyBudgetPerCategories: {
+            some: {
+              month,
+              year,
+            },
+          },
+        },
+      },
+    })
+  }
+
 export const createBudgetCategory: MutationResolvers['createBudgetCategory'] =
   ({ input }) => {
     return db.budgetCategory.create({

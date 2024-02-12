@@ -1,7 +1,7 @@
 import { Link, routes } from '@redwoodjs/router'
 import { Metadata } from '@redwoodjs/web'
 
-import { MonthPicker } from 'src/components/AppLayout/month-picker'
+import { MonthPicker } from 'src/components/Spreadsheet/month-picker'
 
 const TestPage = () => {
   return (

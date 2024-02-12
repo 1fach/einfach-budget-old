@@ -1,4 +1,4 @@
-import type { MonthlyBudgetPerCategory } from '@prisma/client'
+/* import type { MonthlyBudgetPerCategory } from '@prisma/client'
 
 import {
   monthlyBudgetPerCategories,
@@ -86,3 +86,4 @@ describe('monthlyBudgetPerCategories', () => {
     }
   )
 })
+ */

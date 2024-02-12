@@ -20,6 +20,7 @@ export const QUERY = gql`
   ) {
     budget(id: $budgetId, userId: $userId) {
       budgetCategoryGroups {
+        id
         name
         sortOrder
         monthlyCategoryGroupActivity(month: $month, year: $year) {
@@ -28,6 +29,7 @@ export const QUERY = gql`
           available
         }
         budgetCategories {
+          id
           name
           sortOrder
           monthlyBudgetPerCategory(month: $month, year: $year) {

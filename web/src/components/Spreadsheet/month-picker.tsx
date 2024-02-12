@@ -1,15 +1,34 @@
 import { CalendarIcon, ChevronLeftIcon, ChevronRightIcon } from 'lucide-react'
 
+import {
+  useSelectedMonth,
+  useSelectedYear,
+  useEinfachActions,
+} from 'src/lib/store'
+
 import { Button } from '@/ui/button'
 import * as DatePicker from '@/ui/date-picker'
 import { Input } from '@/ui/input'
 
-export const MonthPicker = (props: DatePicker.RootProps) => {
+type MonthPickerProps = DatePicker.RootProps
+
+export const MonthPicker = (props: MonthPickerProps) => {
+  const { updateMonth, updateYear } = useEinfachActions()
+
+  const month = useSelectedMonth()
+  const year = useSelectedYear()
+  const date =
+    year.toString() + '-' + month.toString().padStart(2, '0') + '-' + '01'
   return (
     <DatePicker.Root
       positioning={{ sameWidth: true }}
       startOfWeek={1}
       selectionMode="single"
+      value={[date]}
+      onValueChange={(details) => {
+        updateMonth(details.value[0].month)
+        updateYear(details.value[0].year)
+      }}
       {...props}
     >
       <DatePicker.Label>Date Picker</DatePicker.Label>

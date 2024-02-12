@@ -6,12 +6,13 @@ import {
   CCategory,
   CCurrency,
   CEditableCurrency,
-} from './cell'
+} from './cells'
 import { HExpand, HCheckbox } from './header'
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 export type MonthlyBudget = {
+  id: string
   category: string
   assigned: number
   activity: number
