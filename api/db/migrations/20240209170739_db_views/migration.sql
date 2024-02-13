@@ -44,7 +44,7 @@ WITH outflows AS (
 SELECT
   "monthlyBudgetPerCategoryId",
   activity,
-  SUM(assigned - activity) OVER (PARTITION BY "budgetCategoryId" ORDER BY "month", "year" ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as available
+  SUM(assigned - activity) OVER (PARTITION BY "budgetCategoryId" ORDER BY "year", "month" ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as available
 FROM outflows;
 
 
