@@ -12,6 +12,7 @@ import { HExpand, HCheckbox } from './header'
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 export type MonthlyBudget = {
+  __typename?: string
   id: string
   category: string
   assigned: number

@@ -9,8 +9,6 @@ import {
   DataTableSkeleton,
 } from 'src/components/Spreadsheet/data-table'
 
-import { convertBudgetGQLIntoDisplayable } from './convertData'
-
 export const QUERY = gql`
   query FindBudgetByMonth(
     $userId: String!
@@ -18,30 +16,18 @@ export const QUERY = gql`
     $month: Int!
     $year: Int!
   ) {
-    budget(id: $budgetId, userId: $userId) {
-      budgetCategoryGroups {
+    monthlyBudget(id: $budgetId, userId: $userId, month: $month, year: $year) {
+      id
+      category: name
+      assigned
+      activity
+      available
+      subRows {
         id
-        name
-        sortOrder
-        monthlyCategoryGroupActivity(month: $month, year: $year) {
-          assigned
-          activity
-          available
-        }
-        budgetCategories {
-          id
-          name
-          sortOrder
-          monthlyBudgetPerCategory(month: $month, year: $year) {
-            month
-            year
-            assigned
-            monthlyCategoryActivity {
-              activity
-              available
-            }
-          }
-        }
+        category: name
+        assigned
+        activity
+        available
       }
     }
   }
@@ -57,11 +43,8 @@ export const Failure = ({ error }: CellFailureProps) => (
   <div style={{ color: 'red' }}>Error: {error?.message}</div>
 )
 
-export const Success = ({ budget }: CellSuccessProps<FindBudgetByMonth>) => {
-  return (
-    <DataTable
-      columns={columns}
-      data={convertBudgetGQLIntoDisplayable(budget)}
-    />
-  )
+export const Success = ({
+  monthlyBudget,
+}: CellSuccessProps<FindBudgetByMonth>) => {
+  return <DataTable columns={columns} data={monthlyBudget} />
 }

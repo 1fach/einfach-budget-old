@@ -2,9 +2,12 @@ import { useState, useEffect } from 'react'
 
 import { type Row, type Getter } from '@tanstack/react-table'
 import { ChevronDown, ChevronRight } from 'lucide-react'
+import type { FindBudgetByMonth } from 'types/graphql'
 
+import { useLocation } from '@redwoodjs/router'
 import { useMutation } from '@redwoodjs/web'
 
+import { useAuth } from 'src/auth'
 import { QUERY as FIND_THIS_MONTH_BUDGET } from 'src/components/MonthlyBudgetsCell'
 import { useSelectedMonth, useSelectedYear } from 'src/lib/store'
 
@@ -93,12 +96,12 @@ export const CEditableCurrency = ({
     setValue(initialValue)
   }, [initialValue])
 
+  const userId = useAuth().currentUser?.id
+  const budgetId = useLocation().pathname.split('/').pop()
   const month = useSelectedMonth()
   const year = useSelectedYear()
 
-  const [updateAssignedBudgetForCategory] = useMutation(UPDATE_BUDGET, {
-    refetchQueries: [FIND_THIS_MONTH_BUDGET],
-  })
+  const [updateAssignedBudgetForCategory] = useMutation(UPDATE_BUDGET)
 
   const onBlur = () => {
     setValue(format(value))
@@ -109,6 +112,59 @@ export const CEditableCurrency = ({
           month,
           year,
           input: { assigned: convertToFloat(value) },
+        },
+        update: (cache) => {
+          const existingData = cache.readQuery<FindBudgetByMonth>({
+            query: FIND_THIS_MONTH_BUDGET,
+            variables: {
+              month,
+              year,
+              budgetId,
+              userId,
+            },
+          })
+
+          const { parent, me } = (existingData?.monthlyBudget || []).reduce(
+            (acc, group) => {
+              if (!acc.parent) {
+                const subRow = group.subRows.find(
+                  (subRow) => subRow.id === row.original.id
+                )
+                if (subRow) {
+                  acc.parent = group
+                  acc.me = subRow
+                }
+              }
+              return acc
+            },
+            { parent: null, me: null }
+          )
+
+          const changes = convertToFloat(value) - me.assigned
+
+          cache.modify({
+            id: cache.identify(me),
+            fields: {
+              assigned(cachedAssigned) {
+                return cachedAssigned + changes
+              },
+              available(cachedAvailable) {
+                return cachedAvailable + changes
+              },
+            },
+          })
+
+          cache.modify({
+            id: cache.identify(parent),
+            fields: {
+              assigned(cachedAssigned) {
+                return cachedAssigned + changes
+              },
+              available(cachedAvailable) {
+                return cachedAvailable + changes
+              },
+            },
+          })
         },
       })
     }
