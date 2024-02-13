@@ -1,5 +1,3 @@
-import { useState } from 'react'
-
 import { css } from '@one-ui/styled-system/css'
 import {
   ColumnDef,
@@ -32,30 +30,12 @@ export type DataTableProps<TData> = {
 
 export function DataTable({ columns, data }: DataTableProps<MonthlyBudget>) {
   const [expanded, setExpanded] = React.useState<ExpandedState>(true)
-  const [tableData, setTableData] = useState(data)
 
   const table = useReactTable({
-    data: tableData,
+    data,
     columns,
     state: {
       expanded,
-    },
-    meta: {
-      updateData: (rowIndex: number[], columnId: string, value: string) => {
-        setTableData((old) =>
-          old.map((row, index) => {
-            if (index === rowIndex[0]) {
-              const subRows = old[rowIndex[0]].subRows
-              subRows[rowIndex[1]][columnId] = value
-              return {
-                ...old[rowIndex[0]],
-                subRows,
-              }
-            }
-            return row
-          })
-        )
-      },
     },
     getCoreRowModel: getCoreRowModel(),
     onExpandedChange: setExpanded,
