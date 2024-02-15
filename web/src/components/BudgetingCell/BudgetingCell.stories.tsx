@@ -1,10 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react'
 
-import { Loading, Empty, Failure, Success } from './MonthlyBudgetsCell'
-import { standard } from './MonthlyBudgetsCell.mock'
+import { Loading, Empty, Failure, Success } from './BudgetingCell'
+import { standard } from './BudgetingCell.mock'
 
 const meta: Meta = {
-  title: 'Cells/MonthlyBudgetsCell',
+  title: 'Cells/BudgetingCell',
+  tags: ['autodocs'],
 }
 
 export default meta

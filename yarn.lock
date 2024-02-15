@@ -17184,6 +17184,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"immer@npm:^10.0.3":
+  version: 10.0.3
+  resolution: "immer@npm:10.0.3"
+  checksum: 10c0/282a4f8479a40f7d12b2b3243c095e3e892bf99058e2ffcdd6b8e9fd143e6a90f2717ab9b6c8b97c927ffb8054465c8f647056f41660dbfd672e240cf1063503
+  languageName: node
+  linkType: hard
+
 "immutable@npm:~3.7.6":
   version: 3.7.6
   resolution: "immutable@npm:3.7.6"
@@ -26723,6 +26730,7 @@ __metadata:
     "@types/react-dom": "npm:^18.2.19"
     clsx: "npm:^2.1.0"
     humanize-string: "npm:^3.0.0"
+    immer: "npm:^10.0.3"
     lucide-react: "npm:^0.323.0"
     prop-types: "npm:^15.8.1"
     react: "npm:^18.2.0"

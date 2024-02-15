@@ -49,18 +49,11 @@ export const updateAssignedBudgetForCategory: MutationResolvers['updateAssignedB
 export const MonthlyBudgetPerCategory: MonthlyBudgetPerCategoryRelationResolvers =
   {
     budgetCategory: (_obj, { root }) => {
-      return db.monthlyBudgetPerCategory
-        .findUnique({ where: { id: root?.id } })
-        .budgetCategory()
+      return root.budgetCategory
     },
     transactions: (_obj, { root }) => {
       return db.monthlyBudgetPerCategory
         .findUnique({ where: { id: root?.id } })
         .transactions()
-    },
-    monthlyCategoryActivity: (_obj, { root }) => {
-      return db.monthlyBudgetPerCategory
-        .findUnique({ where: { id: root?.id } })
-        .monthlyCategoryActivity()
     },
   }

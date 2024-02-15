@@ -47,9 +47,6 @@ export const Account: AccountRelationResolvers = {
   transactions: (_obj, { root }) => {
     return db.account.findUnique({ where: { id: root?.id } }).transactions()
   },
-  accountBalance: (_obj, { root }) => {
-    return db.account.findUnique({ where: { id: root?.id } }).accountBalance()
-  },
   payee: (_obj, { root }) => {
     return db.account.findUnique({ where: { id: root?.id } }).payee()
   },

@@ -1,16 +1,11 @@
 export const schema = gql`
   type BudgetCategoryGroup {
-    id: String!
+    id: ID!
     name: String!
     sortOrder: Int!
     budget: Budget!
     budgetId: String!
     budgetCategories: [BudgetCategory]!
-    monthlyCategoryGroupActivity(
-      month: Int!
-      year: Int!
-    ): [MonthlyCategoryGroupActivity]!
-    monthlyCategoryGroupActivities: [MonthlyCategoryGroupActivity]!
   }
 
   type Query {

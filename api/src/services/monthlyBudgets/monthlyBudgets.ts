@@ -1,5 +1,6 @@
 import type {
   MonthlyBudgetGroupRelationResolvers,
+  MonthlyBudgetRelationResolvers,
   QueryResolvers,
 } from 'types/graphql'
 
@@ -11,64 +12,97 @@ export const monthlyBudget: QueryResolvers['monthlyBudget'] = async ({
   month,
   year,
 }) => {
-  const query = await db.budget.findUnique({
+  const budget = await db.budget.findUnique({
     where: {
       id,
       userId,
     },
     include: {
-      budgetCategoryGroups: {
-        orderBy: {
-          sortOrder: 'asc',
+      budgetReadyToAssigns: {
+        where: {
+          month,
+          year,
         },
-        include: {
-          monthlyCategoryGroupActivities: {
-            where: {
-              month,
-              year,
-            },
+      },
+    },
+  })
+
+  return {
+    id: budget.id,
+    name: budget.name,
+    userId: budget.userId,
+    readyToAssign:
+      budget.budgetReadyToAssigns[0]?.readyToAssign.toNumber() || 0,
+    month,
+    year,
+  }
+}
+
+export const MonthlyBudget: MonthlyBudgetRelationResolvers = {
+  groups: async (_obj, { root }) => {
+    const budget = await db.budget.findUnique({
+      where: {
+        id: root.id,
+        userId: root.userId,
+      },
+      include: {
+        budgetReadyToAssigns: {
+          where: {
+            month: root.month,
+            year: root.year,
           },
-          budgetCategories: {
-            orderBy: {
-              sortOrder: 'asc',
+        },
+        budgetCategoryGroups: {
+          orderBy: {
+            sortOrder: 'asc',
+          },
+          include: {
+            monthlyCategoryGroupActivities: {
+              where: {
+                month: root.month,
+                year: root.year,
+              },
             },
-            include: {
-              monthlyBudgetPerCategories: {
-                where: {
-                  month,
-                  year,
-                },
-                include: {
-                  monthlyCategoryActivity: true,
+            budgetCategories: {
+              orderBy: {
+                sortOrder: 'asc',
+              },
+              include: {
+                monthlyBudgetPerCategories: {
+                  where: {
+                    month: root.month,
+                    year: root.year,
+                  },
+                  include: {
+                    monthlyCategoryActivity: true,
+                  },
                 },
               },
             },
           },
         },
       },
-    },
-  })
+    })
 
-  const res = query.budgetCategoryGroups.map((group) => {
-    return {
-      id: group.id,
-      name: group.name,
-      month,
-      year,
-      assigned:
-        group.monthlyCategoryGroupActivities[0]?.assigned.toNumber() || 0,
-      activity:
-        group.monthlyCategoryGroupActivities[0]?.activity.toNumber() || 0,
-      available:
-        group.monthlyCategoryGroupActivities[0]?.available.toNumber() || 0,
-    }
-  })
-
-  return res
+    return budget.budgetCategoryGroups.map((group) => {
+      return {
+        id: group.id,
+        name: group.name,
+        month: root.month,
+        year: root.year,
+        assigned:
+          group.monthlyCategoryGroupActivities[0]?.assigned.toNumber() || 0,
+        activity:
+          group.monthlyCategoryGroupActivities[0]?.activity.toNumber() || 0,
+        available:
+          group.monthlyCategoryGroupActivities[0]?.available.toNumber() || 0,
+      }
+    })
+  },
 }
 
 export const MonthlyBudgetGroup: MonthlyBudgetGroupRelationResolvers = {
-  subRows: async (_obj, { root }) => {
+  categories: async (_obj, { root }) => {
     const categoryGroups = await db.budgetCategoryGroup.findUnique({
       where: { id: root.id },
       include: {

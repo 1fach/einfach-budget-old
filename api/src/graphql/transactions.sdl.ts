@@ -1,6 +1,6 @@
 export const schema = gql`
   type Transaction {
-    id: String!
+    id: ID!
     description: String!
     date: DateTime!
     outflow: Float!

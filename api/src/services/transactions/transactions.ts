@@ -44,10 +44,10 @@ export const deleteTransaction: MutationResolvers['deleteTransaction'] = ({
 
 export const Transaction: TransactionRelationResolvers = {
   account: (_obj, { root }) => {
-    return db.transaction.findUnique({ where: { id: root?.id } }).account()
+    return root.account
   },
   payee: (_obj, { root }) => {
-    return db.transaction.findUnique({ where: { id: root?.id } }).payee()
+    return root.payee
   },
   monthlyBudgetPerCategory: (_obj, { root }) => {
     return db.transaction

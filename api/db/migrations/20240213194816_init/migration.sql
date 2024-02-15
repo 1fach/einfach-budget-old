@@ -38,6 +38,7 @@ CREATE TABLE "transaction" (
     "outflow" DECIMAL(12,2) NOT NULL DEFAULT 0.00,
     "inflow" DECIMAL(12,2) NOT NULL DEFAULT 0.00,
     "cleared" BOOLEAN NOT NULL DEFAULT false,
+    "createdAt" TIMESTAMP(2) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "accountId" TEXT NOT NULL,
     "payeeId" TEXT,
     "monthlyBudgetPerCategoryId" TEXT NOT NULL,
@@ -119,7 +120,13 @@ CREATE UNIQUE INDEX "monthly_budget_per_category_month_year_budgetCategoryId_key
 CREATE INDEX "budget_category_group_budgetId_idx" ON "budget_category_group"("budgetId");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "budget_category_group_name_budgetId_key" ON "budget_category_group"("name", "budgetId");
+
+-- CreateIndex
 CREATE INDEX "budget_category_budgetCategoryGroupId_idx" ON "budget_category"("budgetCategoryGroupId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "budget_category_name_budgetCategoryGroupId_key" ON "budget_category"("name", "budgetCategoryGroupId");
 
 -- AddForeignKey
 ALTER TABLE "account" ADD CONSTRAINT "account_budgetId_fkey" FOREIGN KEY ("budgetId") REFERENCES "budget"("id") ON DELETE CASCADE ON UPDATE CASCADE;

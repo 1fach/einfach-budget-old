@@ -1,6 +1,6 @@
 export const schema = gql`
   type Budget {
-    id: String!
+    id: ID!
     name: String!
     user: User!
     userId: String!

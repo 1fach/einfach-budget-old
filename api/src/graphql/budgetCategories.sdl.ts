@@ -1,6 +1,6 @@
 export const schema = gql`
   type BudgetCategory {
-    id: String!
+    id: ID!
     name: String!
     sortOrder: Int!
     budgetCategoryGroup: BudgetCategoryGroup!
@@ -15,7 +15,11 @@ export const schema = gql`
   type Query {
     budgetCategories: [BudgetCategory!]! @requireAuth
     budgetCategory(id: String!): BudgetCategory @requireAuth
-    budgetCategoriesWithNoAssignedFor(budgetId:String!, month: Int!, year: Int!): [BudgetCategory!]! @requireAuth
+    budgetCategoriesWithNoAssignedFor(
+      budgetId: String!
+      month: Int!
+      year: Int!
+    ): [BudgetCategory!]! @requireAuth
   }
 
   input CreateBudgetCategoryInput {

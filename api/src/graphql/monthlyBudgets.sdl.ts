@@ -17,7 +17,17 @@ export const schema = gql`
     assigned: Float!
     activity: Float!
     available: Float!
-    subRows: [MonthlyBudgetCategory!]
+    categories: [MonthlyBudgetCategory!]
+  }
+
+  type MonthlyBudget {
+    id: String!
+    userId: String!
+    name: String!
+    month: Int!
+    year: Int!
+    readyToAssign: Float!
+    groups: [MonthlyBudgetGroup!]
   }
 
   type Query {
@@ -26,6 +36,6 @@ export const schema = gql`
       userId: String!
       month: Int!
       year: Int!
-    ): [MonthlyBudgetGroup!]! @requireAuth
+    ): MonthlyBudget! @requireAuth
   }
 `

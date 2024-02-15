@@ -1,12 +1,12 @@
 export const schema = gql`
   type Account {
-    id: String!
+    id: ID!
     nickname: String!
     budget: Budget!
     budgetId: String!
+    payee: Payee!
+    payeeId: String!
     transactions: [Transaction]!
-    accountBalance: AccountBalance
-    payee: Payee
   }
 
   type Query {
@@ -17,11 +17,13 @@ export const schema = gql`
   input CreateAccountInput {
     nickname: String!
     budgetId: String!
+    payeeId: String!
   }
 
   input UpdateAccountInput {
     nickname: String
     budgetId: String
+    payeeId: String
   }
 
   type Mutation {

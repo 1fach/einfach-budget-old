@@ -43,9 +43,7 @@ export const deleteBudgetCategoryGroup: MutationResolvers['deleteBudgetCategoryG
 
 export const BudgetCategoryGroup: BudgetCategoryGroupRelationResolvers = {
   budget: (_obj, { root }) => {
-    return db.budgetCategoryGroup
-      .findUnique({ where: { id: root?.id } })
-      .budget()
+    return root.budget
   },
   budgetCategories: (_obj, { root }) => {
     return db.budgetCategoryGroup
@@ -55,20 +53,5 @@ export const BudgetCategoryGroup: BudgetCategoryGroupRelationResolvers = {
           sortOrder: 'asc',
         },
       })
-  },
-  monthlyCategoryGroupActivity: ({ month, year }, { root }) => {
-    return db.budgetCategoryGroup
-      .findUnique({ where: { id: root?.id } })
-      .monthlyCategoryGroupActivities({
-        where: {
-          month,
-          year,
-        },
-      })
-  },
-  monthlyCategoryGroupActivities: (_obj, { root }) => {
-    return db.budgetCategoryGroup
-      .findUnique({ where: { id: root?.id } })
-      .monthlyCategoryGroupActivities()
   },
 }

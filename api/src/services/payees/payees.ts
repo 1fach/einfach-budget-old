@@ -40,10 +40,10 @@ export const deletePayee: MutationResolvers['deletePayee'] = ({ id }) => {
 
 export const Payee: PayeeRelationResolvers = {
   budget: (_obj, { root }) => {
-    return db.payee.findUnique({ where: { id: root?.id } }).budget()
+    return root.budget
   },
   account: (_obj, { root }) => {
-    return db.payee.findUnique({ where: { id: root?.id } }).account()
+    return root.account
   },
   transactions: (_obj, { root }) => {
     return db.payee.findUnique({ where: { id: root?.id } }).transactions()

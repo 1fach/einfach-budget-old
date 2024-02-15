@@ -49,17 +49,6 @@ model Account {
   @@map("account")
 }
 
-view AccountBalance {
-  clearedBalance   Decimal @default(0.00) @db.Decimal(12, 2)
-  unclearedBalance Decimal @default(0.00) @db.Decimal(12, 2)
-  workingBalance   Decimal @default(0.00) @db.Decimal(12, 2)
-
-  account   Account @relation(fields: [accountId], references: [id])
-  accountId String  @id
-
-  @@map("account_balance")
-}
-
 model Payee {
   id   String @id @default(uuid())
   name String
@@ -67,7 +56,7 @@ model Payee {
   budget   Budget @relation(fields: [budgetId], references: [id], onDelete: Cascade)
   budgetId String
 
-  Account      Account?
+  account      Account?
   transactions Transaction[]
 
   @@index([budgetId])
@@ -81,13 +70,15 @@ model Transaction {
   outflow     Decimal  @default(0.00) @db.Decimal(12, 2)
   inflow      Decimal  @default(0.00) @db.Decimal(12, 2)
   cleared     Boolean  @default(false)
+  createdAt   DateTime @default(now()) @db.Timestamp(2)
 
-  account                    Account                  @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  account                    Account                    @relation(fields: [accountId], references: [id], onDelete: Cascade)
   accountId                  String
-  payee                      Payee?                   @relation(fields: [payeeId], references: [id], onDelete: SetNull)
+  payee                      Payee?                     @relation(fields: [payeeId], references: [id], onDelete: SetNull)
   payeeId                    String?
-  monthlyBudgetPerCategory   MonthlyBudgetPerCategory @relation(fields: [monthlyBudgetPerCategoryId], references: [id], onDelete: Cascade)
+  monthlyBudgetPerCategory   MonthlyBudgetPerCategory   @relation(fields: [monthlyBudgetPerCategoryId], references: [id], onDelete: Cascade)
   monthlyBudgetPerCategoryId String
+  transactionRunningBalance  TransactionRunningBalance?
 
   @@index([accountId])
   @@map("transaction")
@@ -103,6 +94,7 @@ model Budget {
   accounts             Account[]
   budgetCategoryGroups BudgetCategoryGroup[]
   payees               Payee[]
+  budgetReadyToAssigns BudgetReadyToAssign[]
 
   @@unique([userId, name]) // a user can't have budget with the same name
   @@index([userId])
@@ -124,30 +116,6 @@ model MonthlyBudgetPerCategory {
   @@unique([month, year, budgetCategoryId]) // In a month there shouldn't be two same categories
   @@index([budgetCategoryId])
   @@map("monthly_budget_per_category")
-}
-
-view MonthlyCategoryActivity {
-  activity  Decimal @default(0.00) @db.Decimal(12, 2)
-  available Decimal @default(0.00) @db.Decimal(12, 2)
-
-  monthlyBudgetPerCategory   MonthlyBudgetPerCategory @relation(fields: [monthlyBudgetPerCategoryId], references: [id])
-  monthlyBudgetPerCategoryId String                   @id
-
-  @@map("monthly_category_activity")
-}
-
-view MonthlyCategoryGroupActivity {
-  month     Int
-  year      Int
-  assigned  Decimal @default(0.00) @db.Decimal(12, 2)
-  activity  Decimal @default(0.00) @db.Decimal(12, 2)
-  available Decimal @default(0.00) @db.Decimal(12, 2)
-
-  budgetCategoryGroup   BudgetCategoryGroup @relation(fields: [budgetCategoryGroupId], references: [id])
-  budgetCategoryGroupId String
-
-  @@id([month, year, budgetCategoryGroupId])
-  @@map("monthly_category_group_activity")
 }
 
 model BudgetCategoryGroup {
@@ -179,4 +147,60 @@ model BudgetCategory {
   @@unique([name, budgetCategoryGroupId])
   @@index([budgetCategoryGroupId])
   @@map("budget_category")
+}
+
+view AccountBalance {
+  clearedBalance   Decimal
+  unclearedBalance Decimal
+  workingBalance   Decimal
+
+  account   Account @relation(fields: [accountId], references: [id])
+  accountId String  @id
+
+  @@map("account_balance")
+}
+
+view BudgetReadyToAssign {
+  month         Int
+  year          Int
+  readyToAssign Decimal
+
+  budget   Budget @relation(fields: [budgetId], references: [id])
+  budgetId String
+
+  @@id([budgetId, month, year])
+  @@map("budget_ready_to_assign")
+}
+
+view MonthlyCategoryActivity {
+  activity  Decimal
+  available Decimal
+
+  monthlyBudgetPerCategory   MonthlyBudgetPerCategory @relation(fields: [monthlyBudgetPerCategoryId], references: [id])
+  monthlyBudgetPerCategoryId String                   @id
+
+  @@map("monthly_category_activity")
+}
+
+view MonthlyCategoryGroupActivity {
+  month     Int
+  year      Int
+  assigned  Decimal
+  activity  Decimal
+  available Decimal
+
+  budgetCategoryGroup   BudgetCategoryGroup @relation(fields: [budgetCategoryGroupId], references: [id])
+  budgetCategoryGroupId String
+
+  @@id([month, year, budgetCategoryGroupId])
+  @@map("monthly_category_group_activity")
+}
+
+view TransactionRunningBalance {
+  runningBalance Decimal
+
+  transaction   Transaction @relation(fields: [transactionId], references: [id])
+  transactionId String      @id
+
+  @@map("transaction_running_balance")
 }

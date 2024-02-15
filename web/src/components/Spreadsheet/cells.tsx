@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 
 import { type Row, type Getter } from '@tanstack/react-table'
+import { produce } from 'immer'
 import { ChevronDown, ChevronRight } from 'lucide-react'
 import type { FindBudgetByMonth } from 'types/graphql'
 
@@ -8,7 +9,7 @@ import { useLocation } from '@redwoodjs/router'
 import { useMutation } from '@redwoodjs/web'
 
 import { useAuth } from 'src/auth'
-import { QUERY as FIND_THIS_MONTH_BUDGET } from 'src/components/MonthlyBudgetsCell'
+import { QUERY as FIND_THIS_MONTH_BUDGET } from 'src/components/BudgetingCell'
 import { useSelectedMonth, useSelectedYear } from 'src/lib/store'
 
 import type { MonthlyBudget } from './columns'
@@ -113,8 +114,8 @@ export const CEditableCurrency = ({
           year,
           input: { assigned: convertToFloat(value) },
         },
-        update: (cache) => {
-          const existingData = cache.readQuery<FindBudgetByMonth>({
+        update: (store) => {
+          const existingMonthlyBudget = store.readQuery<FindBudgetByMonth>({
             query: FIND_THIS_MONTH_BUDGET,
             variables: {
               month,
@@ -124,46 +125,44 @@ export const CEditableCurrency = ({
             },
           })
 
-          const { parent, me } = (existingData?.monthlyBudget || []).reduce(
-            (acc, group) => {
-              if (!acc.parent) {
-                const subRow = group.subRows.find(
-                  (subRow) => subRow.id === row.original.id
-                )
-                if (subRow) {
-                  acc.parent = group
-                  acc.me = subRow
-                }
+          let changes = 0
+
+          store.writeQuery<FindBudgetByMonth>({
+            query: FIND_THIS_MONTH_BUDGET,
+            variables: {
+              month,
+              year,
+              budgetId,
+              userId,
+            },
+            data: produce(existingMonthlyBudget, (draft) => {
+              const { thisGroup, thisCategory } = (
+                draft?.monthlyBudget.groups || []
+              ).reduce(
+                (acc, group) => {
+                  if (!acc.thisGroup) {
+                    const subRow = group.subRows.find(
+                      (subRow) => subRow.id === row.original.id
+                    )
+                    if (subRow) {
+                      acc.thisGroup = group
+                      acc.thisCategory = subRow
+                    }
+                  }
+                  return acc
+                },
+                { thisGroup: null, thisCategory: null }
+              )
+
+              changes = convertToFloat(value) - thisCategory.assigned
+              if (thisGroup && thisCategory) {
+                thisCategory.assigned += changes
+                thisCategory.available += changes
+                thisGroup.assigned += changes
+                thisGroup.available += changes
+                draft.monthlyBudget.readyToAssign -= changes
               }
-              return acc
-            },
-            { parent: null, me: null }
-          )
-
-          const changes = convertToFloat(value) - me.assigned
-
-          cache.modify({
-            id: cache.identify(me),
-            fields: {
-              assigned(cachedAssigned) {
-                return cachedAssigned + changes
-              },
-              available(cachedAvailable) {
-                return cachedAvailable + changes
-              },
-            },
-          })
-
-          cache.modify({
-            id: cache.identify(parent),
-            fields: {
-              assigned(cachedAssigned) {
-                return cachedAssigned + changes
-              },
-              available(cachedAvailable) {
-                return cachedAvailable + changes
-              },
-            },
+            }),
           })
         },
       })

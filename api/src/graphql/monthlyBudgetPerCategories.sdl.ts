@@ -1,13 +1,12 @@
 export const schema = gql`
   type MonthlyBudgetPerCategory {
-    id: String!
+    id: ID!
     month: Int!
     year: Int!
     assigned: Float!
     budgetCategory: BudgetCategory!
     budgetCategoryId: String!
     transactions: [Transaction]!
-    monthlyCategoryActivity: MonthlyCategoryActivity
   }
 
   type Query {
