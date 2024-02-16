@@ -29,6 +29,7 @@
     "@redwoodjs/web": "6.6.4",
     "@tanstack/react-table": "^8.11.8",
     "clsx": "^2.1.0",
+    "expr-eval": "^2.0.2",
     "humanize-string": "^3.0.0",
     "immer": "^10.0.3",
     "lucide-react": "^0.323.0",

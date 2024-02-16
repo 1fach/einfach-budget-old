@@ -10,6 +10,7 @@ import { useMutation } from '@redwoodjs/web'
 
 import { useAuth } from 'src/auth'
 import { QUERY as FIND_THIS_MONTH_BUDGET } from 'src/components/BudgetingCell'
+import { parser } from 'src/lib/math-exp'
 import { useSelectedMonth, useSelectedYear } from 'src/lib/store'
 
 import type { MonthlyBudget } from './columns'
@@ -76,8 +77,12 @@ export const CEditableCurrency = ({
   row: Row<MonthlyBudget>
 }) => {
   const convertToFloat = (str: string) => {
-    const res = parseFloat(str.replace(/[^0-9.]/g, ''))
-    return isNaN(res) ? 0 : res
+    try {
+      return parser.evaluate(str)
+    } catch (e) {
+      const res = parseFloat(str.replace(/[^0-9.]/g, ''))
+      return isNaN(res) ? 0 : res
+    }
   }
 
   const format = (str: string) => {
