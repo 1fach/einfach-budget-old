@@ -159,7 +159,7 @@ export const CEditableCurrency = ({
                 { thisGroup: null, thisCategory: null }
               )
 
-              changes = convertToFloat(value) - thisCategory.assigned
+              changes = +((+convertToFloat(value).toFixed(2) - +thisCategory.assigned.toFixed(2)).toFixed(2))
               if (thisGroup && thisCategory) {
                 thisCategory.assigned += changes
                 thisCategory.available += changes
