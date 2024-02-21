@@ -9,26 +9,21 @@
   },
   "devDependencies": {
     "@faker-js/faker": "^8.4.1",
-    "@redwoodjs/auth-dbauth-setup": "6.6.4",
-    "@redwoodjs/cli-storybook": "6.6.4",
-    "@redwoodjs/core": "6.6.4",
-    "@redwoodjs/studio": "6.6.4"
+    "@redwoodjs/auth-dbauth-setup": "^7.0.1",
+    "@redwoodjs/cli-storybook": "^7.0.1",
+    "@redwoodjs/core": "^7.0.1",
+    "@redwoodjs/realtime": "^7.0.1",
+    "@redwoodjs/studio": "^11.3.1"
   },
   "eslintConfig": {
     "extends": "@redwoodjs/eslint-config",
     "root": true
   },
   "engines": {
-    "node": "=18.x",
-    "yarn": ">=1.15"
+    "node": "=20.x"
   },
   "prisma": {
     "seed": "yarn rw exec seed"
   },
-  "packageManager": "yarn@4.1.0",
-  "resolutions": {
-    "@prisma/client": "5.9.1",
-    "@prisma/internals": "5.9.1",
-    "prisma": "5.9.1"
-  }
+  "packageManager": "yarn@4.1.0"
 }

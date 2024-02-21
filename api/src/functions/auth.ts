@@ -1,6 +1,10 @@
 import type { APIGatewayProxyEvent, Context } from 'aws-lambda'
 
-import { DbAuthHandler, DbAuthHandlerOptions } from '@redwoodjs/auth-dbauth-api'
+import {
+  DbAuthHandler,
+  DbAuthHandlerOptions,
+  SignupHandlerOptions,
+} from '@redwoodjs/auth-dbauth-api'
 
 import { db } from 'src/lib/db'
 
@@ -21,7 +25,7 @@ export const handler = async (
     // You could use this return value to, for example, show the email
     // address in a toast message so the user will know it worked and where
     // to look for the email.
-    handler: (user) => {
+    handler: (user, resetToken) => {
       return user
     },
 
@@ -91,6 +95,8 @@ export const handler = async (
     },
   }
 
+  type SignupUserAttributes = { name?: string }
+
   const signupOptions: DbAuthHandlerOptions['signup'] = {
     // Whatever you want to happen to your data on new user signup. Redwood will
     // check for duplicate usernames before calling this handler. At a minimum
@@ -107,7 +113,13 @@ export const handler = async (
     //
     // If this returns anything else, it will be returned by the
     // `signUp()` function in the form of: `{ message: 'String here' }`.
-    handler: ({ username, hashedPassword, salt, userAttributes }) => {
+
+    handler: ({
+      username,
+      hashedPassword,
+      salt,
+      userAttributes,
+    }: SignupHandlerOptions<SignupUserAttributes>) => {
       return db.user.create({
         data: {
           email: username,

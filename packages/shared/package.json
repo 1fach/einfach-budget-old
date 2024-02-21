@@ -2,11 +2,11 @@
   "name": "@one-ui/shared",
   "packageManager": "yarn@3.6.3",
   "dependencies": {
-    "@ark-ui/anatomy": "^2.1.0"
+    "@ark-ui/anatomy": "^2.2.0"
   },
   "devDependencies": {
-    "@pandacss/dev": "^0.30.2",
-    "@pandacss/preset-panda": "^0.30.2",
-    "@pandacss/types": "^0.30.2"
+    "@pandacss/dev": "^0.32.0",
+    "@pandacss/preset-panda": "^0.32.0",
+    "@pandacss/types": "^0.32.0"
   }
 }
