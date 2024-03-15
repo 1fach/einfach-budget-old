@@ -130,8 +130,6 @@ export const CEditableCurrency = ({
             },
           })
 
-          let changes = 0
-
           store.writeQuery<FindBudgetByMonth>({
             query: FIND_THIS_MONTH_BUDGET,
             variables: {
@@ -159,7 +157,10 @@ export const CEditableCurrency = ({
                 { thisGroup: null, thisCategory: null }
               )
 
-              changes = +((+convertToFloat(value).toFixed(2) - +thisCategory.assigned.toFixed(2)).toFixed(2))
+              const changes = +(
+                +convertToFloat(value).toFixed(2) -
+                +thisCategory.assigned.toFixed(2)
+              ).toFixed(2)
               if (thisGroup && thisCategory) {
                 thisCategory.assigned += changes
                 thisCategory.available += changes
@@ -185,8 +186,13 @@ export const CEditableCurrency = ({
     }
   }
 
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>): void =>
-    setValue(e.target.value)
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    if (e.target.value.endsWith(',')) {
+      setValue(e.target.value.replace(/,$/, '.'))
+    } else {
+      setValue(e.target.value)
+    }
+  }
 
   return (
     <Input

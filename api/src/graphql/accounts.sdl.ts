@@ -2,6 +2,7 @@ export const schema = gql`
   type Account {
     id: ID!
     nickname: String!
+    balance: Float
     budget: Budget!
     budgetId: String!
     payee: Payee!
@@ -10,7 +11,7 @@ export const schema = gql`
   }
 
   type Query {
-    accounts: [Account!]! @requireAuth
+    accounts(budgetId: String!): [Account!]! @requireAuth
     account(id: String!): Account @requireAuth
   }
 

@@ -94,7 +94,7 @@ model Budget {
   accounts             Account[]
   budgetCategoryGroups BudgetCategoryGroup[]
   payees               Payee[]
-  budgetReadyToAssigns BudgetReadyToAssign[]
+  budgetSummaries      BudgetSummary[]
 
   @@unique([userId, name]) // a user can't have budget with the same name
   @@index([userId])
@@ -160,16 +160,18 @@ view AccountBalance {
   @@map("account_balance")
 }
 
-view BudgetReadyToAssign {
-  month         Int
-  year          Int
-  readyToAssign Decimal
+view BudgetSummary {
+  month            Int
+  year             Int
+  readyToAssign    Decimal
+  currentAssigned  Decimal
+  prevOverspending Decimal
 
   budget   Budget @relation(fields: [budgetId], references: [id])
   budgetId String
 
   @@id([budgetId, month, year])
-  @@map("budget_ready_to_assign")
+  @@map("budget_summary")
 }
 
 view MonthlyCategoryActivity {

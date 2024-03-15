@@ -9,8 +9,8 @@ import {
 } from '../AppLayout/sidebar-section'
 
 export const QUERY = gql`
-  query UserBudgetsQuery($userId: String!) {
-    userBudgets: budgetsByUser(userId: $userId) {
+  query UserBudgetsQuery {
+    userBudgets: budgets {
       id
       name
     }
@@ -30,7 +30,7 @@ export const Success = ({
 }: CellSuccessProps<UserBudgetsQuery>) => {
   const budgetSidebar = userBudgets.map((budget) => ({
     title: budget.name,
-    link: routes.budget({ id: budget.id }),
+    link: routes.budget({ budget: budget.id }),
   }))
 
   return <SidebarSection title="Budgets" items={budgetSidebar} />

@@ -31,11 +31,7 @@ export const schema = gql`
   }
 
   type Query {
-    monthlyBudget(
-      id: String!
-      userId: String!
-      month: Int!
-      year: Int!
-    ): MonthlyBudget! @requireAuth
+    monthlyBudget(id: String!, month: Int!, year: Int!): MonthlyBudget
+      @requireAuth
   }
 `

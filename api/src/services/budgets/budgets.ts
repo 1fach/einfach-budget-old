@@ -6,13 +6,13 @@ import type {
 
 import { db } from 'src/lib/db'
 
-export const budgetsByUser: QueryResolvers['budgetsByUser'] = ({ userId }) => {
-  return db.budget.findMany({ where: { userId } })
+export const budgets: QueryResolvers['budgets'] = () => {
+  return db.budget.findMany({ where: { userId: context.currentUser?.id } })
 }
 
-export const budget: QueryResolvers['budget'] = ({ id, userId }) => {
+export const budget: QueryResolvers['budget'] = ({ id }) => {
   return db.budget.findUnique({
-    where: { id, userId },
+    where: { id, userId: context.currentUser?.id },
   })
 }
 

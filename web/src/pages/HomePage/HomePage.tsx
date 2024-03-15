@@ -6,14 +6,10 @@ import { useSelectedBudgetId } from 'src/lib/store'
 const HomePage = () => {
   const selectedBudgetId = useSelectedBudgetId()
   if (selectedBudgetId.trim() !== '') {
-    return <Redirect to={routes.budget({ id: selectedBudgetId })} />
+    return <Redirect to={routes.budget({ budget: selectedBudgetId })} />
   }
 
-  return (
-    <>
-      <Metadata title="Home" description="Home page" />
-    </>
-  )
+  return <Metadata title="Home" description="Home page" />
 }
 
 export default HomePage

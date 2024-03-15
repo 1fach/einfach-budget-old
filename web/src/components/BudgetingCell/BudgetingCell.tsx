@@ -17,13 +17,8 @@ import { MonthPicker } from 'src/components/Spreadsheet/month-picker'
 import { Skeleton } from '@/ui/skeleton'
 
 export const QUERY = gql`
-  query FindBudgetByMonth(
-    $userId: String!
-    $budgetId: String!
-    $month: Int!
-    $year: Int!
-  ) {
-    monthlyBudget(id: $budgetId, userId: $userId, month: $month, year: $year) {
+  query FindBudgetByMonth($budgetId: String!, $month: Int!, $year: Int!) {
+    monthlyBudget(id: $budgetId, month: $month, year: $year) {
       budgetId: id
       name
       readyToAssign

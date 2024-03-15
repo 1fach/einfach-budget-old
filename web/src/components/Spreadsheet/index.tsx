@@ -5,7 +5,6 @@ import { styled, Grid, GridItem } from '@one-ui/styled-system/jsx'
 
 import { useQuery, useMutation } from '@redwoodjs/web'
 
-import { useAuth } from 'src/auth'
 import BudgetingCell from 'src/components/BudgetingCell'
 import { useSelectedMonth, useSelectedYear } from 'src/lib/store'
 
@@ -38,7 +37,6 @@ const CREATE_EMPTY_BUDGET_FOR_CATEGORIES = gql`
 `
 
 export const Spreadsheet = ({ budgetId }: Props) => {
-  const { currentUser } = useAuth()
   const month = useSelectedMonth()
   const year = useSelectedYear()
 
@@ -77,12 +75,7 @@ export const Spreadsheet = ({ budgetId }: Props) => {
         gridTemplateRows={6}
         className={css({ display: 'grid' })}
       >
-        <BudgetingCell
-          userId={currentUser.id}
-          budgetId={budgetId}
-          month={month}
-          year={year}
-        />
+        <BudgetingCell budgetId={budgetId} month={month} year={year} />
       </GridItem>
       <Inspector />
     </Grid>

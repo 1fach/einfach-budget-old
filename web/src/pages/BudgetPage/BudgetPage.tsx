@@ -1,43 +1,49 @@
+import { useEffect } from 'react'
+
 import type { FindBudgetName } from 'types/graphql'
 
-import { Metadata } from '@redwoodjs/web'
-import { useQuery } from '@redwoodjs/web'
+import { navigate, routes } from '@redwoodjs/router'
+import { useQuery, Metadata } from '@redwoodjs/web'
 
-import { useAuth } from 'src/auth'
 import { Spreadsheet } from 'src/components/Spreadsheet'
 import { useEinfachActions } from 'src/lib/store'
 
 const QUERY = gql`
-  query FindBudgetName($userId: String!, $budgetId: String!) {
-    budget(id: $budgetId, userId: $userId) {
+  query FindBudgetName($budgetId: String!) {
+    budget(id: $budgetId) {
       name
     }
   }
 `
 
-const BudgetPage = ({ id }: { id: string }) => {
-  const { currentUser } = useAuth()
-
+const BudgetPage = ({ budget }: { budget: string }) => {
   const { data, loading } = useQuery<FindBudgetName>(QUERY, {
     variables: {
-      userId: currentUser.id,
-      budgetId: id,
+      budgetId: budget,
     },
   })
-
   const { updateBudgetId } = useEinfachActions()
-  if (id.trim() !== '') {
-    updateBudgetId(id)
-  }
+
+  const getBudgetName = () => (data.budget === null ? '' : data.budget.name)
+
+  useEffect(() => {
+    if (!loading) {
+      if (data.budget && budget.trim() !== '') {
+        updateBudgetId(budget)
+      } else {
+        navigate(routes.oops(), { replace: true })
+      }
+    }
+  }, [data, loading, budget, updateBudgetId])
 
   return (
     <>
       <Metadata
-        title={loading ? 'Budget' : data.budget.name}
+        title={loading ? 'Budget' : getBudgetName()}
         description="Budget page"
       />
 
-      <Spreadsheet budgetId={id} />
+      {!loading ? <Spreadsheet budgetId={budget} /> : null}
     </>
   )
 }
