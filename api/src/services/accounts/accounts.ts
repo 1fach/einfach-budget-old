@@ -78,8 +78,6 @@ export const Account: AccountRelationResolvers = {
     return root.budget
   },
   transactions: async (_obj, { root }) => {
-    const prismaRes = await db.account.findUnique({ where: { id: root?.id } }).transactions()
-    console.log(root)
     return db.account.findUnique({ where: { id: root?.id } }).transactions()
   },
   payee: (_obj, { root }) => {
