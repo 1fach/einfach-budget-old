@@ -1,12 +1,5 @@
-import { css, cx } from '@one-ui/styled-system/css'
-import { styled } from '@one-ui/styled-system/jsx'
-import {
-  formLabel,
-  formItem,
-  formControl,
-  formDescription,
-  formMessage,
-} from '@one-ui/styled-system/recipes'
+import * as React from 'react'
+
 import * as LabelPrimitive from '@radix-ui/react-label'
 import { Slot } from '@radix-ui/react-slot'
 
@@ -19,7 +12,17 @@ import {
   useFormContext,
 } from '@redwoodjs/forms'
 
-import { Label } from '@/ui/label'
+import { Label as PLabel } from './label'
+
+import { css, cx } from '@/styling/css'
+import { styled } from '@/styling/jsx'
+import {
+  formLabel,
+  formItem,
+  formControl,
+  formDescription,
+  formMessage,
+} from '@/styling/recipes'
 
 type FormFieldContextValue<
   TFieldValues extends FieldValues = FieldValues,
@@ -105,12 +108,12 @@ BaseFormItem.displayName = 'FormItem'
 
 const BaseFormLabel = React.forwardRef<
   React.ElementRef<typeof LabelPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof Label>
+  React.ComponentPropsWithoutRef<typeof PLabel>
 >(({ className, ...props }, ref) => {
   const { error, formItemId } = useFormField()
 
   return (
-    <Label
+    <PLabel
       ref={ref}
       className={cx(error && css({ color: 'destructive' }), className)}
       htmlFor={formItemId}
@@ -171,10 +174,10 @@ const BaseFormMessage = React.forwardRef<
 })
 BaseFormMessage.displayName = 'FormMessage'
 
-export const Form = FormProvider
-export const FormField = BaseFormField
-export const FormLabel = styled(BaseFormLabel, formLabel)
-export const FormItem = styled(BaseFormItem, formItem)
-export const FormControl = styled(BaseFormControl, formControl)
-export const FormDescription = styled(BaseFormDescription, formDescription)
-export const FormMessage = styled(BaseFormMessage, formMessage)
+export const Root = FormProvider
+export const Field = BaseFormField
+export const Label = styled(BaseFormLabel, formLabel)
+export const Item = styled(BaseFormItem, formItem)
+export const Control = styled(BaseFormControl, formControl)
+export const Description = styled(BaseFormDescription, formDescription)
+export const Message = styled(BaseFormMessage, formMessage)

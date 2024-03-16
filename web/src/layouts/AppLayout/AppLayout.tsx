@@ -1,7 +1,7 @@
-import { css } from '@one-ui/styled-system/css'
-import { Grid, GridItem } from '@one-ui/styled-system/jsx'
-
 import { NavigationMenu, Sidebar } from 'src/components/AppLayout'
+
+import { css } from '@/styling/css'
+import { Grid, GridItem } from '@/styling/jsx'
 
 type AppLayoutProps = {
   children?: React.ReactNode

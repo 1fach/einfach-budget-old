@@ -1,6 +1,9 @@
-import { styled, type HTMLStyledProps } from '@one-ui/styled-system/jsx'
-import { button } from '@one-ui/styled-system/recipes'
+import * as React from 'react'
+
 import { Slot } from '@radix-ui/react-slot'
+
+import { styled, type HTMLStyledProps } from '@/styling/jsx'
+import { button } from '@/styling/recipes'
 
 const BaseButton = React.forwardRef<
   HTMLButtonElement,

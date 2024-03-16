@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 
+import { Checkbox, Input } from '@einfach-ui/react'
 import { type Row, type Getter } from '@tanstack/react-table'
 import { produce } from 'immer'
 import { ChevronDown, ChevronRight } from 'lucide-react'
@@ -14,9 +15,6 @@ import { parser } from 'src/lib/math-exp'
 import { useSelectedMonth, useSelectedYear } from 'src/lib/store'
 
 import type { MonthlyBudget } from './columns'
-
-import { Checkbox } from '@/ui/checkbox'
-import { Input } from '@/ui/input'
 
 export const CCheckbox = ({ row }: { row: Row<MonthlyBudget> }) => {
   return (

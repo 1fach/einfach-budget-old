@@ -1,4 +1,4 @@
-import { css } from '@one-ui/styled-system/css'
+import { Checkbox, Skeleton, Table } from '@einfach-ui/react'
 import {
   ColumnDef,
   ExpandedState,
@@ -7,21 +7,11 @@ import {
   useReactTable,
   getExpandedRowModel,
 } from '@tanstack/react-table'
-import { clsx } from 'clsx'
 import { ChevronRight } from 'lucide-react'
 
 import { MonthlyBudget } from './columns'
 
-import { Checkbox } from '@/ui/checkbox'
-import { Skeleton } from '@/ui/skeleton'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/ui/table'
+import { cx, css } from '@/styling/css'
 
 export type DataTableProps<TData> = {
   readonly columns: ColumnDef<TData>[]
@@ -45,19 +35,19 @@ export function DataTable({ columns, data }: DataTableProps<MonthlyBudget>) {
   })
 
   return (
-    <Table>
-      <TableHeader>
+    <Table.Root>
+      <Table.Header>
         {table.getHeaderGroups().map((headerGroup) => (
-          <TableRow key={headerGroup.id}>
+          <Table.Row key={headerGroup.id}>
             {headerGroup.headers.map((header) => {
               return (
-                <TableHead
+                <Table.Head
                   key={header.id}
                   colSpan={header.colSpan}
-                  className={clsx({
-                    [css({ width: '6' })]:
-                      header.id === 'checkAll' || header.id === 'expandAll',
-                  })}
+                  className={cx(
+                    (header.id === 'checkAll' || header.id === 'expandAll') &&
+                      css({ width: '6' })
+                  )}
                 >
                   {header.isPlaceholder
                     ? null
@@ -65,16 +55,16 @@ export function DataTable({ columns, data }: DataTableProps<MonthlyBudget>) {
                         header.column.columnDef.header,
                         header.getContext()
                       )}
-                </TableHead>
+                </Table.Head>
               )
             })}
-          </TableRow>
+          </Table.Row>
         ))}
-      </TableHeader>
-      <TableBody>
+      </Table.Header>
+      <Table.Body>
         {table.getRowModel().rows?.length ? (
           table.getRowModel().rows.map((row) => (
-            <TableRow
+            <Table.Row
               key={row.id}
               className={css({
                 '&[data-expandable=true]': {
@@ -87,57 +77,57 @@ export function DataTable({ columns, data }: DataTableProps<MonthlyBudget>) {
             >
               {row.getVisibleCells().map((cell) => {
                 return (
-                  <TableCell
+                  <Table.Cell
                     key={cell.id}
-                    className={clsx({
-                      [css({ width: '6' })]:
-                        cell.column.id === 'checkAll' ||
-                        cell.column.id === 'expandAll',
-                    })}
+                    className={cx(
+                      (cell.column.id === 'checkAll' ||
+                        cell.column.id === 'expandAll') &&
+                        css({ width: '6' })
+                    )}
                   >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
+                  </Table.Cell>
                 )
               })}
-            </TableRow>
+            </Table.Row>
           ))
         ) : (
-          <TableRow>
-            <TableCell
+          <Table.Row>
+            <Table.Cell
               colSpan={columns.length}
               className={css({ h: '24', textAlign: 'center' })}
             >
               No results.
-            </TableCell>
-          </TableRow>
+            </Table.Cell>
+          </Table.Row>
         )}
-      </TableBody>
-    </Table>
+      </Table.Body>
+    </Table.Root>
   )
 }
 
 export const DataTableSkeleton = () => {
   return (
-    <Table>
-      <TableHeader className={css({ textTransform: 'uppercase' })}>
-        <TableRow>
-          <TableHead className={css({ width: '6' })}>
+    <Table.Root>
+      <Table.Header className={css({ textTransform: 'uppercase' })}>
+        <Table.Row>
+          <Table.Head className={css({ width: '6' })}>
             <Checkbox />
-          </TableHead>
-          <TableHead className={css({ width: '6' })}>
+          </Table.Head>
+          <Table.Head className={css({ width: '6' })}>
             <button>
               <ChevronRight size={12} />
             </button>
-          </TableHead>
-          <TableHead>Category</TableHead>
-          <TableHead>Assigned</TableHead>
-          <TableHead>Activity</TableHead>
-          <TableHead>Available</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
+          </Table.Head>
+          <Table.Head>Category</Table.Head>
+          <Table.Head>Assigned</Table.Head>
+          <Table.Head>Activity</Table.Head>
+          <Table.Head>Available</Table.Head>
+        </Table.Row>
+      </Table.Header>
+      <Table.Body>
         {Array.from({ length: 6 }, (_, index) => (
-          <TableRow
+          <Table.Row
             className={css({
               '&[data-expandable=true]': {
                 bg: 'secondary',
@@ -145,25 +135,25 @@ export const DataTableSkeleton = () => {
             })}
             key={index}
           >
-            <TableCell className={css({ width: '6' })}>
+            <Table.Cell className={css({ width: '6' })}>
               <Checkbox />
-            </TableCell>
-            <TableCell className={css({ width: '6' })}></TableCell>
-            <TableCell>
+            </Table.Cell>
+            <Table.Cell className={css({ width: '6' })}></Table.Cell>
+            <Table.Cell>
               <Skeleton height="4" width="44" borderRadius="sm" />
-            </TableCell>
-            <TableCell>
+            </Table.Cell>
+            <Table.Cell>
               <Skeleton height="4" width="44" borderRadius="sm" />
-            </TableCell>
-            <TableCell>
+            </Table.Cell>
+            <Table.Cell>
               <Skeleton height="4" width="44" borderRadius="sm" />
-            </TableCell>
-            <TableCell>
+            </Table.Cell>
+            <Table.Cell>
               <Skeleton height="4" width="44" borderRadius="sm" />
-            </TableCell>
-          </TableRow>
+            </Table.Cell>
+          </Table.Row>
         ))}
-      </TableBody>
-    </Table>
+      </Table.Body>
+    </Table.Root>
   )
 }

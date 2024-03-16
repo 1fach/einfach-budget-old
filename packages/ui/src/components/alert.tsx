@@ -1,20 +1,18 @@
-import { styled } from '@one-ui/styled-system/jsx'
-import {
-  alert,
-  alertTitle,
-  alertDescription,
-} from '@one-ui/styled-system/recipes'
+import * as React from 'react'
+
+import { styled } from '@/styling/jsx'
+import { alert, alertTitle, alertDescription } from '@/styling/recipes'
 
 const BaseAlert = (
   props: React.HTMLAttributes<HTMLDivElement>,
   ref: React.ForwardedRef<HTMLDivElement>
 ) => <div ref={ref} {...props} role="alert" />
 
-export const Alert = styled(
+export const Root = styled(
   React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
     BaseAlert
   ),
   alert
 )
-export const AlertTitle = styled('h5', alertTitle)
+export const Title = styled('h5', alertTitle)
 export const AlertDescription = styled('div', alertDescription)

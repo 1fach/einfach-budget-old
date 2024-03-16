@@ -1,8 +1,7 @@
-import { css } from '@one-ui/styled-system/css'
+import { LinkButton, Skeleton } from '@einfach-ui/react'
 import { Folder } from 'lucide-react'
 
-import { LinkButton } from '@/ui/link-button'
-import { Skeleton } from '@/ui/skeleton'
+import { css } from '@/styling/css'
 
 type SidebarSectionItem = {
   title: string

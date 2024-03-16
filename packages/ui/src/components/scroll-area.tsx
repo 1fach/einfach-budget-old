@@ -1,11 +1,11 @@
-'use client'
-
 import * as React from 'react'
 
-import { createStyleContext } from '@one-ui/shared/style-context'
-import { styled } from '@one-ui/styled-system/jsx'
-import { scrollArea } from '@one-ui/styled-system/recipes'
 import * as ScrollAreaPrimitive from '@radix-ui/react-scroll-area'
+
+import { createStyleContext } from '../style-context'
+
+import { styled } from '@/styling/jsx'
+import { scrollArea } from '@/styling/recipes'
 
 const { withProvider, withContext } = createStyleContext(scrollArea)
 

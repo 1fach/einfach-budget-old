@@ -1,4 +1,4 @@
-import { styled, GridItem } from '@one-ui/styled-system/jsx'
+import { Skeleton } from '@einfach-ui/react'
 import type {
   FindBudgetByMonth,
   FindBudgetByMonthVariables,
@@ -14,7 +14,7 @@ import {
 } from 'src/components/Spreadsheet/data-table'
 import { MonthPicker } from 'src/components/Spreadsheet/month-picker'
 
-import { Skeleton } from '@/ui/skeleton'
+import { styled, GridItem } from '@/styling/jsx'
 
 export const QUERY = gql`
   query FindBudgetByMonth($budgetId: String!, $month: Int!, $year: Int!) {

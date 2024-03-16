@@ -1,18 +1,22 @@
-import { createStyleContext } from '@one-ui/shared/style-context'
-import { css, cx } from '@one-ui/styled-system/css'
-import { styled } from '@one-ui/styled-system/jsx'
-import { menubar, icon } from '@one-ui/styled-system/recipes'
+import * as React from 'react'
+
 import * as MenubarPrimitive from '@radix-ui/react-menubar'
 import { Check, ChevronRight, Circle } from 'lucide-react'
 
+import { createStyleContext } from '../style-context'
+
+import { css, cx } from '@/styling/css'
+import { styled } from '@/styling/jsx'
+import { menubar, icon } from '@/styling/recipes'
+
 const { withProvider, withContext } = createStyleContext(menubar)
 
-const ItemIndicator = withContext(
+const PItemIndicator = withContext(
   MenubarPrimitive.ItemIndicator,
   'itemIndicator'
 )
 
-const SubTrigger = React.forwardRef<
+const PSubTrigger = React.forwardRef<
   React.ElementRef<typeof MenubarPrimitive.SubTrigger>,
   React.ComponentPropsWithoutRef<typeof MenubarPrimitive.SubTrigger> & {
     insetLeft?: boolean
@@ -27,9 +31,9 @@ const SubTrigger = React.forwardRef<
     <ChevronRight className={icon({ left: 'auto' })} />
   </MenubarPrimitive.SubTrigger>
 ))
-SubTrigger.displayName = MenubarPrimitive.SubTrigger.displayName
+PSubTrigger.displayName = MenubarPrimitive.SubTrigger.displayName
 
-const Content = React.forwardRef<
+const PContent = React.forwardRef<
   React.ElementRef<typeof MenubarPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof MenubarPrimitive.Content>
 >(({ align = 'start', alignOffset = -4, sideOffset = 8, ...props }, ref) => (
@@ -43,9 +47,9 @@ const Content = React.forwardRef<
     />
   </MenubarPrimitive.Portal>
 ))
-Content.displayName = MenubarPrimitive.Content.displayName
+PContent.displayName = MenubarPrimitive.Content.displayName
 
-const Item = React.forwardRef<
+const PItem = React.forwardRef<
   React.ElementRef<typeof MenubarPrimitive.Item>,
   React.ComponentPropsWithoutRef<typeof MenubarPrimitive.Item> & {
     insetLeft?: boolean
@@ -57,35 +61,35 @@ const Item = React.forwardRef<
     {...props}
   />
 ))
-Item.displayName = MenubarPrimitive.Item.displayName
+PItem.displayName = MenubarPrimitive.Item.displayName
 
-const CheckboxItem = React.forwardRef<
+const PCheckboxItem = React.forwardRef<
   React.ElementRef<typeof MenubarPrimitive.CheckboxItem>,
   React.ComponentPropsWithoutRef<typeof MenubarPrimitive.CheckboxItem>
 >(({ children, checked, ...props }, ref) => (
   <MenubarPrimitive.CheckboxItem ref={ref} checked={checked} {...props}>
-    <ItemIndicator>
+    <PItemIndicator>
       <Check className={icon()} />
-    </ItemIndicator>
+    </PItemIndicator>
     {children}
   </MenubarPrimitive.CheckboxItem>
 ))
-CheckboxItem.displayName = MenubarPrimitive.CheckboxItem.displayName
+PCheckboxItem.displayName = MenubarPrimitive.CheckboxItem.displayName
 
-const RadioItem = React.forwardRef<
+const PRadioItem = React.forwardRef<
   React.ElementRef<typeof MenubarPrimitive.RadioItem>,
   React.ComponentPropsWithoutRef<typeof MenubarPrimitive.RadioItem>
 >(({ children, ...props }, ref) => (
   <MenubarPrimitive.RadioItem ref={ref} {...props}>
-    <ItemIndicator>
+    <PItemIndicator>
       <Circle className={icon({ size: 'xs', fillCurrent: true })} />
-    </ItemIndicator>
+    </PItemIndicator>
     {children}
   </MenubarPrimitive.RadioItem>
 ))
-RadioItem.displayName = MenubarPrimitive.RadioItem.displayName
+PRadioItem.displayName = MenubarPrimitive.RadioItem.displayName
 
-const Label = React.forwardRef<
+const PLabel = React.forwardRef<
   React.ElementRef<typeof MenubarPrimitive.Label>,
   React.ComponentPropsWithoutRef<typeof MenubarPrimitive.Label> & {
     insetLeft?: boolean
@@ -97,39 +101,30 @@ const Label = React.forwardRef<
     {...props}
   />
 ))
-Label.displayName = MenubarPrimitive.Label.displayName
+PLabel.displayName = MenubarPrimitive.Label.displayName
 
-export const Menubar = withProvider(styled(MenubarPrimitive.Root), 'root')
-export const MenubarMenu = withContext(styled(MenubarPrimitive.Menu), 'menu')
-export const MenubarGroup = withContext(styled(MenubarPrimitive.Group), 'group')
-export const MenubarPortal = withContext(
-  styled(MenubarPrimitive.Portal),
-  'portal'
-)
-export const MenubarSub = withContext(styled(MenubarPrimitive.Sub), 'sub')
-export const MenubarRadioGroup = withContext(
+export const Root = withProvider(styled(MenubarPrimitive.Root), 'root')
+export const Menu = withContext(styled(MenubarPrimitive.Menu), 'menu')
+export const Group = withContext(styled(MenubarPrimitive.Group), 'group')
+export const Portal = withContext(styled(MenubarPrimitive.Portal), 'portal')
+export const Sub = withContext(styled(MenubarPrimitive.Sub), 'sub')
+export const RadioGroup = withContext(
   styled(MenubarPrimitive.RadioGroup),
   'radioGroup'
 )
-export const MenubarTrigger = withContext(
-  styled(MenubarPrimitive.Trigger),
-  'trigger'
-)
-export const MenubarContent = withContext(styled(Content), 'content')
-export const MenubarSubTrigger = withContext(styled(SubTrigger), 'subTrigger')
-export const MenubarSubContent = withContext(
+export const Trigger = withContext(styled(MenubarPrimitive.Trigger), 'trigger')
+export const Content = withContext(styled(PContent), 'content')
+export const SubTrigger = withContext(styled(PSubTrigger), 'subTrigger')
+export const SubContent = withContext(
   styled(MenubarPrimitive.SubContent),
   'subContent'
 )
-export const MenubarItem = withContext(styled(Item), 'item')
-export const MenubarCheckboxItem = withContext(
-  styled(CheckboxItem),
-  'checkboxItem'
-)
-export const MenubarRadioItem = withContext(styled(RadioItem), 'radioItem')
-export const MenubarLabel = withContext(styled(Label), 'label')
-export const MenubarSeparator = withContext(
+export const Item = withContext(styled(PItem), 'item')
+export const CheckboxItem = withContext(styled(PCheckboxItem), 'checkboxItem')
+export const RadioItem = withContext(styled(PRadioItem), 'radioItem')
+export const Label = withContext(styled(PLabel), 'label')
+export const Separator = withContext(
   styled(MenubarPrimitive.Separator),
   'separator'
 )
-export const MenubarShortcut = withContext(styled('span'), 'shortcut')
+export const Shortcut = withContext(styled('span'), 'shortcut')

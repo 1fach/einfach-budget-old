@@ -1,6 +1,5 @@
+import { Button, Link, Input, Toaster, toast, Form } from '@einfach-ui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { css } from '@one-ui/styled-system/css'
-import { Flex } from '@one-ui/styled-system/jsx'
 import * as z from 'zod'
 
 import { useForm } from '@redwoodjs/forms'
@@ -8,18 +7,8 @@ import { routes, navigate } from '@redwoodjs/router'
 
 import { useAuth } from 'src/auth'
 
-import { Link } from '@/ui/anchor'
-import { Button } from '@/ui/button'
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/ui/form'
-import { Input } from '@/ui/input'
-import { Toaster, toast } from '@/ui/toaster'
+import { css } from '@/styling/css'
+import { Flex } from '@/styling/jsx'
 
 const formSchema = z.object({
   email: z.string().email({
@@ -64,31 +53,31 @@ export const LoginForm = () => {
   return (
     <>
       <Toaster />
-      <Form
+      <Form.Root
         onSubmit={onSubmit}
         formMethods={form}
         className={css({ spaceY: '8' })}
       >
-        <FormField
+        <Form.Field
           control={form.control}
           name="email"
           render={({ field }) => (
-            <FormItem w="full" fontWeight="thin">
-              <FormLabel>Email</FormLabel>
-              <FormControl>
+            <Form.Item w="full" fontWeight="thin">
+              <Form.Label>Email</Form.Label>
+              <Form.Control>
                 <Input placeholder="Enter your email" h="8" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
+              </Form.Control>
+              <Form.Message />
+            </Form.Item>
           )}
         />
 
-        <FormField
+        <Form.Field
           control={form.control}
           name="password"
           render={({ field }) => (
-            <FormItem w="full" fontWeight="thin">
-              <FormLabel display="flex" justifyContent="space-between">
+            <Form.Item w="full" fontWeight="thin">
+              <Form.Label display="flex" justifyContent="space-between">
                 Password{' '}
                 <Link
                   fontSize="xs"
@@ -98,17 +87,17 @@ export const LoginForm = () => {
                 >
                   Forgot password?
                 </Link>
-              </FormLabel>
-              <FormControl>
+              </Form.Label>
+              <Form.Control>
                 <Input
                   type="password"
                   placeholder="Enter your password"
                   h="8"
                   {...field}
                 />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
+              </Form.Control>
+              <Form.Message />
+            </Form.Item>
           )}
         />
 
@@ -120,7 +109,7 @@ export const LoginForm = () => {
             Create an account
           </Button>
         </Flex>
-      </Form>
+      </Form.Root>
     </>
   )
 }

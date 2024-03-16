@@ -1,7 +1,10 @@
-import { cx } from '@one-ui/styled-system/css'
-import { styled } from '@one-ui/styled-system/jsx'
-import { separator } from '@one-ui/styled-system/recipes'
+import * as React from 'react'
+
 import * as SeparatorPrimitive from '@radix-ui/react-separator'
+
+import { cx } from '@/styling/css'
+import { styled } from '@/styling/jsx'
+import { separator } from '@/styling/recipes'
 
 const BaseSeparator = React.forwardRef<
   React.ElementRef<typeof SeparatorPrimitive.Root>,

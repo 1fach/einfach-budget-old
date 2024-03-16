@@ -1,3 +1,4 @@
+import { Button, DatePicker, Input } from '@einfach-ui/react'
 import { CalendarIcon, ChevronLeftIcon, ChevronRightIcon } from 'lucide-react'
 
 import {
@@ -5,10 +6,6 @@ import {
   useSelectedYear,
   useEinfachActions,
 } from 'src/lib/store'
-
-import { Button } from '@/ui/button'
-import * as DatePicker from '@/ui/date-picker'
-import { Input } from '@/ui/input'
 
 type MonthPickerProps = DatePicker.RootProps
 

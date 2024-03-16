@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-import { Container } from '@one-ui/styled-system/jsx'
+import { Card } from '@einfach-ui/react'
 
 import { navigate, routes } from '@redwoodjs/router'
 import { Metadata } from '@redwoodjs/web'
@@ -8,7 +8,7 @@ import { Metadata } from '@redwoodjs/web'
 import { useAuth } from 'src/auth'
 import { ForgotPasswordForm } from 'src/components/Form'
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card'
+import { Container } from '@/styling/jsx'
 
 const ForgotPasswordPage = () => {
   const { isAuthenticated } = useAuth()
@@ -29,14 +29,14 @@ const ForgotPasswordPage = () => {
         alignItems="center"
         justifyContent="center"
       >
-        <Card w="400px">
-          <CardHeader pb="8">
-            <CardTitle>Forgot password</CardTitle>
-          </CardHeader>
-          <CardContent>
+        <Card.Root w="400px">
+          <Card.Header pb="8">
+            <Card.Title>Forgot password</Card.Title>
+          </Card.Header>
+          <Card.Content>
             <ForgotPasswordForm />
-          </CardContent>
-        </Card>
+          </Card.Content>
+        </Card.Root>
       </Container>
     </>
   )

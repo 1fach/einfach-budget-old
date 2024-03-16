@@ -1,10 +1,15 @@
-import { css } from '@one-ui/styled-system/css'
-import { HStack } from '@one-ui/styled-system/jsx'
+import {
+  Muted,
+  Small,
+  Skeleton,
+  Avatar,
+  AvatarImage,
+  AvatarFallback,
+} from '@einfach-ui/react'
 import { ChevronRight } from 'lucide-react'
 
-import { Avatar, AvatarImage, AvatarFallback } from '@/ui/avatar'
-import { Skeleton } from '@/ui/skeleton'
-import { Muted, Small } from '@/ui/text'
+import { css } from '@/styling/css'
+import { HStack } from '@/styling/jsx'
 
 export type UserButtonProps = {
   readonly name: string

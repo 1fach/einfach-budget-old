@@ -1,6 +1,5 @@
+import { Button, Link, Input, Toaster, toast, Form } from '@einfach-ui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { css } from '@one-ui/styled-system/css'
-import { HStack } from '@one-ui/styled-system/jsx'
 import { ArrowLeft } from 'lucide-react'
 import * as z from 'zod'
 
@@ -9,19 +8,8 @@ import { routes } from '@redwoodjs/router'
 
 import { useAuth } from 'src/auth'
 
-import { Button } from '../ui/button'
-
-import { Link } from '@/ui/anchor'
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/ui/form'
-import { Input } from '@/ui/input'
-import { Toaster, toast } from '@/ui/toaster'
+import { css } from '@/styling/css'
+import { HStack } from '@/styling/jsx'
 
 const formSchema = z.object({
   email: z.string().email({
@@ -60,22 +48,22 @@ export const ForgotPasswordForm = () => {
   return (
     <>
       <Toaster />
-      <Form
+      <Form.Root
         onSubmit={onSubmit}
         formMethods={form}
         className={css({ spaceY: '8' })}
       >
-        <FormField
+        <Form.Field
           control={form.control}
           name="email"
           render={({ field }) => (
-            <FormItem w="full" fontWeight="thin">
-              <FormLabel>Email</FormLabel>
-              <FormControl>
+            <Form.Item w="full" fontWeight="thin">
+              <Form.Label>Email</Form.Label>
+              <Form.Control>
                 <Input placeholder="Enter your email" h="8" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
+              </Form.Control>
+              <Form.Message />
+            </Form.Item>
           )}
         />
 
@@ -108,7 +96,7 @@ export const ForgotPasswordForm = () => {
             Reset password
           </Button>
         </HStack>
-      </Form>
+      </Form.Root>
     </>
   )
 }

@@ -1,9 +1,8 @@
+import { Checkbox } from '@einfach-ui/react'
 import { type Table } from '@tanstack/react-table'
 import { ChevronDown, ChevronRight } from 'lucide-react'
 
 import type { MonthlyBudget } from './columns'
-
-import { Checkbox } from '@/ui/checkbox'
 
 export const HCheckbox = ({ table }: { table: Table<MonthlyBudget> }) => {
   const checked = table.getIsAllRowsSelected()

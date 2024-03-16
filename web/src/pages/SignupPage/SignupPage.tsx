@@ -1,4 +1,4 @@
-import { Container } from '@one-ui/styled-system/jsx'
+import { Card } from '@einfach-ui/react'
 
 import { navigate, routes } from '@redwoodjs/router'
 import { Metadata } from '@redwoodjs/web'
@@ -6,7 +6,7 @@ import { Metadata } from '@redwoodjs/web'
 import { useAuth } from 'src/auth'
 import { SignUpForm } from 'src/components/Form'
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card'
+import { Container } from '@/styling/jsx'
 
 const SignupPage = () => {
   const { isAuthenticated } = useAuth()
@@ -27,14 +27,14 @@ const SignupPage = () => {
         alignItems="center"
         justifyContent="center"
       >
-        <Card w="400px">
-          <CardHeader pb="8">
-            <CardTitle>Sign up</CardTitle>
-          </CardHeader>
-          <CardContent>
+        <Card.Root w="400px">
+          <Card.Header pb="8">
+            <Card.Title>Sign up</Card.Title>
+          </Card.Header>
+          <Card.Content>
             <SignUpForm />
-          </CardContent>
-        </Card>
+          </Card.Content>
+        </Card.Root>
       </Container>
     </>
   )

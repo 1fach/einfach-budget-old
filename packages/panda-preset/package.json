@@ -1,0 +1,14 @@
+{
+  "name": "@einfach-ui/panda-preset",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./src/index.ts",
+  "dependencies": {
+    "@ark-ui/anatomy": "^2.3.1"
+  },
+  "devDependencies": {
+    "@pandacss/dev": "^0.35.0",
+    "@pandacss/preset-panda": "^0.35.0",
+    "@pandacss/types": "^0.35.0"
+  }
+}

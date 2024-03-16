@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 
+import { toast, Toaster } from '@einfach-ui/react'
+
 import {
   Form,
   Label,
@@ -11,8 +13,6 @@ import { navigate, routes } from '@redwoodjs/router'
 import { Metadata } from '@redwoodjs/web'
 
 import { useAuth } from 'src/auth'
-
-import { toast, Toaster } from '@/ui/toaster'
 
 const ResetPasswordPage = ({ resetToken }: { resetToken: string }) => {
   const { isAuthenticated, reauthenticate, validateResetToken, resetPassword } =

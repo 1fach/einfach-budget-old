@@ -1,23 +1,8 @@
+import { Menubar, useTheme } from '@einfach-ui/react'
+
 import { navigate, routes } from '@redwoodjs/router'
 
 import { useAuth } from 'src/auth'
-
-import {
-  Menubar,
-  MenubarCheckboxItem,
-  MenubarContent,
-  MenubarItem,
-  MenubarMenu,
-  MenubarRadioGroup,
-  MenubarRadioItem,
-  MenubarSeparator,
-  MenubarShortcut,
-  MenubarSub,
-  MenubarSubContent,
-  MenubarSubTrigger,
-  MenubarTrigger,
-} from '@/ui/menubar'
-import { useTheme } from '@/ui/theme-provider'
 
 export const NavigationMenu = () => {
   const { isAuthenticated, logOut } = useAuth()
@@ -25,95 +10,95 @@ export const NavigationMenu = () => {
   const { theme, setTheme } = useTheme()
 
   return (
-    <Menubar
+    <Menubar.Root
       borderRadius="0"
       borderX="none"
       borderTop="none"
       borderBottomWidth="thin"
     >
-      <MenubarMenu>
-        <MenubarTrigger>File</MenubarTrigger>
-        <MenubarContent>
-          <MenubarItem>
-            New Tab <MenubarShortcut>⌘T</MenubarShortcut>
-          </MenubarItem>
-          <MenubarItem>
-            New Window <MenubarShortcut>⌘N</MenubarShortcut>
-          </MenubarItem>
-          <MenubarItem disabled>New Incognito Window</MenubarItem>
-          <MenubarSeparator />
-          <MenubarSub>
-            <MenubarSubTrigger>Share</MenubarSubTrigger>
-            <MenubarSubContent>
-              <MenubarItem>Email link</MenubarItem>
-              <MenubarItem>Messages</MenubarItem>
-              <MenubarItem>Notes</MenubarItem>
-            </MenubarSubContent>
-          </MenubarSub>
-          <MenubarSeparator />
+      <Menubar.Menu>
+        <Menubar.Trigger>File</Menubar.Trigger>
+        <Menubar.Content>
+          <Menubar.Item>
+            New Tab <Menubar.Shortcut>⌘T</Menubar.Shortcut>
+          </Menubar.Item>
+          <Menubar.Item>
+            New Window <Menubar.Shortcut>⌘N</Menubar.Shortcut>
+          </Menubar.Item>
+          <Menubar.Item disabled>New Incognito Window</Menubar.Item>
+          <Menubar.Separator />
+          <Menubar.Sub>
+            <Menubar.SubTrigger>Share</Menubar.SubTrigger>
+            <Menubar.SubContent>
+              <Menubar.Item>Email link</Menubar.Item>
+              <Menubar.Item>Messages</Menubar.Item>
+              <Menubar.Item>Notes</Menubar.Item>
+            </Menubar.SubContent>
+          </Menubar.Sub>
+          <Menubar.Separator />
           {isAuthenticated ? (
-            <MenubarItem onSelect={logOut}>Logout</MenubarItem>
+            <Menubar.Item onSelect={logOut}>Logout</Menubar.Item>
           ) : (
-            <MenubarItem onSelect={onLogin}>Sign in</MenubarItem>
+            <Menubar.Item onSelect={onLogin}>Sign in</Menubar.Item>
           )}
-        </MenubarContent>
-      </MenubarMenu>
-      <MenubarMenu>
-        <MenubarTrigger>Edit</MenubarTrigger>
-        <MenubarContent>
-          <MenubarItem>
-            Undo <MenubarShortcut>⌘Z</MenubarShortcut>
-          </MenubarItem>
-          <MenubarItem>
-            Redo <MenubarShortcut>⇧⌘Z</MenubarShortcut>
-          </MenubarItem>
-          <MenubarSeparator />
-          <MenubarSub>
-            <MenubarSubTrigger>Find</MenubarSubTrigger>
-            <MenubarSubContent>
-              <MenubarItem>Search the web</MenubarItem>
-              <MenubarSeparator />
-              <MenubarItem>Find...</MenubarItem>
-              <MenubarItem>Find Next</MenubarItem>
-              <MenubarItem>Find Previous</MenubarItem>
-            </MenubarSubContent>
-          </MenubarSub>
-          <MenubarSeparator />
-          <MenubarItem>Cut</MenubarItem>
-          <MenubarItem>Copy</MenubarItem>
-          <MenubarItem>Paste</MenubarItem>
-        </MenubarContent>
-      </MenubarMenu>
-      <MenubarMenu>
-        <MenubarTrigger>View</MenubarTrigger>
-        <MenubarContent>
-          <MenubarCheckboxItem>Always Show Bookmarks Bar</MenubarCheckboxItem>
-          <MenubarCheckboxItem checked>
+        </Menubar.Content>
+      </Menubar.Menu>
+      <Menubar.Menu>
+        <Menubar.Trigger>Edit</Menubar.Trigger>
+        <Menubar.Content>
+          <Menubar.Item>
+            Undo <Menubar.Shortcut>⌘Z</Menubar.Shortcut>
+          </Menubar.Item>
+          <Menubar.Item>
+            Redo <Menubar.Shortcut>⇧⌘Z</Menubar.Shortcut>
+          </Menubar.Item>
+          <Menubar.Separator />
+          <Menubar.Sub>
+            <Menubar.SubTrigger>Find</Menubar.SubTrigger>
+            <Menubar.SubContent>
+              <Menubar.Item>Search the web</Menubar.Item>
+              <Menubar.Separator />
+              <Menubar.Item>Find...</Menubar.Item>
+              <Menubar.Item>Find Next</Menubar.Item>
+              <Menubar.Item>Find Previous</Menubar.Item>
+            </Menubar.SubContent>
+          </Menubar.Sub>
+          <Menubar.Separator />
+          <Menubar.Item>Cut</Menubar.Item>
+          <Menubar.Item>Copy</Menubar.Item>
+          <Menubar.Item>Paste</Menubar.Item>
+        </Menubar.Content>
+      </Menubar.Menu>
+      <Menubar.Menu>
+        <Menubar.Trigger>View</Menubar.Trigger>
+        <Menubar.Content>
+          <Menubar.CheckboxItem>Always Show Bookmarks Bar</Menubar.CheckboxItem>
+          <Menubar.CheckboxItem checked>
             Always Show Full URLs
-          </MenubarCheckboxItem>
-          <MenubarSeparator />
-          <MenubarItem insetLeft>
-            Reload <MenubarShortcut>⌘R</MenubarShortcut>
-          </MenubarItem>
-          <MenubarItem disabled insetLeft>
-            Force Reload <MenubarShortcut>⇧⌘R</MenubarShortcut>
-          </MenubarItem>
-          <MenubarSeparator />
-          <MenubarItem insetLeft>Toggle Fullscreen</MenubarItem>
-          <MenubarSeparator />
-          <MenubarItem insetLeft>Hide Sidebar</MenubarItem>
-        </MenubarContent>
-      </MenubarMenu>
-      <MenubarMenu>
-        <MenubarTrigger>Themes</MenubarTrigger>
-        <MenubarContent>
-          <MenubarRadioGroup value={theme} onValueChange={setTheme}>
-            <MenubarRadioItem value="system">System</MenubarRadioItem>
-            <MenubarRadioItem value="light">Light</MenubarRadioItem>
-            <MenubarRadioItem value="dark">Dark</MenubarRadioItem>
-          </MenubarRadioGroup>
-        </MenubarContent>
-      </MenubarMenu>
-    </Menubar>
+          </Menubar.CheckboxItem>
+          <Menubar.Separator />
+          <Menubar.Item insetLeft>
+            Reload <Menubar.Shortcut>⌘R</Menubar.Shortcut>
+          </Menubar.Item>
+          <Menubar.Item disabled insetLeft>
+            Force Reload <Menubar.Shortcut>⇧⌘R</Menubar.Shortcut>
+          </Menubar.Item>
+          <Menubar.Separator />
+          <Menubar.Item insetLeft>Toggle Fullscreen</Menubar.Item>
+          <Menubar.Separator />
+          <Menubar.Item insetLeft>Hide Sidebar</Menubar.Item>
+        </Menubar.Content>
+      </Menubar.Menu>
+      <Menubar.Menu>
+        <Menubar.Trigger>Themes</Menubar.Trigger>
+        <Menubar.Content>
+          <Menubar.RadioGroup value={theme} onValueChange={setTheme}>
+            <Menubar.RadioItem value="system">System</Menubar.RadioItem>
+            <Menubar.RadioItem value="light">Light</Menubar.RadioItem>
+            <Menubar.RadioItem value="dark">Dark</Menubar.RadioItem>
+          </Menubar.RadioGroup>
+        </Menubar.Content>
+      </Menubar.Menu>
+    </Menubar.Root>
   )
 }

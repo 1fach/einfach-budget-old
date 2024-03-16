@@ -1,6 +1,5 @@
+import { Button, Input, Toaster, toast, Form } from '@einfach-ui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { css } from '@one-ui/styled-system/css'
-import { Flex } from '@one-ui/styled-system/jsx'
 import * as z from 'zod'
 
 import { useForm } from '@redwoodjs/forms'
@@ -8,17 +7,8 @@ import { routes, navigate } from '@redwoodjs/router'
 
 import { useAuth } from 'src/auth'
 
-import { Button } from '@/ui/button'
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/ui/form'
-import { Input } from '@/ui/input'
-import { Toaster, toast } from '@/ui/toaster'
+import { css } from '@/styling/css'
+import { Flex } from '@/styling/jsx'
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -68,55 +58,55 @@ export const SignUpForm = () => {
   return (
     <>
       <Toaster />
-      <Form
+      <Form.Root
         onSubmit={onSubmit}
         formMethods={form}
         className={css({ spaceY: '8' })}
       >
-        <FormField
+        <Form.Field
           control={form.control}
           name="name"
           render={({ field }) => (
-            <FormItem w="full" fontWeight="thin">
-              <FormLabel>Name</FormLabel>
-              <FormControl>
+            <Form.Item w="full" fontWeight="thin">
+              <Form.Label>Name</Form.Label>
+              <Form.Control>
                 <Input placeholder="Enter your name" h="8" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
+              </Form.Control>
+              <Form.Message />
+            </Form.Item>
           )}
         />
 
-        <FormField
+        <Form.Field
           control={form.control}
           name="email"
           render={({ field }) => (
-            <FormItem w="full" fontWeight="thin">
-              <FormLabel>Email</FormLabel>
-              <FormControl>
+            <Form.Item w="full" fontWeight="thin">
+              <Form.Label>Email</Form.Label>
+              <Form.Control>
                 <Input placeholder="Enter your email" h="8" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
+              </Form.Control>
+              <Form.Message />
+            </Form.Item>
           )}
         />
 
-        <FormField
+        <Form.Field
           control={form.control}
           name="password"
           render={({ field }) => (
-            <FormItem w="full" fontWeight="thin">
-              <FormLabel>Password</FormLabel>
-              <FormControl>
+            <Form.Item w="full" fontWeight="thin">
+              <Form.Label>Password</Form.Label>
+              <Form.Control>
                 <Input
                   type="password"
                   placeholder="Enter your password"
                   h="8"
                   {...field}
                 />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
+              </Form.Control>
+              <Form.Message />
+            </Form.Item>
           )}
         />
 
@@ -133,7 +123,7 @@ export const SignUpForm = () => {
             Create an account
           </Button>
         </Flex>
-      </Form>
+      </Form.Root>
     </>
   )
 }
