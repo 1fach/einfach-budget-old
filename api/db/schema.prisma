@@ -5,9 +5,8 @@ datasource db {
 }
 
 generator client {
-  provider        = "prisma-client-js"
-  binaryTargets   = "native"
-  previewFeatures = ["views"]
+  provider      = "prisma-client-js"
+  binaryTargets = "native"
 }
 
 // Don't use unique constaint on primitive type, because the data is
@@ -19,30 +18,28 @@ generator client {
 // On the other hand, unique constraint for reference is allowed.
 
 model User {
-  id                  String    @id @default(uuid())
+  id                  String    @id
   name                String?
   email               String    @unique
-  hashedPassword      String
+  hashedPassword      String    @map("hashed_password")
   salt                String
-  resetToken          String?
-  resetTokenExpiresAt DateTime?
+  resetToken          String?   @map("reset_token")
+  resetTokenExpiresAt DateTime? @map("reset_token_expires_at")
   budgets             Budget[]
 
   @@map("user")
 }
 
 model Account {
-  // It means money account not user account
-  id       String @id @default(uuid())
+  id       String @id
   nickname String
 
   budget   Budget @relation(fields: [budgetId], references: [id], onDelete: Cascade)
-  budgetId String
+  budgetId String @map("budget_id")
   payee    Payee  @relation(fields: [payeeId], references: [id], onDelete: Cascade)
-  payeeId  String @unique
+  payeeId  String @unique @map("payee_id")
 
-  transactions   Transaction[]
-  accountBalance AccountBalance?
+  transactions Transaction[]
 
   @@unique([budgetId, nickname]) // don't use the same name of account inside a same budget
   @@index([budgetId])
@@ -50,11 +47,11 @@ model Account {
 }
 
 model Payee {
-  id   String @id @default(uuid())
+  id   String @id
   name String
 
   budget   Budget @relation(fields: [budgetId], references: [id], onDelete: Cascade)
-  budgetId String
+  budgetId String @map("budget_id")
 
   account      Account?
   transactions Transaction[]
@@ -64,37 +61,35 @@ model Payee {
 }
 
 model Transaction {
-  id          String   @id @default(uuid())
+  id          String   @id
   description String
   date        DateTime @default(now()) @db.Date
-  outflow     Decimal  @default(0.00) @db.Decimal(12, 2)
-  inflow      Decimal  @default(0.00) @db.Decimal(12, 2)
+  outflow     BigInt   @default(0)
+  inflow      BigInt   @default(0)
   cleared     Boolean  @default(false)
-  createdAt   DateTime @default(now()) @db.Timestamp(2)
+  updatedAt   DateTime @updatedAt @map("updated_at")
 
-  account                    Account                    @relation(fields: [accountId], references: [id], onDelete: Cascade)
-  accountId                  String
-  payee                      Payee?                     @relation(fields: [payeeId], references: [id], onDelete: SetNull)
-  payeeId                    String?
-  monthlyBudgetPerCategory   MonthlyBudgetPerCategory   @relation(fields: [monthlyBudgetPerCategoryId], references: [id], onDelete: Cascade)
-  monthlyBudgetPerCategoryId String
-  transactionRunningBalance  TransactionRunningBalance?
+  account                    Account                  @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  accountId                  String                   @map("account_id")
+  payee                      Payee?                   @relation(fields: [payeeId], references: [id], onDelete: SetNull)
+  payeeId                    String?                  @map("payee_id")
+  monthlyBudgetPerCategory   MonthlyBudgetPerCategory @relation(fields: [monthlyBudgetPerCategoryId], references: [id], onDelete: Cascade)
+  monthlyBudgetPerCategoryId String                   @map("monthly_budget_per_category_id")
 
   @@index([accountId])
   @@map("transaction")
 }
 
 model Budget {
-  id   String @id @default(uuid())
+  id   String @id
   name String
 
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String
+  userId String @map("user_id")
 
   accounts             Account[]
   budgetCategoryGroups BudgetCategoryGroup[]
   payees               Payee[]
-  budgetSummaries      BudgetSummary[]
 
   @@unique([userId, name]) // a user can't have budget with the same name
   @@index([userId])
@@ -102,16 +97,15 @@ model Budget {
 }
 
 model MonthlyBudgetPerCategory {
-  id       String  @id @default(uuid())
+  id       String @id
   month    Int
   year     Int
-  assigned Decimal @default(0.00) @db.Decimal(12, 2)
+  assigned BigInt @default(0)
 
   budgetCategory   BudgetCategory @relation(fields: [budgetCategoryId], references: [id], onDelete: Cascade)
-  budgetCategoryId String
+  budgetCategoryId String         @map("budget_category_id")
 
-  transactions            Transaction[]
-  monthlyCategoryActivity MonthlyCategoryActivity?
+  transactions Transaction[]
 
   @@unique([month, year, budgetCategoryId]) // In a month there shouldn't be two same categories
   @@index([budgetCategoryId])
@@ -119,15 +113,14 @@ model MonthlyBudgetPerCategory {
 }
 
 model BudgetCategoryGroup {
-  id        String @id @default(uuid())
+  id        String @id
   name      String
-  sortOrder Int
+  sortOrder Int    @map("sort_order")
 
   budget   Budget @relation(fields: [budgetId], references: [id], onDelete: Cascade)
-  budgetId String
+  budgetId String @map("budget_id")
 
-  budgetCategories               BudgetCategory[]
-  monthlyCategoryGroupActivities MonthlyCategoryGroupActivity[]
+  budgetCategories BudgetCategory[]
 
   @@unique([name, budgetId])
   @@index([budgetId])
@@ -135,74 +128,16 @@ model BudgetCategoryGroup {
 }
 
 model BudgetCategory {
-  id        String @id @default(uuid())
+  id        String @id
   name      String
-  sortOrder Int
+  sortOrder Int    @map("sort_order")
 
   budgetCategoryGroup   BudgetCategoryGroup @relation(fields: [budgetCategoryGroupId], references: [id], onDelete: Cascade)
-  budgetCategoryGroupId String
+  budgetCategoryGroupId String              @map("budget_category_group_id")
 
   monthlyBudgetPerCategories MonthlyBudgetPerCategory[]
 
   @@unique([name, budgetCategoryGroupId])
   @@index([budgetCategoryGroupId])
   @@map("budget_category")
-}
-
-view AccountBalance {
-  clearedBalance   Decimal
-  unclearedBalance Decimal
-  workingBalance   Decimal
-
-  account   Account @relation(fields: [accountId], references: [id])
-  accountId String  @id
-
-  @@map("account_balance")
-}
-
-view BudgetSummary {
-  month            Int
-  year             Int
-  readyToAssign    Decimal
-  currentAssigned  Decimal
-  prevOverspending Decimal
-
-  budget   Budget @relation(fields: [budgetId], references: [id])
-  budgetId String
-
-  @@id([budgetId, month, year])
-  @@map("budget_summary")
-}
-
-view MonthlyCategoryActivity {
-  activity  Decimal
-  available Decimal
-
-  monthlyBudgetPerCategory   MonthlyBudgetPerCategory @relation(fields: [monthlyBudgetPerCategoryId], references: [id])
-  monthlyBudgetPerCategoryId String                   @id
-
-  @@map("monthly_category_activity")
-}
-
-view MonthlyCategoryGroupActivity {
-  month     Int
-  year      Int
-  assigned  Decimal
-  activity  Decimal
-  available Decimal
-
-  budgetCategoryGroup   BudgetCategoryGroup @relation(fields: [budgetCategoryGroupId], references: [id])
-  budgetCategoryGroupId String
-
-  @@id([month, year, budgetCategoryGroupId])
-  @@map("monthly_category_group_activity")
-}
-
-view TransactionRunningBalance {
-  runningBalance Decimal
-
-  transaction   Transaction @relation(fields: [transactionId], references: [id])
-  transactionId String      @id
-
-  @@map("transaction_running_balance")
 }
