@@ -1,5 +1,15 @@
-import { styled } from '@/styling/jsx'
-import { h1, h2, h3, h4, p, link, large, small, muted } from '@/styling/recipes'
+import { styled } from '@einfach-ui/styled/jsx'
+import {
+  h1,
+  h2,
+  h3,
+  h4,
+  p,
+  link,
+  large,
+  small,
+  muted,
+} from '@einfach-ui/styled/recipes'
 
 export const H1 = styled('h1', h1)
 export const H2 = styled('h2', h2)

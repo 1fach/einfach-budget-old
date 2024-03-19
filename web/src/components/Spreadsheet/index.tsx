@@ -1,12 +1,12 @@
 import { useEffect } from 'react'
 
+import { css } from '@einfach-ui/styled/css'
+import { styled, Grid, GridItem } from '@einfach-ui/styled/jsx'
+
 import { useQuery, useMutation } from '@redwoodjs/web'
 
 import BudgetingCell from 'src/components/BudgetingCell'
 import { useSelectedMonth, useSelectedYear } from 'src/lib/store'
-
-import { css } from '@/styling/css'
-import { styled, Grid, GridItem } from '@/styling/jsx'
 
 type Props = { budgetId?: string }
 

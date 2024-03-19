@@ -1,6 +1,5 @@
 import { Button, Input, Label, Dialog, Select } from '@einfach-ui/react'
-
-import { Grid } from '@/styling/jsx'
+import { Grid } from '@einfach-ui/styled/jsx'
 
 export const AccountModal = () => {
   return (

@@ -1,11 +1,10 @@
 import * as React from 'react'
 
+import { styled } from '@einfach-ui/styled/jsx'
+import { scrollArea } from '@einfach-ui/styled/recipes'
 import * as ScrollAreaPrimitive from '@radix-ui/react-scroll-area'
 
 import { createStyleContext } from '../style-context'
-
-import { styled } from '@/styling/jsx'
-import { scrollArea } from '@/styling/recipes'
 
 const { withProvider, withContext } = createStyleContext(scrollArea)
 

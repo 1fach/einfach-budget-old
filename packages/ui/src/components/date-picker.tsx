@@ -1,11 +1,10 @@
 import type { ComponentProps } from 'react'
 
 import { DatePicker } from '@ark-ui/react/date-picker'
+import { styled } from '@einfach-ui/styled/jsx'
+import { datePicker } from '@einfach-ui/styled/recipes'
 
 import { createStyleContext } from '../style-context'
-
-import { styled } from '@/styling/jsx'
-import { datePicker } from '@/styling/recipes'
 
 const { withProvider, withContext } = createStyleContext(datePicker)
 

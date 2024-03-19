@@ -14,7 +14,8 @@ web/types/graphql.d.ts
 web/src/styling-system
 api/types/graphql.d.ts
 api/src/lib/generateGraphiQLHeader.*
-packages/ui/src/styling-system
+packages/styled/*
+!packages/styled/package.json
 .pnp.*
 .yarn/*
 !.yarn/patches

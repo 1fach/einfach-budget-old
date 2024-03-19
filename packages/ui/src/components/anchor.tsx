@@ -1,7 +1,7 @@
-import { Link as RLink } from '@redwoodjs/router'
+import { styled, type HTMLStyledProps } from '@einfach-ui/styled/jsx'
+import { link } from '@einfach-ui/styled/recipes'
 
-import { styled, type HTMLStyledProps } from '@/styling/jsx'
-import { link } from '@/styling/recipes'
+import { Link as RLink } from '@redwoodjs/router'
 
 export const Link = styled(RLink, link)
 export type LinkProps = HTMLStyledProps<typeof Link>

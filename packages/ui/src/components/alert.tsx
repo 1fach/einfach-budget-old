@@ -1,7 +1,7 @@
 import * as React from 'react'
 
-import { styled } from '@/styling/jsx'
-import { alert, alertTitle, alertDescription } from '@/styling/recipes'
+import { styled } from '@einfach-ui/styled/jsx'
+import { alert, alertTitle, alertDescription } from '@einfach-ui/styled/recipes'
 
 const BaseAlert = (
   props: React.HTMLAttributes<HTMLDivElement>,

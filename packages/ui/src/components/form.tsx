@@ -1,5 +1,14 @@
 import * as React from 'react'
 
+import { css, cx } from '@einfach-ui/styled/css'
+import { styled } from '@einfach-ui/styled/jsx'
+import {
+  formLabel,
+  formItem,
+  formControl,
+  formDescription,
+  formMessage,
+} from '@einfach-ui/styled/recipes'
 import * as LabelPrimitive from '@radix-ui/react-label'
 import { Slot } from '@radix-ui/react-slot'
 
@@ -13,16 +22,6 @@ import {
 } from '@redwoodjs/forms'
 
 import { Label as PLabel } from './label'
-
-import { css, cx } from '@/styling/css'
-import { styled } from '@/styling/jsx'
-import {
-  formLabel,
-  formItem,
-  formControl,
-  formDescription,
-  formMessage,
-} from '@/styling/recipes'
 
 type FormFieldContextValue<
   TFieldValues extends FieldValues = FieldValues,

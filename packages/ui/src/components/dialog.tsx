@@ -1,13 +1,12 @@
 import * as React from 'react'
 
+import { css } from '@einfach-ui/styled/css'
+import { styled } from '@einfach-ui/styled/jsx'
+import { dialog, icon } from '@einfach-ui/styled/recipes'
 import * as DialogPrimitive from '@radix-ui/react-dialog'
 import { X } from 'lucide-react'
 
 import { createStyleContext } from '../style-context'
-
-import { css } from '@/styling/css'
-import { styled } from '@/styling/jsx'
-import { dialog, icon } from '@/styling/recipes'
 
 const { withProvider, withContext } = createStyleContext(dialog)
 

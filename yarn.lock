@@ -2044,6 +2044,7 @@ __metadata:
     "@ark-ui/anatomy": "npm:^2.3.1"
     "@ark-ui/react": "npm:^2.2.2"
     "@einfach-ui/panda-preset": "workspace:*"
+    "@einfach-ui/styled": "workspace:*"
     "@pandacss/dev": "npm:^0.35.0"
     "@pandacss/types": "npm:^0.35.0"
     "@radix-ui/react-avatar": "npm:^1.0.4"
@@ -2063,6 +2064,12 @@ __metadata:
     react-dom: "npm:^18.2.0"
     sonner: "npm:^1.4.3"
     typescript: "npm:^5.3.3"
+  languageName: unknown
+  linkType: soft
+
+"@einfach-ui/styled@workspace:*, @einfach-ui/styled@workspace:packages/styled":
+  version: 0.0.0-use.local
+  resolution: "@einfach-ui/styled@workspace:packages/styled"
   languageName: unknown
   linkType: soft
 
@@ -10884,8 +10891,6 @@ __metadata:
     "@redwoodjs/api": "npm:7.1.3"
     "@redwoodjs/auth-dbauth-api": "npm:7.1.3"
     "@redwoodjs/graphql-server": "npm:7.1.3"
-    humanize-string: "npm:^3.0.0"
-    nanoid: "npm:3"
   languageName: unknown
   linkType: soft
 
@@ -13813,13 +13818,6 @@ __metadata:
   dependencies:
     xregexp: "npm:4.0.0"
   checksum: 10c0/7908c37fa2e20022cfbf425c03aebdc8dee3c57b6c64135bbf23007f40528dd2463b4fb28755ee5dec7be3aca4b1d136de962bea6a886518b27c558b0f3a8bb5
-  languageName: node
-  linkType: hard
-
-"decamelize@npm:^6.0.0":
-  version: 6.0.0
-  resolution: "decamelize@npm:6.0.0"
-  checksum: 10c0/689888f5ea39add843d79fb5a8d3bc1ce1df7583899bc7cef081c3deecd54758e24e8692f4c214e0ea6917742bb05ea1991e3e15c33031e7aa7b9041e8e8033a
   languageName: node
   linkType: hard
 
@@ -17492,15 +17490,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"humanize-string@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "humanize-string@npm:3.0.0"
-  dependencies:
-    decamelize: "npm:^6.0.0"
-  checksum: 10c0/700d337913151a2f96949aa7d6afda7ab8254e4fd8790f79255ddd90dc53d49d6bd45ece122afbf310f9ec6bae11d3c6ca8b1fcd9220eb310f337254e27baf07
-  languageName: node
-  linkType: hard
-
 "iconv-lite@npm:0.4.24, iconv-lite@npm:^0.4.24":
   version: 0.4.24
   resolution: "iconv-lite@npm:0.4.24"
@@ -20953,7 +20942,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nanoid@npm:3, nanoid@npm:3.3.7, nanoid@npm:^3.3.7":
+"nanoid@npm:3.3.7, nanoid@npm:^3.3.7":
   version: 3.3.7
   resolution: "nanoid@npm:3.3.7"
   bin:
@@ -27183,6 +27172,7 @@ __metadata:
   dependencies:
     "@einfach-ui/panda-preset": "workspace:*"
     "@einfach-ui/react": "workspace:^"
+    "@einfach-ui/styled": "workspace:*"
     "@hookform/resolvers": "npm:^3.3.4"
     "@pandacss/dev": "npm:^0.35.0"
     "@redwoodjs/auth-dbauth-web": "npm:7.1.3"

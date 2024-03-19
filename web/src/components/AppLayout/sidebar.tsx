@@ -1,10 +1,10 @@
+import { css, cx } from '@einfach-ui/styled/css'
+
 import AccountsCell from 'src/components/AccountsCell'
 import UserBudgetsCell from 'src/components/UserBudgetsCell'
 import { useSelectedBudgetId } from 'src/lib/store'
 
 import { AccountModal } from '../AccountModal/account-modal'
-
-import { css, cx } from '@/styling/css'
 
 export const Sidebar = ({
   className,

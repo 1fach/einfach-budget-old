@@ -1,4 +1,5 @@
 import { Checkbox, Skeleton, Table } from '@einfach-ui/react'
+import { cx, css } from '@einfach-ui/styled/css'
 import {
   ColumnDef,
   ExpandedState,
@@ -10,8 +11,6 @@ import {
 import { ChevronRight } from 'lucide-react'
 
 import { MonthlyBudget } from './columns'
-
-import { cx, css } from '@/styling/css'
 
 export type DataTableProps<TData> = {
   readonly columns: ColumnDef<TData>[]

@@ -1,7 +1,6 @@
 import { LinkButton, Skeleton } from '@einfach-ui/react'
+import { css } from '@einfach-ui/styled/css'
 import { Folder } from 'lucide-react'
-
-import { css } from '@/styling/css'
 
 type SidebarSectionItem = {
   title: string

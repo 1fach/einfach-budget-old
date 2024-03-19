@@ -6,10 +6,9 @@ import {
   AvatarImage,
   AvatarFallback,
 } from '@einfach-ui/react'
+import { css } from '@einfach-ui/styled/css'
+import { HStack } from '@einfach-ui/styled/jsx'
 import { ChevronRight } from 'lucide-react'
-
-import { css } from '@/styling/css'
-import { HStack } from '@/styling/jsx'
 
 export type UserButtonProps = {
   readonly name: string

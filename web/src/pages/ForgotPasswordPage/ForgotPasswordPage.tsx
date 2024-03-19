@@ -1,14 +1,13 @@
 import { useEffect } from 'react'
 
 import { Card } from '@einfach-ui/react'
+import { Container } from '@einfach-ui/styled/jsx'
 
 import { navigate, routes } from '@redwoodjs/router'
 import { Metadata } from '@redwoodjs/web'
 
 import { useAuth } from 'src/auth'
 import { ForgotPasswordForm } from 'src/components/Form'
-
-import { Container } from '@/styling/jsx'
 
 const ForgotPasswordPage = () => {
   const { isAuthenticated } = useAuth()

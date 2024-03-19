@@ -23,8 +23,6 @@
       ],
       "$api/*": ["../api/*"],
       "types/*": ["./types/*", "../types/*"],
-      "@/ui/*": ["./src/components/ui/*"],
-      "@/styling/*": ["./src/styling-system/*"],
       "@redwoodjs/testing": ["../node_modules/@redwoodjs/testing/web"]
     },
     "typeRoots": [

@@ -1,4 +1,4 @@
-import { styled } from '@/styling/jsx'
+import { styled } from '@einfach-ui/styled/jsx'
 import {
   card,
   cardHeader,
@@ -6,7 +6,7 @@ import {
   cardDescription,
   cardContent,
   cardFooter,
-} from '@/styling/recipes'
+} from '@einfach-ui/styled/recipes'
 
 export const Root = styled('div', card)
 export const Header = styled('div', cardHeader)

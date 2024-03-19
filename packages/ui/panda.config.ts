@@ -26,5 +26,6 @@ export default defineConfig({
   // Preset for shadcn/ui
   presets: [einfachUiPreset],
 
-  outdir: './src/styling-system',
+  outdir: '../styled',
+  importMap: '@einfach-ui/styled',
 })

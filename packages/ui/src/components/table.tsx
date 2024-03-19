@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import { styled } from '@/styling/jsx'
+import { styled } from '@einfach-ui/styled/jsx'
 import {
   tableContainer,
   table,
@@ -11,7 +11,7 @@ import {
   tableRow,
   tableCell,
   tableCaption,
-} from '@/styling/recipes'
+} from '@einfach-ui/styled/recipes'
 
 const TableContainer = styled('div', tableContainer)
 

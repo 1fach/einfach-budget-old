@@ -1,7 +1,7 @@
-import { NavigationMenu, Sidebar } from 'src/components/AppLayout'
+import { css } from '@einfach-ui/styled/css'
+import { Grid, GridItem } from '@einfach-ui/styled/jsx'
 
-import { css } from '@/styling/css'
-import { Grid, GridItem } from '@/styling/jsx'
+import { NavigationMenu, Sidebar } from 'src/components/AppLayout'
 
 type AppLayoutProps = {
   children?: React.ReactNode

@@ -1,12 +1,11 @@
 import * as React from 'react'
 
+import { styled } from '@einfach-ui/styled/jsx'
+import { select, icon } from '@einfach-ui/styled/recipes'
 import * as SelectPrimitive from '@radix-ui/react-select'
 import { Check, ChevronDown } from 'lucide-react'
 
 import { createStyleContext } from '../style-context'
-
-import { styled } from '@/styling/jsx'
-import { select, icon } from '@/styling/recipes'
 
 const { withProvider, withContext } = createStyleContext(select)
 

@@ -1,9 +1,8 @@
+import { styled } from '@einfach-ui/styled/jsx'
+import { avatar } from '@einfach-ui/styled/recipes'
 import * as AvatarPrimitive from '@radix-ui/react-avatar'
 
 import { createStyleContext } from '../style-context'
-
-import { styled } from '@/styling/jsx'
-import { avatar } from '@/styling/recipes'
 
 const { withProvider, withContext } = createStyleContext(avatar)
 

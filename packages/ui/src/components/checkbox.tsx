@@ -1,11 +1,10 @@
 import * as React from 'react'
 
+import { cx } from '@einfach-ui/styled/css'
+import { styled } from '@einfach-ui/styled/jsx'
+import { checkbox, icon } from '@einfach-ui/styled/recipes'
 import * as CheckboxPrimitive from '@radix-ui/react-checkbox'
 import { Check, Minus } from 'lucide-react'
-
-import { cx } from '@/styling/css'
-import { styled } from '@/styling/jsx'
-import { checkbox, icon } from '@/styling/recipes'
 
 type BaseCheckboxProps = React.ComponentPropsWithoutRef<
   typeof CheckboxPrimitive.Root

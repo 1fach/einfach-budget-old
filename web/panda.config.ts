@@ -23,8 +23,7 @@ export default defineConfig({
   // Where to look for your css declarations
   include: ['./src/**/*.{js,jsx,ts,tsx}'],
 
-  // Preset for shadcn/ui
   presets: [einfachUiPreset],
-
-  outdir: './src/styling-system',
+  outdir: '../packages/styled',
+  importMap: '@einfach-ui/styled',
 })

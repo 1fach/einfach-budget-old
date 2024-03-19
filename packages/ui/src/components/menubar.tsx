@@ -1,13 +1,12 @@
 import * as React from 'react'
 
+import { css, cx } from '@einfach-ui/styled/css'
+import { styled } from '@einfach-ui/styled/jsx'
+import { menubar, icon } from '@einfach-ui/styled/recipes'
 import * as MenubarPrimitive from '@radix-ui/react-menubar'
 import { Check, ChevronRight, Circle } from 'lucide-react'
 
 import { createStyleContext } from '../style-context'
-
-import { css, cx } from '@/styling/css'
-import { styled } from '@/styling/jsx'
-import { menubar, icon } from '@/styling/recipes'
 
 const { withProvider, withContext } = createStyleContext(menubar)
 

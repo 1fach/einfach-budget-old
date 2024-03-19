@@ -1,4 +1,6 @@
 import { Button, Link, Input, Toaster, toast, Form } from '@einfach-ui/react'
+import { css } from '@einfach-ui/styled/css'
+import { HStack } from '@einfach-ui/styled/jsx'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ArrowLeft } from 'lucide-react'
 import * as z from 'zod'
@@ -7,9 +9,6 @@ import { useForm } from '@redwoodjs/forms'
 import { routes } from '@redwoodjs/router'
 
 import { useAuth } from 'src/auth'
-
-import { css } from '@/styling/css'
-import { HStack } from '@/styling/jsx'
 
 const formSchema = z.object({
   email: z.string().email({

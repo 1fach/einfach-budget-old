@@ -1,10 +1,9 @@
 import * as React from 'react'
 
+import { cx } from '@einfach-ui/styled/css'
+import { styled } from '@einfach-ui/styled/jsx'
+import { separator } from '@einfach-ui/styled/recipes'
 import * as SeparatorPrimitive from '@radix-ui/react-separator'
-
-import { cx } from '@/styling/css'
-import { styled } from '@/styling/jsx'
-import { separator } from '@/styling/recipes'
 
 const BaseSeparator = React.forwardRef<
   React.ElementRef<typeof SeparatorPrimitive.Root>,
