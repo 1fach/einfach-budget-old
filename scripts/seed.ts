@@ -1,9 +1,11 @@
 import { faker } from '@faker-js/faker'
 import { Prisma } from '@prisma/client'
 import { db } from 'api/src/lib/db'
-import { v4 as uuidv4 } from 'uuid'
+import { customAlphabet } from 'nanoid'
 
 import { hashPassword } from '@redwoodjs/auth-dbauth-api'
+
+const nanoid = customAlphabet('6789BCDFGHJKLMNPQRTWbcdfghjkmnpqrtwz', 12)
 
 type TestDataType = {
   users?: Prisma.UserCreateManyInput[]
@@ -168,7 +170,7 @@ function createUserData(count) {
   for (let i = 0; i < count; i++) {
     const [hashedPassword, salt] = hashPassword(faker.internet.password())
     const user: Prisma.UserCreateManyInput = {
-      id: uuidv4(),
+      id: nanoid(),
       name: faker.person.fullName(),
       email: faker.internet.email(),
       hashedPassword,
@@ -179,7 +181,7 @@ function createUserData(count) {
 
   const [hashedPassword, salt] = hashPassword('test123')
   users.push({
-    id: '4c360cad-9581-4df7-8e62-f2617ff732fd',
+    id: 'mptmfq7BPqk8',
     name: faker.person.fullName(),
     email: 'testrw@einfach.com',
     hashedPassword,
@@ -194,7 +196,7 @@ function createBudgetsForUser(count) {
   for (const user of testData.users) {
     for (let i = 0; i < count; i++) {
       const budget: Prisma.BudgetCreateManyInput = {
-        id: uuidv4(),
+        id: nanoid(),
         name: faker.animal.dog(),
         userId: user.id,
       }
@@ -212,7 +214,7 @@ function createTransactionFromAllAccounts(count) {
     for (const account of testData.accounts) {
       const balance = 10000
       const inflow: Prisma.TransactionCreateManyInput = {
-        id: uuidv4(),
+        id: nanoid(),
         description: 'Inflow Balance',
         date: faker.date.between({
           from: '2023-09-01T00:00:00.000Z',
@@ -228,13 +230,13 @@ function createTransactionFromAllAccounts(count) {
 
       for (let i = 0; i < count; i++) {
         const outflow: Prisma.TransactionCreateManyInput = {
-          id: uuidv4(),
+          id: nanoid(),
           description: faker.finance.transactionDescription(),
           date: faker.date.between({
             from: '2023-09-01T00:00:00.000Z',
             to: '2023-12-31T00:00:00.000Z',
           }),
-          outflow: faker.finance.amount({
+          outflow: faker.number.bigInt({
             min: 10,
             max: 100,
           }),
@@ -256,7 +258,7 @@ function createBudgetCategoryGroupForBudget(count) {
   for (const budget of testData.budgets) {
     for (let i = 0; i < count; i++) {
       const group: Prisma.BudgetCategoryGroupCreateManyInput = {
-        id: uuidv4(),
+        id: nanoid(),
         name: faker.commerce.department(),
         sortOrder: faker.number.int(10000),
         budgetId: budget.id,
@@ -273,8 +275,8 @@ function createBudgetCategoryForGroup(count) {
   for (const categoryGroup of testData.categoryGroups) {
     for (let i = 0; i < count; i++) {
       const category: Prisma.BudgetCategoryCreateManyInput = {
-        id: uuidv4(),
-        name: faker.commerce.department(),
+        id: nanoid(),
+        name: faker.lorem.words(3),
         sortOrder: faker.number.int(10000),
         budgetCategoryGroupId: categoryGroup.id,
       }
@@ -291,10 +293,10 @@ function createMonthlyBudgetPerCategoryForCategory(monthStart, monthEnd, year) {
   for (const category of testData.categories) {
     for (let i = monthStart; i <= monthEnd; i++) {
       const monthlyBudget: Prisma.MonthlyBudgetPerCategoryCreateManyInput = {
-        id: uuidv4(),
+        id: nanoid(),
         month: i,
         year: year,
-        assigned: new Prisma.Decimal(3000),
+        assigned: 3000,
         budgetCategoryId: category.id,
       }
       monthlyBudgets.push(monthlyBudget)
@@ -313,14 +315,14 @@ function createAccountsPayeesForBudget(count) {
       const accName = faker.lorem.words(3)
 
       const payee: Prisma.PayeeCreateManyInput = {
-        id: uuidv4(),
+        id: nanoid(),
         name: accName,
         budgetId: budget.id,
       }
       payees.push(payee)
 
       const account: Prisma.AccountCreateManyInput = {
-        id: uuidv4(),
+        id: nanoid(),
         nickname: accName,
         budgetId: budget.id,
         payeeId: payee.id,
