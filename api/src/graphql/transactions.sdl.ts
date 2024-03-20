@@ -10,7 +10,6 @@ export const schema = gql`
     accountId: String!
     payee: Payee
     payeeId: String
-    monthlyBudgetPerCategory: MonthlyBudgetPerCategory!
     monthlyBudgetPerCategoryId: String!
   }
 
