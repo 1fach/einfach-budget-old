@@ -32,6 +32,7 @@ const BudgetPage = ({ budget }: { budget: string }) => {
         updateBudgetId(budget)
       } else {
         navigate(routes.oops(), { replace: true })
+        updateBudgetId('')
       }
     }
   }, [data, loading, budget, updateBudgetId])
