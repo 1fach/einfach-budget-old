@@ -118,11 +118,14 @@ export const monthlyBudgetInit: MutationResolvers['monthlyBudgetInit'] =
   }
 
 export const monthlyBudgetAssign: MutationResolvers['monthlyBudgetAssign'] =
-  async ({ input }) => {
-    const { assigned, month, year, categoryId } = input
-
+  async ({
+    input: {
+      filter: { categoryId, month, year },
+      update: data,
+    },
+  }) => {
     const updatedMonthlyBudgetCategory = db.monthlyBudgetPerCategory.update({
-      data: { assigned },
+      data,
       where: {
         month_year_budgetCategoryId: {
           month,

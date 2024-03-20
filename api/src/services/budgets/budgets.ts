@@ -27,16 +27,50 @@ export const budgetCreate: MutationResolvers['budgetCreate'] = ({ input }) => {
   })
 }
 
-export const budgetRename: MutationResolvers['budgetRename'] = ({ input }) => {
+export const budgetRename: MutationResolvers['budgetRename'] = ({
+  input: {
+    filter: { id },
+    update: data,
+  },
+}) => {
   return db.budget.update({
-    data: { name: input.name },
-    where: { id: input.id, userId: context.currentUser?.id },
+    data,
+    where: { id, userId: context.currentUser?.id },
   })
 }
 
 export const Budget: BudgetRelationResolvers = {
-  accounts: (_obj, { root }) => {
-    return db.budget.findUnique({ where: { id: root?.id } }).accounts()
+  accounts: async (_obj, { root }) => {
+    const inoutflows = await db.transaction.groupBy({
+      by: ['accountId'],
+      where: {
+        account: {
+          id: root?.id,
+          budget: {
+            userId: context.currentUser?.id,
+          },
+        },
+      },
+      _sum: {
+        inflow: true,
+        outflow: true,
+      },
+    })
+
+    return (
+      await db.budget.findUnique({ where: { id: root?.id } }).accounts()
+    ).map((account) => {
+      const accInOut = inoutflows.find(
+        (balance) => balance.accountId === account.id
+      )
+
+      return {
+        ...account,
+        balance:
+          Number(accInOut?._sum.inflow || 0.0) -
+          Number(accInOut?._sum.outflow || 0.0),
+      }
+    })
   },
   payees: (_obj, { root }) => {
     return db.budget.findUnique({ where: { id: root?.id } }).payees()

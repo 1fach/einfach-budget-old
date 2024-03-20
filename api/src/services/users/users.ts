@@ -12,9 +12,11 @@ export const user: QueryResolvers['user'] = () => {
   })
 }
 
-export const updateUser: MutationResolvers['updateUser'] = ({ input }) => {
+export const userUpdate: MutationResolvers['userUpdate'] = ({
+  input: { update: data },
+}) => {
   return db.user.update({
-    data: input,
+    data,
     where: { id: context.currentUser?.id },
   })
 }

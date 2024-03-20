@@ -24,11 +24,19 @@ export const schema = gql`
     categories: [MonthlyBudgetCategory!]
   }
 
-  input MonthlyBudgetAssignInput {
+  input MonthlyBudgetAssignFilter {
     categoryId: String!
     month: Int!
     year: Int!
+  }
+
+  input MonthlyBudgetAssignData {
     assigned: Float!
+  }
+
+  input MonthlyBudgetAssignInput {
+    filter: MonthlyBudgetAssignFilter!
+    update: MonthlyBudgetAssignData!
   }
 
   type MonthlyBudgetAssignPayload {

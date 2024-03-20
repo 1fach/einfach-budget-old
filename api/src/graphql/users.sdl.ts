@@ -10,12 +10,16 @@ export const schema = gql`
     user: User @requireAuth
   }
 
-  input UpdateUserInput {
+  input UserUpdateData {
     name: String
     email: String
   }
 
+  input UserUpdateInput {
+    update: PayeeUpdateData!
+  }
+
   type Mutation {
-    updateUser(input: UpdateUserInput!): User! @requireAuth
+    userUpdate(input: UserUpdateInput!): User! @requireAuth
   }
 `

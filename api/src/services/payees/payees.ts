@@ -5,46 +5,53 @@ import type {
 } from 'types/graphql'
 
 import { db } from 'src/lib/db'
+import { nanoid } from 'src/lib/nanoid'
 
-export const payees: QueryResolvers['payees'] = () => {
-  return db.payee.findMany()
+export const payees: QueryResolvers['payees'] = ({ budgetId }) => {
+  return db.payee.findMany({
+    where: {
+      budget: {
+        id: budgetId,
+        userId: context.currentUser?.id,
+      },
+    },
+  })
 }
 
 export const payee: QueryResolvers['payee'] = ({ id }) => {
   return db.payee.findUnique({
-    where: { id },
+    where: {
+      id,
+      budget: { userId: context.currentUser?.id },
+    },
   })
 }
 
-export const createPayee: MutationResolvers['createPayee'] = ({ input }) => {
+export const payeeCreate: MutationResolvers['payeeCreate'] = ({ input }) => {
   return db.payee.create({
-    data: input,
+    data: {
+      ...input,
+      id: nanoid(),
+    },
   })
 }
 
-export const updatePayee: MutationResolvers['updatePayee'] = ({
-  id,
-  input,
+export const payeeUpdate: MutationResolvers['payeeUpdate'] = ({
+  input: {
+    filter: { id },
+    update: data,
+  },
 }) => {
   return db.payee.update({
-    data: input,
-    where: { id },
-  })
-}
-
-export const deletePayee: MutationResolvers['deletePayee'] = ({ id }) => {
-  return db.payee.delete({
-    where: { id },
+    data,
+    where: {
+      id,
+      budget: { userId: context.currentUser?.id },
+    },
   })
 }
 
 export const Payee: PayeeRelationResolvers = {
-  budget: (_obj, { root }) => {
-    return root.budget
-  },
-  account: (_obj, { root }) => {
-    return root.account
-  },
   transactions: (_obj, { root }) => {
     return db.payee.findUnique({ where: { id: root?.id } }).transactions()
   },

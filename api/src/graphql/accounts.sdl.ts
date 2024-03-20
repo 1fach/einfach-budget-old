@@ -2,10 +2,8 @@ export const schema = gql`
   type Account {
     id: ID!
     nickname: String!
-    balance: Float
-    budget: Budget!
+    balance: Float!
     budgetId: String!
-    payee: Payee!
     payeeId: String!
     transactions: [Transaction]!
   }
@@ -15,22 +13,27 @@ export const schema = gql`
     account(id: String!): Account @requireAuth
   }
 
-  input CreateAccountInput {
+  input AccountCreateInput {
     nickname: String!
     budgetId: String!
     payeeId: String!
   }
 
-  input UpdateAccountInput {
+  input AccountUpdateFilter {
+    id: String!
+  }
+
+  input AccountUpdateData {
     nickname: String
-    budgetId: String
-    payeeId: String
+  }
+
+  input AccountUpdateInput {
+    filter: AccountUpdateFilter!
+    update: AccountUpdateData!
   }
 
   type Mutation {
-    createAccount(input: CreateAccountInput!): Account! @requireAuth
-    updateAccount(id: String!, input: UpdateAccountInput!): Account!
-      @requireAuth
-    deleteAccount(id: String!): Account! @requireAuth
+    accountCreate(input: AccountCreateInput!): Account! @requireAuth
+    accountUpdate(input: AccountUpdateInput!): Account! @requireAuth
   }
 `

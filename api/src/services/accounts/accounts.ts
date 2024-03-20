@@ -5,16 +5,10 @@ import type {
 } from 'types/graphql'
 
 import { db } from 'src/lib/db'
+import { nanoid } from 'src/lib/nanoid'
 
 export const accounts: QueryResolvers['accounts'] = async ({ budgetId }) => {
   const dbAccounts = await db.account.findMany({
-    include: {
-      accountBalance: {
-        select: {
-          workingBalance: true,
-        },
-      },
-    },
     where: {
       budget: {
         id: budgetId,
@@ -23,64 +17,112 @@ export const accounts: QueryResolvers['accounts'] = async ({ budgetId }) => {
     },
   })
 
+  const inoutflows = await db.transaction.groupBy({
+    by: ['accountId'],
+    where: {
+      account: {
+        budgetId,
+        budget: {
+          userId: context.currentUser?.id,
+        },
+      },
+    },
+    _sum: {
+      inflow: true,
+      outflow: true,
+    },
+  })
+
   return dbAccounts.map((account) => {
+    const accInOut = inoutflows.find(
+      (balance) => balance.accountId === account.id
+    )
+
     return {
       ...account,
-      balance: account.accountBalance.workingBalance.toNumber(),
+      balance:
+        Number(accInOut?._sum.inflow || 0.0) -
+        Number(accInOut?._sum.outflow || 0.0),
     }
   })
 }
 
 export const account: QueryResolvers['account'] = async ({ id }) => {
   const account = await db.account.findUnique({
-    include: {
-      accountBalance: {
-        select: {
-          workingBalance: true,
-        },
-      },
-    },
     where: { id },
+  })
+
+  const inoutflow = await db.transaction.aggregate({
+    where: {
+      accountId: id,
+    },
+    _sum: {
+      inflow: true,
+      outflow: true,
+    },
   })
 
   return {
     ...account,
-    balance: account.accountBalance.workingBalance.toNumber(),
+    balance:
+      Number(inoutflow?._sum.inflow || 0.0) -
+      Number(inoutflow?._sum.outflow || 0.0),
   }
 }
 
-export const createAccount: MutationResolvers['createAccount'] = ({
+export const accountCreate: MutationResolvers['accountCreate'] = async ({
   input,
 }) => {
-  return db.account.create({
-    data: input,
+  const create = await db.account.create({
+    data: {
+      ...input,
+      id: nanoid(),
+    },
   })
+
+  return {
+    ...create,
+    balance: 0.0,
+  }
 }
 
-export const updateAccount: MutationResolvers['updateAccount'] = ({
-  id,
-  input,
+export const accountUpdate: MutationResolvers['accountUpdate'] = async ({
+  input: {
+    filter: { id },
+    update: data,
+  },
 }) => {
-  return db.account.update({
-    data: input,
-    where: { id },
+  const updateAcc = await db.account.update({
+    data,
+    where: {
+      id,
+      budget: { userId: context.currentUser?.id },
+    },
   })
-}
 
-export const deleteAccount: MutationResolvers['deleteAccount'] = ({ id }) => {
-  return db.account.delete({
-    where: { id },
+  const inoutflow = await db.transaction.aggregate({
+    where: {
+      account: {
+        id: id,
+        budget: { userId: context.currentUser?.id },
+      },
+    },
+    _sum: {
+      inflow: true,
+      outflow: true,
+    },
   })
+
+  return {
+    ...updateAcc,
+    balance:
+      Number(inoutflow?._sum.inflow || 0.0) -
+      Number(inoutflow?._sum.outflow || 0.0),
+  }
 }
 
 export const Account: AccountRelationResolvers = {
-  budget: (_obj, { root }) => {
-    return root.budget
-  },
   transactions: async (_obj, { root }) => {
     return db.account.findUnique({ where: { id: root?.id } }).transactions()
-  },
-  payee: (_obj, { root }) => {
-    return root.payee
   },
 }

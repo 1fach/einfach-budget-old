@@ -1,13 +1,14 @@
-import type {
-  QueryResolvers,
-  MutationResolvers,
-  TransactionRelationResolvers,
-} from 'types/graphql'
+import type { QueryResolvers, MutationResolvers } from 'types/graphql'
 
 import { db } from 'src/lib/db'
+import { nanoid } from 'src/lib/nanoid'
 
-export const transactions: QueryResolvers['transactions'] = () => {
-  return db.transaction.findMany()
+export const transactions: QueryResolvers['transactions'] = ({ accountId }) => {
+  return db.transaction.findMany({
+    where: {
+      accountId,
+    },
+  })
 }
 
 export const transaction: QueryResolvers['transaction'] = ({ id }) => {
@@ -16,42 +17,25 @@ export const transaction: QueryResolvers['transaction'] = ({ id }) => {
   })
 }
 
-export const createTransaction: MutationResolvers['createTransaction'] = ({
+export const transactionCreate: MutationResolvers['transactionCreate'] = ({
   input,
 }) => {
   return db.transaction.create({
-    data: input,
+    data: {
+      ...input,
+      id: nanoid(),
+    },
   })
 }
 
-export const updateTransaction: MutationResolvers['updateTransaction'] = ({
-  id,
-  input,
+export const transactionUpdate: MutationResolvers['transactionUpdate'] = ({
+  input: {
+    filter: { id },
+    update: data,
+  },
 }) => {
   return db.transaction.update({
-    data: input,
+    data,
     where: { id },
   })
-}
-
-export const deleteTransaction: MutationResolvers['deleteTransaction'] = ({
-  id,
-}) => {
-  return db.transaction.delete({
-    where: { id },
-  })
-}
-
-export const Transaction: TransactionRelationResolvers = {
-  account: (_obj, { root }) => {
-    return root.account
-  },
-  payee: (_obj, { root }) => {
-    return root.payee
-  },
-  monthlyBudgetPerCategory: (_obj, { root }) => {
-    return db.transaction
-      .findUnique({ where: { id: root?.id } })
-      .monthlyBudgetPerCategory()
-  },
 }

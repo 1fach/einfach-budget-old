@@ -3,7 +3,7 @@ import type { MutationResolvers } from 'types/graphql'
 import { db } from 'src/lib/db'
 import { nanoid } from 'src/lib/nanoid'
 
-export const createBudgetCategoryGroup: MutationResolvers['createBudgetCategoryGroup'] =
+export const budgetCategoryGroupCreate: MutationResolvers['budgetCategoryGroupCreate'] =
   ({ input }) => {
     return db.budgetCategoryGroup.create({
       data: {
@@ -13,10 +13,15 @@ export const createBudgetCategoryGroup: MutationResolvers['createBudgetCategoryG
     })
   }
 
-export const updateBudgetCategoryGroup: MutationResolvers['updateBudgetCategoryGroup'] =
-  ({ id, input }) => {
+export const budgetCategoryGroupUpdate: MutationResolvers['budgetCategoryGroupUpdate'] =
+  ({
+    input: {
+      filter: { id },
+      update: data,
+    },
+  }) => {
     return db.budgetCategoryGroup.update({
-      data: input,
+      data,
       where: { id },
     })
   }

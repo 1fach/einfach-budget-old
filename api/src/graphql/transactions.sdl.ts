@@ -6,19 +6,17 @@ export const schema = gql`
     outflow: Float!
     inflow: Float!
     cleared: Boolean!
-    account: Account!
     accountId: String!
-    payee: Payee
     payeeId: String
     monthlyBudgetPerCategoryId: String!
   }
 
   type Query {
-    transactions: [Transaction!]! @requireAuth
+    transactions(accountId: String!): [Transaction!]! @requireAuth
     transaction(id: String!): Transaction @requireAuth
   }
 
-  input CreateTransactionInput {
+  input TransactionCreateInput {
     description: String!
     date: DateTime!
     outflow: Float!
@@ -29,7 +27,11 @@ export const schema = gql`
     monthlyBudgetPerCategoryId: String!
   }
 
-  input UpdateTransactionInput {
+  input TransactionUpdateFilter {
+    id: String!
+  }
+
+  input TransactionUpdateData {
     description: String
     date: DateTime
     outflow: Float
@@ -40,12 +42,13 @@ export const schema = gql`
     monthlyBudgetPerCategoryId: String
   }
 
+  input TransactionUpdateInput {
+    filter: TransactionUpdateFilter!
+    update: TransactionUpdateData!
+  }
+
   type Mutation {
-    createTransaction(input: CreateTransactionInput!): Transaction! @requireAuth
-    updateTransaction(
-      id: String!
-      input: UpdateTransactionInput!
-    ): Transaction! @requireAuth
-    deleteTransaction(id: String!): Transaction! @requireAuth
+    transactionCreate(input: TransactionCreateInput!): Transaction! @requireAuth
+    transactionUpdate(input: TransactionUpdateInput!): Transaction! @requireAuth
   }
 `

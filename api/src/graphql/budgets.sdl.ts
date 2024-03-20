@@ -16,13 +16,21 @@ export const schema = gql`
     name: String!
   }
 
-  input BudgetInputRename {
+  input BudgetRenameFilter {
     id: String!
+  }
+
+  input BudgetRenameData {
     name: String
+  }
+
+  input BudgetRenameInput {
+    filter: BudgetRenameFilter!
+    update: BudgetRenameData!
   }
 
   type Mutation {
     budgetCreate(input: BudgetCreateInput!): Budget! @requireAuth
-    budgetRename(input: BudgetInputRename!): Budget! @requireAuth
+    budgetRename(input: BudgetRenameInput!): Budget! @requireAuth
   }
 `

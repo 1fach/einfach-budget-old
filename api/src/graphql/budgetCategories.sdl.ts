@@ -6,24 +6,31 @@ export const schema = gql`
     budgetCategoryGroupId: String!
   }
 
-  input CreateBudgetCategoryInput {
+  input BudgetCategoryCreateInput {
     name: String!
     sortOrder: Int!
     budgetCategoryGroupId: String!
   }
 
-  input UpdateBudgetCategoryInput {
+  input BudgetCategoryUpdateFilter {
+    id: String!
+  }
+
+  input BudgetCategoryUpdateData {
     name: String
     sortOrder: Int
     budgetCategoryGroupId: String
   }
 
+  input BudgetCategoryUpdateInput {
+    filter: BudgetCategoryUpdateFilter!
+    update: BudgetCategoryUpdateData!
+  }
+
   type Mutation {
-    createBudgetCategory(input: CreateBudgetCategoryInput!): BudgetCategory!
+    budgetCategoryCreate(input: BudgetCategoryCreateInput!): BudgetCategory!
       @requireAuth
-    updateBudgetCategory(
-      id: String!
-      input: UpdateBudgetCategoryInput!
-    ): BudgetCategory! @requireAuth
+    budgetCategoryUpdate(input: BudgetCategoryUpdateInput!): BudgetCategory!
+      @requireAuth
   }
 `
