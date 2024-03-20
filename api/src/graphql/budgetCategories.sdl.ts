@@ -1,25 +1,9 @@
 export const schema = gql`
-  type BudgetCategory {
+  interface BudgetCategory {
     id: ID!
     name: String!
     sortOrder: Int!
-    budgetCategoryGroup: BudgetCategoryGroup!
     budgetCategoryGroupId: String!
-    monthlyBudgetPerCategory(
-      month: Int!
-      year: Int!
-    ): [MonthlyBudgetPerCategory!]!
-    monthlyBudgetPerCategories: [MonthlyBudgetPerCategory!]!
-  }
-
-  type Query {
-    budgetCategories: [BudgetCategory!]! @requireAuth
-    budgetCategory(id: String!): BudgetCategory @requireAuth
-    budgetCategoriesWithNoAssignedFor(
-      budgetId: String!
-      month: Int!
-      year: Int!
-    ): [BudgetCategory!]! @requireAuth
   }
 
   input CreateBudgetCategoryInput {
@@ -41,6 +25,5 @@ export const schema = gql`
       id: String!
       input: UpdateBudgetCategoryInput!
     ): BudgetCategory! @requireAuth
-    deleteBudgetCategory(id: String!): BudgetCategory! @requireAuth
   }
 `

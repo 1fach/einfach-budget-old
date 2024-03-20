@@ -1,29 +1,8 @@
 export const schema = gql`
-  type MonthlyBudgetCategory {
-    id: String!
-    name: String!
-    month: Int!
-    year: Int!
-    assigned: Float!
-    activity: Float!
-    available: Float!
-  }
-
-  type MonthlyBudgetGroup {
-    id: String!
-    name: String!
-    month: Int!
-    year: Int!
-    assigned: Float!
-    activity: Float!
-    available: Float!
-    categories: [MonthlyBudgetCategory!]
-  }
-
   type MonthlyBudget {
-    id: String!
-    userId: String!
+    id: ID! # budgetId + year + month as a unique identifier.
     name: String!
+    userId: String!
     month: Int!
     year: Int!
     readyToAssign: Float!
@@ -31,7 +10,37 @@ export const schema = gql`
   }
 
   type Query {
-    monthlyBudget(id: String!, month: Int!, year: Int!): MonthlyBudget
+    monthlyBudget(id: String!, month: Int!, year: Int!): MonthlyBudget!
       @requireAuth
+  }
+
+  input MonthlyBudgetInitInput {
+    budgetId: String!
+    month: Int!
+    year: Int!
+  }
+
+  type MonthlyBudgetInitPayload {
+    categories: [MonthlyBudgetCategory!]
+  }
+
+  input MonthlyBudgetAssignInput {
+    categoryId: String!
+    month: Int!
+    year: Int!
+    assigned: Float!
+  }
+
+  type MonthlyBudgetAssignPayload {
+    category: MonthlyBudgetCategory!
+  }
+
+  type Mutation {
+    monthlyBudgetInit(
+      input: MonthlyBudgetInitInput!
+    ): MonthlyBudgetInitPayload! @requireAuth
+    monthlyBudgetAssign(
+      input: MonthlyBudgetAssignInput!
+    ): MonthlyBudgetAssignPayload! @requireAuth
   }
 `

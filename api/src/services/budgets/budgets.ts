@@ -5,6 +5,7 @@ import type {
 } from 'types/graphql'
 
 import { db } from 'src/lib/db'
+import { nanoid } from 'src/lib/nanoid'
 
 export const budgets: QueryResolvers['budgets'] = () => {
   return db.budget.findMany({ where: { userId: context.currentUser?.id } })
@@ -16,45 +17,28 @@ export const budget: QueryResolvers['budget'] = ({ id }) => {
   })
 }
 
-export const createBudget: MutationResolvers['createBudget'] = ({ input }) => {
+export const budgetCreate: MutationResolvers['budgetCreate'] = ({ input }) => {
   return db.budget.create({
-    data: input,
+    data: {
+      ...input,
+      id: nanoid(),
+      userId: context.currentUser?.id,
+    },
   })
 }
 
-export const updateBudget: MutationResolvers['updateBudget'] = ({
-  id,
-  input,
-}) => {
+export const budgetRename: MutationResolvers['budgetRename'] = ({ input }) => {
   return db.budget.update({
-    data: input,
-    where: { id },
-  })
-}
-
-export const deleteBudget: MutationResolvers['deleteBudget'] = ({ id }) => {
-  return db.budget.delete({
-    where: { id },
+    data: { name: input.name },
+    where: { id: input.id, userId: context.currentUser?.id },
   })
 }
 
 export const Budget: BudgetRelationResolvers = {
-  user: (_obj, { root }) => {
-    return db.budget.findUnique({ where: { id: root?.id } }).user()
-  },
   accounts: (_obj, { root }) => {
     return db.budget.findUnique({ where: { id: root?.id } }).accounts()
   },
   payees: (_obj, { root }) => {
     return db.budget.findUnique({ where: { id: root?.id } }).payees()
-  },
-  budgetCategoryGroups: (_obj, { root }) => {
-    return db.budget
-      .findUnique({ where: { id: root?.id } })
-      .budgetCategoryGroups({
-        orderBy: {
-          sortOrder: 'asc',
-        },
-      })
   },
 }

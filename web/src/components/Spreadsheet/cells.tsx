@@ -9,7 +9,6 @@ import type { FindBudgetByMonth } from 'types/graphql'
 import { useLocation } from '@redwoodjs/router'
 import { useMutation } from '@redwoodjs/web'
 
-import { useAuth } from 'src/auth'
 import { QUERY as FIND_THIS_MONTH_BUDGET } from 'src/components/BudgetingCell'
 import { parser } from 'src/lib/math-exp'
 import { useSelectedMonth, useSelectedYear } from 'src/lib/store'
@@ -49,20 +48,12 @@ export const CExpand = ({ row }: { row: Row<MonthlyBudget> }) => {
   )
 }
 
-const UPDATE_BUDGET = gql`
-  mutation UpdateAssignedBudgetForCategory(
-    $categoryId: String!
-    $month: Int!
-    $year: Int!
-    $input: UpdateAssignedBudgetForCategoryInput!
-  ) {
-    updateAssignedBudgetForCategory(
-      categoryId: $categoryId
-      month: $month
-      year: $year
-      input: $input
-    ) {
-      id
+const ASSIGN_MONTHLY_BUDGET = gql`
+  mutation MonthlyBudgetAssign($input: MonthlyBudgetAssignInput!) {
+    monthlyBudgetAssign(input: $input) {
+      category {
+        id
+      }
     }
   }
 `
@@ -100,22 +91,23 @@ export const CEditableCurrency = ({
     setValue(initialValue)
   }, [initialValue])
 
-  const userId = useAuth().currentUser?.id
   const budgetId = useLocation().pathname.split('/').pop()
   const month = useSelectedMonth()
   const year = useSelectedYear()
 
-  const [updateAssignedBudgetForCategory] = useMutation(UPDATE_BUDGET)
+  const [monthlyBudgetAssign] = useMutation(ASSIGN_MONTHLY_BUDGET)
 
   const onBlur = () => {
     setValue(format(value))
     if (!row.getCanExpand()) {
-      updateAssignedBudgetForCategory({
+      monthlyBudgetAssign({
         variables: {
-          categoryId: row.original.id,
-          month,
-          year,
-          input: { assigned: convertToFloat(value) },
+          input: {
+            categoryId: row.original.id,
+            month,
+            year,
+            assigned: convertToFloat(value),
+          },
         },
         update: (store) => {
           const existingMonthlyBudget = store.readQuery<FindBudgetByMonth>({
@@ -124,7 +116,6 @@ export const CEditableCurrency = ({
               month,
               year,
               budgetId,
-              userId,
             },
           })
 
@@ -134,7 +125,6 @@ export const CEditableCurrency = ({
               month,
               year,
               budgetId,
-              userId,
             },
             data: produce(existingMonthlyBudget, (draft) => {
               const { thisGroup, thisCategory } = (

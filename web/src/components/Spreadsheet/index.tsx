@@ -3,35 +3,19 @@ import { useEffect } from 'react'
 import { css } from '@einfach-ui/styled/css'
 import { styled, Grid, GridItem } from '@einfach-ui/styled/jsx'
 
-import { useQuery, useMutation } from '@redwoodjs/web'
+import { useMutation } from '@redwoodjs/web'
 
 import BudgetingCell from 'src/components/BudgetingCell'
 import { useSelectedMonth, useSelectedYear } from 'src/lib/store'
 
 type Props = { budgetId?: string }
 
-const GET_BUDGET_CATEGORIES_WITH_NO_ASSIGNED = gql`
-  query GetBudgetCategoriesWithNoAssigned(
-    $budgetId: String!
-    $month: Int!
-    $year: Int!
-  ) {
-    budgetCategoriesWithNoAssignedFor(
-      budgetId: $budgetId
-      month: $month
-      year: $year
-    ) {
-      id
-    }
-  }
-`
-
-const CREATE_EMPTY_BUDGET_FOR_CATEGORIES = gql`
-  mutation CreateEmptyBudgetForCategories(
-    $input: CreateEmptyBudgetForCategoriesInput!
-  ) {
-    createEmptyBudgetForCategories(input: $input) {
-      count
+const MONTHLY_BUDGET_INIT = gql`
+  mutation MonthlyBudgetInit($input: MonthlyBudgetInitInput!) {
+    monthlyBudgetInit(input: $input) {
+      categories {
+        id
+      }
     }
   }
 `
@@ -40,33 +24,19 @@ export const Spreadsheet = ({ budgetId }: Props) => {
   const month = useSelectedMonth()
   const year = useSelectedYear()
 
-  const { data } = useQuery(GET_BUDGET_CATEGORIES_WITH_NO_ASSIGNED, {
+  const [monthlyBudgetInit] = useMutation(MONTHLY_BUDGET_INIT, {
     variables: {
-      budgetId: budgetId,
-      month,
-      year,
+      input: {
+        budgetId,
+        month,
+        year,
+      },
     },
   })
 
-  const [createEmptyBudgetForCategories] = useMutation(
-    CREATE_EMPTY_BUDGET_FOR_CATEGORIES
-  )
-
   useEffect(() => {
-    if (data?.budgetCategoriesWithNoAssignedFor.length > 0) {
-      createEmptyBudgetForCategories({
-        variables: {
-          input: {
-            categoryIds: data.budgetCategoriesWithNoAssignedFor.map(
-              (category) => category.id
-            ),
-            month,
-            year,
-          },
-        },
-      })
-    }
-  }, [data, month, year, createEmptyBudgetForCategories])
+    monthlyBudgetInit()
+  }, [monthlyBudgetInit])
 
   return (
     <Grid gridTemplateColumns={4} minH="100vh">

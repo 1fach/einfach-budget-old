@@ -3,14 +3,7 @@ export const schema = gql`
     id: ID!
     name: String!
     sortOrder: Int!
-    budget: Budget!
     budgetId: String!
-    budgetCategories: [BudgetCategory]!
-  }
-
-  type Query {
-    budgetCategoryGroups: [BudgetCategoryGroup!]! @requireAuth
-    budgetCategoryGroup(id: String!): BudgetCategoryGroup @requireAuth
   }
 
   input CreateBudgetCategoryGroupInput {
@@ -33,6 +26,5 @@ export const schema = gql`
       id: String!
       input: UpdateBudgetCategoryGroupInput!
     ): BudgetCategoryGroup! @requireAuth
-    deleteBudgetCategoryGroup(id: String!): BudgetCategoryGroup! @requireAuth
   }
 `

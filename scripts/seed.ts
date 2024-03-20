@@ -77,7 +77,7 @@ const populateTable = async () => {
   )
   console.log(testData.monthlyBudgets.length + ' monthly budgets are prepared')
 
-  testData.transactions = createTransactionFromAllAccounts(4)
+  testData.transactions = createTransactionFromAllAccounts(1)
   console.log(testData.transactions.length + ' transactions are prepared')
   console.log('========= END PREPARING TESTDATA =========')
   console.log()
@@ -259,7 +259,7 @@ function createBudgetCategoryGroupForBudget(count) {
     for (let i = 0; i < count; i++) {
       const group: Prisma.BudgetCategoryGroupCreateManyInput = {
         id: nanoid(),
-        name: faker.commerce.department(),
+        name: faker.word.noun(),
         sortOrder: faker.number.int(10000),
         budgetId: budget.id,
       }
@@ -276,7 +276,7 @@ function createBudgetCategoryForGroup(count) {
     for (let i = 0; i < count; i++) {
       const category: Prisma.BudgetCategoryCreateManyInput = {
         id: nanoid(),
-        name: faker.lorem.words(3),
+        name: faker.word.noun(),
         sortOrder: faker.number.int(10000),
         budgetCategoryGroupId: categoryGroup.id,
       }
@@ -312,7 +312,7 @@ function createAccountsPayeesForBudget(count) {
 
   for (const budget of testData.budgets) {
     for (let i = 0; i < count; i++) {
-      const accName = faker.lorem.words(3)
+      const accName = faker.word.noun()
 
       const payee: Prisma.PayeeCreateManyInput = {
         id: nanoid(),
@@ -345,29 +345,6 @@ export default async () => {
 
     // populate tables with relationships
     await populateTable()
-
-    // If using dbAuth and seeding users, you'll need to add a `hashedPassword`
-    // and associated `salt` to their record. Here's how to create them using
-    // the same algorithm that dbAuth uses internally:
-    //
-    //   import { hashPassword } from '@redwoodjs/auth-dbauth-api'
-    //
-    //   const users = [
-    //     { name: 'john', email: 'john@example.com', password: 'secret1' },
-    //     { name: 'jane', email: 'jane@example.com', password: 'secret2' }
-    //   ]
-    //
-    //   for (const user of users) {
-    //     const [hashedPassword, salt] = hashPassword(user.password)
-    //     await db.user.create({
-    //       data: {
-    //         name: user.name,
-    //         email: user.email,
-    //         hashedPassword,
-    //         salt
-    //       }
-    //     })
-    //   }
   } catch (error) {
     console.error(error)
   }

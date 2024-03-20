@@ -1,28 +1,15 @@
-import type {
-  QueryResolvers,
-  MutationResolvers,
-  BudgetCategoryGroupRelationResolvers,
-} from 'types/graphql'
+import type { MutationResolvers } from 'types/graphql'
 
 import { db } from 'src/lib/db'
-
-export const budgetCategoryGroups: QueryResolvers['budgetCategoryGroups'] =
-  () => {
-    return db.budgetCategoryGroup.findMany()
-  }
-
-export const budgetCategoryGroup: QueryResolvers['budgetCategoryGroup'] = ({
-  id,
-}) => {
-  return db.budgetCategoryGroup.findUnique({
-    where: { id },
-  })
-}
+import { nanoid } from 'src/lib/nanoid'
 
 export const createBudgetCategoryGroup: MutationResolvers['createBudgetCategoryGroup'] =
   ({ input }) => {
     return db.budgetCategoryGroup.create({
-      data: input,
+      data: {
+        ...input,
+        id: nanoid(),
+      },
     })
   }
 
@@ -33,25 +20,3 @@ export const updateBudgetCategoryGroup: MutationResolvers['updateBudgetCategoryG
       where: { id },
     })
   }
-
-export const deleteBudgetCategoryGroup: MutationResolvers['deleteBudgetCategoryGroup'] =
-  ({ id }) => {
-    return db.budgetCategoryGroup.delete({
-      where: { id },
-    })
-  }
-
-export const BudgetCategoryGroup: BudgetCategoryGroupRelationResolvers = {
-  budget: (_obj, { root }) => {
-    return root.budget
-  },
-  budgetCategories: (_obj, { root }) => {
-    return db.budgetCategoryGroup
-      .findUnique({ where: { id: root?.id } })
-      .budgetCategories({
-        orderBy: {
-          sortOrder: 'asc',
-        },
-      })
-  },
-}
