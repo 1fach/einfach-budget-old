@@ -59,6 +59,12 @@ export const monthlyBudgetInit: MutationResolvers['monthlyBudgetInit'] =
       },
     })
 
+    if (categoriesNoBudget.length === 0) {
+      return {
+        categories: [],
+      }
+    }
+
     const categoryIds = categoriesNoBudget.map((category) => category.id)
 
     await db.monthlyBudgetPerCategory.createMany({
