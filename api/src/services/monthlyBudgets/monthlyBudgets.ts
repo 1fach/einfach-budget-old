@@ -334,7 +334,7 @@ async function calculateReadyToAssign(
   const prevMonthsOverspending = prevMonthsAssigned.reduce((acc, cur) => {
     const outflow = Number(
       prevMonthsOutflows.find((o) => o.monthlyBudgetPerCategoryId === cur.id)
-        ._sum.outflow || 0
+        ?._sum.outflow || 0.0
     )
 
     if (outflow <= Number(cur.assigned)) {

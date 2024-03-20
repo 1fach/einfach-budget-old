@@ -98,15 +98,15 @@ export const CEditableCurrency = ({
   const [monthlyBudgetAssign] = useMutation(ASSIGN_MONTHLY_BUDGET)
 
   const onBlur = () => {
+    if (format(value) === initialValue) return
     setValue(format(value))
     if (!row.getCanExpand()) {
+      const categoryId = row.original.id.split('_')[0]
       monthlyBudgetAssign({
         variables: {
           input: {
-            categoryId: row.original.id,
-            month,
-            year,
-            assigned: convertToFloat(value),
+            filter: { categoryId, month, year },
+            update: { assigned: convertToFloat(value) },
           },
         },
         update: (store) => {
