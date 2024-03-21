@@ -190,63 +190,56 @@ export const monthlyBudgetAssign: MutationResolvers['monthlyBudgetAssign'] =
 export const MonthlyBudget: MonthlyBudgetRelationResolvers = {
   groups: async (_obj, { root }) => {
     const budgetId = root.id.split('_')[0]
-    const budget = await db.budget.findUnique({
-      where: {
-        id: budgetId,
-        userId: context.currentUser?.id,
-      },
-      include: {
-        budgetCategoryGroups: {
-          orderBy: {
-            sortOrder: 'asc',
-          },
-        },
-      },
-    })
+    const groups = await db.$kysely
+      .selectFrom('transaction as t')
+      .innerJoin(
+        'monthly_budget_per_category as m',
+        'm.id',
+        't.monthly_budget_per_category_id'
+      )
+      .innerJoin('budget_category as bc', 'bc.id', 'm.budget_category_id')
+      .innerJoin(
+        'budget_category_group as bg',
+        'bg.id',
+        'bc.budget_category_group_id'
+      )
+      .where('bg.budget_id', '=', budgetId)
+      .where('m.month', '=', root.month)
+      .where('m.year', '=', root.year)
+      .groupBy(['bg.id', 'bg.name', 'bg.sort_order'])
+      .orderBy('bg.sort_order')
+      .select((eb) => [
+        'bg.id',
+        'bg.name',
+        'bg.sort_order',
+        eb.fn.sum<number>('m.assigned').as('assigned'),
+        eb(
+          eb.fn.sum<number>('t.inflow'),
+          '-',
+          eb.fn.sum<number>('t.outflow')
+        ).as('activity'),
+        eb(
+          eb(
+            eb.fn.sum<number>('t.inflow'),
+            '-',
+            eb.fn.sum<number>('t.outflow')
+          ),
+          '+',
+          eb.fn.sum<number>('m.assigned')
+        ).as('available'),
+      ])
+      .execute()
 
-    return budget.budgetCategoryGroups.map(async (group) => {
-      const assigned = await db.monthlyBudgetPerCategory.aggregate({
-        where: {
-          budgetCategory: {
-            budgetCategoryGroupId: group.id,
-          },
-          month: root.month,
-          year: root.year,
-        },
-        _sum: {
-          assigned: true,
-        },
-      })
-
-      const activity = await db.transaction.aggregate({
-        where: {
-          monthlyBudgetPerCategory: {
-            budgetCategory: {
-              budgetCategoryGroupId: group.id,
-            },
-            month: root.month,
-            year: root.year,
-          },
-        },
-        _sum: {
-          outflow: true,
-          inflow: true,
-        },
-      })
-
-      const totalActivity =
-        Number(activity?._sum.inflow || 0.0) -
-        Number(activity?._sum.outflow || 0.0)
-
+    return groups.map((group) => {
       return {
         id: group.id + '_' + root.year + root.month,
         name: group.name,
         month: root.month,
         year: root.year,
-        sortOrder: group.sortOrder,
-        assigned: Number(assigned._sum.assigned || 0.0),
-        activity: totalActivity,
-        available: Number(assigned._sum.assigned || 0.0) + totalActivity,
+        sortOrder: group.sort_order,
+        assigned: group.assigned,
+        activity: group.activity,
+        available: group.available,
       }
     })
   },
