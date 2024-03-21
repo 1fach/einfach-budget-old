@@ -1,3 +1,4 @@
+import { sql } from 'kysely'
 import type {
   MonthlyBudgetRelationResolvers,
   QueryResolvers,
@@ -256,126 +257,127 @@ async function calculateReadyToAssign(
   month: number,
   year: number
 ) {
-  const incomeTillThisMonth = await db.transaction.aggregate({
-    where: {
-      monthlyBudgetPerCategory: {
-        budgetCategory: {
-          budgetCategoryGroup: {
-            budgetId: budget.id,
-          },
-        },
-        OR: [
-          {
-            month: {
-              lte: month,
-            },
-            year,
-          },
-          {
-            year: {
-              lt: year,
-            },
-          },
-        ],
-      },
-    },
-    _sum: {
-      inflow: true,
-    },
-  })
-
-  // prev months overspending
-  const prevMonthsOutflows = await db.transaction.groupBy({
-    by: ['monthlyBudgetPerCategoryId'],
-    where: {
-      outflow: {
-        gt: 0,
-      },
-      monthlyBudgetPerCategory: {
-        budgetCategory: {
-          budgetCategoryGroup: {
-            budgetId: budget.id,
-          },
-        },
-        OR: [
-          {
-            month: {
-              lt: month,
-            },
-            year,
-          },
-          {
-            year: {
-              lt: year,
-            },
-          },
-        ],
-      },
-    },
-    _sum: {
-      outflow: true,
-    },
-  })
-
-  const assignedMoney = await db.monthlyBudgetPerCategory.findMany({
-    select: {
-      id: true,
-      month: true,
-      year: true,
-      assigned: true,
-    },
-    where: {
-      budgetCategory: {
-        budgetCategoryGroup: {
-          budgetId: budget.id,
-        },
-      },
-    },
-  })
-
-  const prevMonthsAssigned = assignedMoney.filter(
-    (a) => (a.month < month && a.year === year) || a.year < year
-  )
-
-  const prevMonthsOverspending = prevMonthsAssigned.reduce((acc, cur) => {
-    const outflow = Number(
-      prevMonthsOutflows.find((o) => o.monthlyBudgetPerCategoryId === cur.id)
-        ?._sum.outflow || 0.0
+  // total income until this month
+  const incomeTillThisMonth = db.$kysely
+    .selectFrom('transaction as t')
+    .innerJoin('account as a', 'a.id', 't.account_id')
+    .innerJoin(
+      'monthly_budget_per_category as m',
+      'm.id',
+      't.monthly_budget_per_category_id'
     )
+    .where('a.budget_id', '=', budget.id)
+    .where(({ eb, or, and }) =>
+      or([
+        eb('m.year', '<', year),
+        and([eb('m.year', '=', year), eb('m.month', '<=', month)]),
+      ])
+    )
+    .select((eb) => eb.fn.sum<number>('t.inflow').as('total_income'))
+    .executeTakeFirst()
 
-    if (outflow <= Number(cur.assigned)) {
-      return acc
-    } else {
-      return acc + (Number(cur.assigned) - outflow)
-    }
-  }, 0)
+  // previous months overspending
+  const prevMonthsOverspending = db.$kysely
+    .with('overspending_per_monthly_budget_category', (qb) =>
+      qb
+        .selectFrom('transaction as t')
+        .innerJoin(
+          'monthly_budget_per_category as m',
+          'm.id',
+          't.monthly_budget_per_category_id'
+        )
+        .innerJoin('budget_category as bc', 'bc.id', 'm.budget_category_id')
+        .innerJoin(
+          'budget_category_group as bg',
+          'bg.id',
+          'bc.budget_category_group_id'
+        )
+        .where('bg.budget_id', '=', budget.id)
+        .where(({ eb, or, and }) =>
+          or([
+            eb('m.year', '<', year),
+            and([eb('m.year', '=', year), eb('m.month', '<', month)]),
+          ])
+        )
+        .groupBy('m.id')
+        .having((eb) =>
+          eb(
+            eb(eb.fn.sum('t.inflow'), '+', eb.fn.sum('m.assigned')),
+            '<',
+            eb.fn.sum('t.outflow')
+          )
+        )
+        .select((eb) =>
+          eb(
+            eb(
+              eb.fn.sum<number>('m.assigned'),
+              '+',
+              eb.fn.sum<number>('t.inflow')
+            ),
+            '-',
+            eb.fn.sum<number>('t.outflow')
+          ).as('overspent')
+        )
+        .$assertType<{ overspent: number }>()
+    )
+    .selectFrom('overspending_per_monthly_budget_category as o')
+    .select((eb) =>
+      eb.fn
+        .coalesce(eb.fn.sum<number | null>('o.overspent'), sql<number>`0`)
+        .as('total_overspending')
+    )
+    .executeTakeFirst()
 
-  // assigned till this month
-  const assignedTillThisMonth = assignedMoney.reduce((acc, cur) => {
-    if ((cur.month <= month && cur.year === year) || cur.year < year) {
-      return acc + Number(cur.assigned || 0.0)
-    } else {
-      return acc
-    }
-  }, 0)
-
-  // future assigned
-  const futureAssigned = assignedMoney.reduce((acc, cur) => {
-    if ((cur.month > month && cur.year === year) || cur.year > year) {
-      return acc + Number(cur.assigned || 0.0)
-    } else {
-      return acc
-    }
-  }, 0)
+  // total assigned until this month and future
+  const totalAssigned = db.$kysely
+    .selectFrom('monthly_budget_per_category as m')
+    .innerJoin('budget_category as bc', 'bc.id', 'm.budget_category_id')
+    .innerJoin(
+      'budget_category_group as bg',
+      'bg.id',
+      'bc.budget_category_group_id'
+    )
+    .where('bg.budget_id', '=', budget.id)
+    .select((eb) => [
+      eb.fn
+        .sum<number>(
+          eb
+            .case()
+            .when(
+              eb.or([
+                eb('m.year', '<', year),
+                eb.and([eb('m.year', '=', year), eb('m.month', '<=', month)]),
+              ])
+            )
+            .then(eb.ref('m.assigned'))
+            .else(0)
+            .end()
+        )
+        .as('assigned_till_this_month'),
+      eb.fn
+        .sum<number>(
+          eb
+            .case()
+            .when(
+              eb.or([
+                eb('m.year', '>', year),
+                eb.and([eb('m.year', '=', year), eb('m.month', '>', month)]),
+              ])
+            )
+            .then(eb.ref('m.assigned'))
+            .else(0)
+            .end()
+        )
+        .as('assigned_future'),
+    ])
+    .executeTakeFirst()
 
   const rtaWithoutFuture =
-    Number(incomeTillThisMonth._sum.inflow || 0.0) -
-    prevMonthsOverspending -
-    assignedTillThisMonth
+    (await incomeTillThisMonth).total_income -
+    (await prevMonthsOverspending).total_overspending -
+    (await totalAssigned).assigned_till_this_month
 
-  const rta =
-    rtaWithoutFuture < 0
-      ? rtaWithoutFuture
-      : Math.max(rtaWithoutFuture - futureAssigned, 0.0)
-  return rta
+  return rtaWithoutFuture < 0
+    ? rtaWithoutFuture
+    : Math.max(rtaWithoutFuture - (await totalAssigned).assigned_future, 0.0)
 }
