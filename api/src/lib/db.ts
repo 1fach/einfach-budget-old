@@ -19,9 +19,17 @@ import { logger } from './logger'
 /*
  * Instance of the Prisma Client
  */
-export const db = new PrismaClient({
+const prisma = new PrismaClient({
   log: emitLogLevels(['info', 'warn', 'error']),
-}).$extends(
+})
+
+handlePrismaLogging({
+  db: prisma,
+  logger,
+  logLevels: ['info', 'warn', 'error'],
+})
+
+export const db = prisma.$extends(
   kyselyExtension({
     kysely: (driver) =>
       new Kysely<DB>({
@@ -34,9 +42,3 @@ export const db = new PrismaClient({
       }),
   })
 )
-
-handlePrismaLogging({
-  db,
-  logger,
-  logLevels: ['info', 'warn', 'error'],
-})
