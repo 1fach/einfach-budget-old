@@ -7,67 +7,44 @@ import type {
 import { db } from 'src/lib/db'
 import { nanoid } from 'src/lib/nanoid'
 
-export const accounts: QueryResolvers['accounts'] = async ({ budgetId }) => {
-  const dbAccounts = await db.account.findMany({
-    where: {
-      budget: {
-        id: budgetId,
-        userId: context.currentUser?.id,
-      },
-    },
-  })
-
-  const inoutflows = await db.transaction.groupBy({
-    by: ['accountId'],
-    where: {
-      account: {
-        budgetId,
-        budget: {
-          userId: context.currentUser?.id,
-        },
-      },
-    },
-    _sum: {
-      inflow: true,
-      outflow: true,
-    },
-  })
-
-  return dbAccounts.map((account) => {
-    const accInOut = inoutflows.find(
-      (balance) => balance.accountId === account.id
-    )
-
-    return {
-      ...account,
-      balance:
-        Number(accInOut?._sum.inflow || 0.0) -
-        Number(accInOut?._sum.outflow || 0.0),
-    }
-  })
+export const accounts: QueryResolvers['accounts'] = ({ budgetId }) => {
+  return db.$kysely
+    .selectFrom('transaction as t')
+    .innerJoin('account as a', 'a.id', 't.account_id')
+    .innerJoin('budget as b', 'b.id', 'a.budget_id')
+    .where('b.user_id', '=', context.currentUser?.id)
+    .where('a.budget_id', '=', budgetId)
+    .groupBy(['a.id', 'a.nickname', 'a.budget_id', 'a.payee_id'])
+    .select((eb) => [
+      'a.id',
+      'a.nickname',
+      'a.budget_id as budgetId',
+      'a.payee_id as payeeId',
+      eb(eb.fn.sum<number>('t.inflow'), '-', eb.fn.sum<number>('t.outflow')).as(
+        'balance'
+      ),
+    ])
+    .execute()
 }
 
-export const account: QueryResolvers['account'] = async ({ id }) => {
-  const account = await db.account.findUnique({
-    where: { id },
-  })
-
-  const inoutflow = await db.transaction.aggregate({
-    where: {
-      accountId: id,
-    },
-    _sum: {
-      inflow: true,
-      outflow: true,
-    },
-  })
-
-  return {
-    ...account,
-    balance:
-      Number(inoutflow?._sum.inflow || 0.0) -
-      Number(inoutflow?._sum.outflow || 0.0),
-  }
+export const account: QueryResolvers['account'] = ({ id }) => {
+  return db.$kysely
+    .selectFrom('transaction as t')
+    .innerJoin('account as a', 'a.id', 't.account_id')
+    .innerJoin('budget as b', 'b.id', 'a.budget_id')
+    .where('b.user_id', '=', context.currentUser?.id)
+    .where('a.id', '=', id)
+    .groupBy(['a.id', 'a.nickname', 'a.budget_id', 'a.payee_id'])
+    .select((eb) => [
+      'a.id',
+      'a.nickname',
+      'a.budget_id as budgetId',
+      'a.payee_id as payeeId',
+      eb(eb.fn.sum<number>('t.inflow'), '-', eb.fn.sum<number>('t.outflow')).as(
+        'balance'
+      ),
+    ])
+    .executeTakeFirst()
 }
 
 export const accountCreate: MutationResolvers['accountCreate'] = async ({
