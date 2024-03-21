@@ -5,6 +5,11 @@
   "dependencies": {
     "@redwoodjs/api": "7.1.3",
     "@redwoodjs/auth-dbauth-api": "7.1.3",
-    "@redwoodjs/graphql-server": "7.1.3"
+    "@redwoodjs/graphql-server": "7.1.3",
+    "kysely": "^0.27.3",
+    "prisma-extension-kysely": "^2.1.0"
+  },
+  "devDependencies": {
+    "prisma-kysely": "^1.8.0"
   }
 }
