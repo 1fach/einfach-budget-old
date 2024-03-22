@@ -3,10 +3,12 @@ import type { APIGatewayProxyEvent, Context } from 'aws-lambda'
 import {
   DbAuthHandler,
   DbAuthHandlerOptions,
-  SignupHandlerOptions,
+  UserType,
 } from '@redwoodjs/auth-dbauth-api'
 
-import { db } from 'src/lib/db'
+import { cookieName } from 'src/lib/auth'
+import { prisma } from 'src/lib/db'
+import { nanoid } from 'src/lib/nanoid'
 
 export const handler = async (
   event: APIGatewayProxyEvent,
@@ -21,11 +23,20 @@ export const handler = async (
     // https://example.com/reset-password?resetToken=${user.resetToken}
     //
     // Whatever is returned from this function will be returned from
-    // the `forgotPassword()` function that is destructured from `useAuth()`
+    // the `forgotPassword()` function that is destructured from `useAuth()`.
     // You could use this return value to, for example, show the email
     // address in a toast message so the user will know it worked and where
     // to look for the email.
-    handler: (user, resetToken) => {
+    //
+    // Note that this return value is sent to the client in *plain text*
+    // so don't include anything you wouldn't want prying eyes to see. The
+    // `user` here has been sanitized to only include the fields listed in
+    // `allowedUserFields` so it should be safe to return as-is.
+    handler: (user, _resetToken) => {
+      // TODO: Send user an email/message with a link to reset their password,
+      // including the `resetToken`. The URL should look something like:
+      // `http://localhost:8910/reset-password?resetToken=${resetToken}`
+
       return user
     },
 
@@ -95,9 +106,14 @@ export const handler = async (
     },
   }
 
-  type SignupUserAttributes = { name?: string }
+  interface UserAttributes {
+    name?: string
+  }
 
-  const signupOptions: DbAuthHandlerOptions['signup'] = {
+  const signupOptions: DbAuthHandlerOptions<
+    UserType,
+    UserAttributes
+  >['signup'] = {
     // Whatever you want to happen to your data on new user signup. Redwood will
     // check for duplicate usernames before calling this handler. At a minimum
     // you need to save the `username`, `hashedPassword` and `salt` to your
@@ -113,15 +129,10 @@ export const handler = async (
     //
     // If this returns anything else, it will be returned by the
     // `signUp()` function in the form of: `{ message: 'String here' }`.
-
-    handler: ({
-      username,
-      hashedPassword,
-      salt,
-      userAttributes,
-    }: SignupHandlerOptions<SignupUserAttributes>) => {
-      return db.user.create({
+    handler: ({ username, hashedPassword, salt, userAttributes }) => {
+      return prisma.user.create({
         data: {
+          id: nanoid(),
           email: username,
           hashedPassword: hashedPassword,
           salt: salt,
@@ -146,7 +157,7 @@ export const handler = async (
 
   const authHandler = new DbAuthHandler(event, context, {
     // Provide prisma db client
-    db: db,
+    db: prisma,
 
     // The name of the property you'd call on `db` to access your user table.
     // i.e. if your Prisma model is named `User` this value would be `user`, as in `db.user`
@@ -164,17 +175,26 @@ export const handler = async (
       resetTokenExpiresAt: 'resetTokenExpiresAt',
     },
 
+    // A list of fields on your user object that are safe to return to the
+    // client when invoking a handler that returns a user (like forgotPassword
+    // and signup). This list should be as small as possible to be sure not to
+    // leak any sensitive information to the client.
+    allowedUserFields: ['id', 'email'],
+
     // Specifies attributes on the cookie that dbAuth sets in order to remember
     // who is logged in. See https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies#restrict_access_to_cookies
     cookie: {
-      HttpOnly: true,
-      Path: '/',
-      SameSite: 'Strict',
-      Secure: process.env.NODE_ENV !== 'development',
+      attributes: {
+        HttpOnly: true,
+        Path: '/',
+        SameSite: 'Strict',
+        Secure: process.env.NODE_ENV !== 'development',
 
-      // If you need to allow other domains (besides the api side) access to
-      // the dbAuth session cookie:
-      // Domain: 'example.com',
+        // If you need to allow other domains (besides the api side) access to
+        // the dbAuth session cookie:
+        // Domain: 'example.com',
+      },
+      name: cookieName,
     },
 
     forgotPassword: forgotPasswordOptions,
