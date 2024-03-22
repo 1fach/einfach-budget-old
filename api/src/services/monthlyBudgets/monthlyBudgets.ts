@@ -176,14 +176,10 @@ export const MonthlyBudget: MonthlyBudgetRelationResolvers = {
   groups: async (_obj, { root }) => {
     const budgetId = root.id.split('_')[0]
     const groups = await db.$kysely
-      .selectFrom('transaction as t')
-      .innerJoin(
-        'monthly_budget_per_category as m',
-        'm.id',
-        't.monthly_budget_per_category_id'
-      )
-      .innerJoin('budget_category as bc', 'bc.id', 'm.budget_category_id')
-      .innerJoin(
+      .selectFrom('monthly_budget_per_category as m')
+      .leftJoin('transaction as t', 't.monthly_budget_per_category_id', 'm.id')
+      .leftJoin('budget_category as bc', 'bc.id', 'm.budget_category_id')
+      .leftJoin(
         'budget_category_group as bg',
         'bg.id',
         'bc.budget_category_group_id'
@@ -199,18 +195,24 @@ export const MonthlyBudget: MonthlyBudgetRelationResolvers = {
         'bg.sort_order',
         eb.fn.sum<number>('m.assigned').as('assigned'),
         eb(
-          eb.fn.sum<number>('t.inflow'),
+          eb.fn.coalesce(eb.fn.sum<number | null>('t.inflow'), sql<number>`0`),
           '-',
-          eb.fn.sum<number>('t.outflow')
+          eb.fn.coalesce(eb.fn.sum<number | null>('t.outflow'), sql<number>`0`)
         ).as('activity'),
         eb(
           eb(
-            eb.fn.sum<number>('t.inflow'),
+            eb.fn.coalesce(
+              eb.fn.sum<number | null>('t.inflow'),
+              sql<number>`0`
+            ),
             '-',
-            eb.fn.sum<number>('t.outflow')
+            eb.fn.coalesce(
+              eb.fn.sum<number | null>('t.outflow'),
+              sql<number>`0`
+            )
           ),
           '+',
-          eb.fn.sum<number>('m.assigned')
+          eb.fn.coalesce(eb.fn.sum<number | null>('m.assigned'), sql<number>`0`)
         ).as('available'),
       ])
       .execute()
