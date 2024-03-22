@@ -44,6 +44,8 @@ export const monthlyBudgetInit: MutationResolvers['monthlyBudgetInit'] =
     const categoriesNoBudget = await db.budgetCategory.findMany({
       select: {
         id: true,
+        name: true,
+        sortOrder: true,
       },
       where: {
         budgetCategoryGroup: {
@@ -66,61 +68,44 @@ export const monthlyBudgetInit: MutationResolvers['monthlyBudgetInit'] =
       }
     }
 
-    const categoryIds = categoriesNoBudget.map((category) => category.id)
+    const valuesToInsert = categoriesNoBudget.map((category) => ({
+      id: nanoid(),
+      month,
+      year,
+      assigned: 0,
+      budget_category_id: category.id,
+    }))
 
-    await db.monthlyBudgetPerCategory.createMany({
-      data: categoryIds.map((budgetCategoryId) => ({
-        id: nanoid(),
-        budgetCategoryId,
+    const insert = await db.$kysely
+      .insertInto('monthly_budget_per_category')
+      .values(valuesToInsert)
+      .returning('budget_category_id')
+      .execute()
+
+    const success = categoriesNoBudget.map((category) => {
+      const created = insert.find(
+        (monthlyBudgetCategory) =>
+          monthlyBudgetCategory.budget_category_id === category.id
+      )
+
+      if (!created) {
+        return null
+      }
+
+      return {
+        id: category.id + '_' + year + month,
+        name: category.name,
+        sortOrder: category.sortOrder,
         month,
         year,
-        assigned: 0,
-      })),
-    })
-
-    const monthlyBudgetCategories = await db.monthlyBudgetPerCategory.findMany({
-      select: {
-        month: true,
-        year: true,
-        assigned: true,
-        budgetCategory: {
-          select: {
-            id: true,
-            name: true,
-            sortOrder: true,
-          },
-        },
-      },
-      where: {
-        month,
-        year,
-        budgetCategory: {
-          id: {
-            in: categoryIds,
-          },
-          budgetCategoryGroup: {
-            budget: {
-              userId: context.currentUser?.id,
-            },
-          },
-        },
-      },
+        assigned: 0.0,
+        activity: 0.0,
+        available: 0.0,
+      }
     })
 
     return {
-      categories: monthlyBudgetCategories.map((monthlyBudgetCategory) => {
-        const budgetCategory = monthlyBudgetCategory.budgetCategory
-        return {
-          id: budgetCategory.id + '_' + year + month,
-          name: budgetCategory.name,
-          sortOrder: budgetCategory.sortOrder,
-          month: monthlyBudgetCategory.month,
-          year: monthlyBudgetCategory.year,
-          assigned: 0.0,
-          activity: 0.0,
-          available: 0.0,
-        }
-      }),
+      categories: success,
     }
   }
 
