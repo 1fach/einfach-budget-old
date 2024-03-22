@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 
+import slugify from '@sindresorhus/slugify'
 import type { FindBudgetName } from 'types/graphql'
 
 import { navigate, routes } from '@redwoodjs/router'
@@ -8,24 +9,35 @@ import { useQuery, Metadata } from '@redwoodjs/web'
 import { Spreadsheet } from 'src/components/Spreadsheet'
 import { useEinfachActions } from 'src/lib/store'
 
-const QUERY = gql`
+export const QUERY = gql`
   query FindBudgetName($budgetId: String!) {
     budget(id: $budgetId) {
       name
     }
   }
 `
+type BudgetPageProps = {
+  budget: string
+  slug: string
+}
 
-const BudgetPage = ({ budget }: { budget: string }) => {
+const BudgetPage = ({ budget, slug }: BudgetPageProps) => {
   const { data, loading } = useQuery<FindBudgetName>(QUERY, {
     variables: {
       budgetId: budget,
     },
   })
-  const { updateBudgetId } = useEinfachActions()
 
-  const getBudgetName = () =>
-    data?.budget === null ? 'Budget' : data?.budget.name
+  useEffect(() => {
+    const generated = slugify(data?.budget?.name || '')
+    if (data?.budget?.name && slug !== generated) {
+      navigate(routes.budgetSlug({ budget, slug: generated }), {
+        replace: true,
+      })
+    }
+  }, [data?.budget?.name, budget, slug])
+
+  const { updateBudgetId } = useEinfachActions()
 
   useEffect(() => {
     if (!loading) {
@@ -37,6 +49,9 @@ const BudgetPage = ({ budget }: { budget: string }) => {
       }
     }
   }, [data, loading, budget, updateBudgetId])
+
+  const getBudgetName = () =>
+    data?.budget === null ? 'Budget' : data?.budget.name
 
   return (
     <>

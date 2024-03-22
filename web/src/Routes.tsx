@@ -25,8 +25,9 @@ const Routes = () => {
       <PrivateSet unauthenticated="login">
         <Set wrap={AppLayout}>
           <Route path="/" page={HomePage} name="home" />
-          <Route path="/budget/{budget}" page={BudgetPage} name="budget" />
-          <Route path="/budget/{budget}/account/{account}" page={AccountPage} name="account" />
+          <Route path="/budget/{budget}" page={RedirectBudgetPage} name="budget" />
+          <Route path="/budget/{budget}/{slug}" page={BudgetPage} name="budgetSlug" />
+          <Route path="/account/{account}" page={AccountPage} name="account" />
         </Set>
       </PrivateSet>
       <Route notfound page={NotFoundPage} />
