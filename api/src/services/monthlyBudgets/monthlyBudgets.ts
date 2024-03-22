@@ -116,58 +116,62 @@ export const monthlyBudgetAssign: MutationResolvers['monthlyBudgetAssign'] =
       update: data,
     },
   }) => {
-    const updatedMonthlyBudgetCategory = db.monthlyBudgetPerCategory.update({
-      data,
-      where: {
-        month_year_budgetCategoryId: {
-          month,
-          year,
-          budgetCategoryId: categoryId,
-        },
-        budgetCategory: {
-          budgetCategoryGroup: {
-            budget: {
-              userId: context.currentUser?.id,
-            },
-          },
-        },
-      },
-    })
+    await db.$kysely
+      .updateTable('monthly_budget_per_category')
+      .set({
+        assigned: data.assigned,
+      })
+      .where('budget_category_id', '=', categoryId)
+      .where('month', '=', month)
+      .where('year', '=', year)
+      .executeTakeFirstOrThrow()
 
-    const budgetCategory = await updatedMonthlyBudgetCategory.budgetCategory()
-    const monthlyBudgetCategory = await updatedMonthlyBudgetCategory
-
-    const activity = await db.transaction.aggregate({
-      _sum: {
-        outflow: true,
-        inflow: true,
-      },
-      where: {
-        monthlyBudgetPerCategory: {
-          budgetCategory: {
-            id: categoryId,
-          },
-          month: month,
-          year: year,
-        },
-      },
-    })
-
-    const resAssigned = Number(monthlyBudgetCategory.assigned || 0.0)
-    const resActivity =
-      Number(activity?._sum.inflow || 0.0) -
-      Number(activity?._sum.outflow || 0.0)
+    const updated = await db.$kysely
+      .selectFrom('monthly_budget_per_category as m')
+      .innerJoin('budget_category as bc', 'bc.id', 'm.budget_category_id')
+      .leftJoin('transaction as t', 't.monthly_budget_per_category_id', 'm.id')
+      .where('m.budget_category_id', '=', categoryId)
+      .where('m.month', '=', month)
+      .where('m.year', '=', year)
+      .groupBy(['bc.id', 'bc.name', 'bc.sort_order'])
+      .select((eb) => [
+        'bc.id as categoryId',
+        'bc.name as categoryName',
+        'bc.sort_order as categorySortOrder',
+        eb.fn.sum<number>('m.assigned').as('assigned'),
+        eb(
+          eb.fn.coalesce(eb.fn.sum<number | null>('t.inflow'), sql<number>`0`),
+          '-',
+          eb.fn.coalesce(eb.fn.sum<number | null>('t.outflow'), sql<number>`0`)
+        ).as('activity'),
+        eb(
+          eb(
+            eb.fn.coalesce(
+              eb.fn.sum<number | null>('t.inflow'),
+              sql<number>`0`
+            ),
+            '-',
+            eb.fn.coalesce(
+              eb.fn.sum<number | null>('t.outflow'),
+              sql<number>`0`
+            )
+          ),
+          '+',
+          eb.fn.coalesce(eb.fn.sum<number | null>('m.assigned'), sql<number>`0`)
+        ).as('available'),
+      ])
+      .executeTakeFirst()
 
     return {
       category: {
-        id: budgetCategory.id + '_' + year + month,
-        name: budgetCategory.name,
-        sortOrder: budgetCategory.sortOrder,
-        month: monthlyBudgetCategory.month,
-        year: monthlyBudgetCategory.year,
-        assigned: resAssigned,
-        activity: resActivity,
-        available: resAssigned - resActivity,
+        id: updated.categoryId + '_' + year + month,
+        name: updated.categoryName,
+        sortOrder: updated.categorySortOrder,
+        month: month,
+        year: year,
+        assigned: updated.assigned,
+        activity: updated.activity,
+        available: updated.available,
       },
     }
   }
@@ -177,13 +181,13 @@ export const MonthlyBudget: MonthlyBudgetRelationResolvers = {
     const budgetId = root.id.split('_')[0]
     const groups = await db.$kysely
       .selectFrom('monthly_budget_per_category as m')
-      .leftJoin('transaction as t', 't.monthly_budget_per_category_id', 'm.id')
-      .leftJoin('budget_category as bc', 'bc.id', 'm.budget_category_id')
-      .leftJoin(
+      .innerJoin('budget_category as bc', 'bc.id', 'm.budget_category_id')
+      .innerJoin(
         'budget_category_group as bg',
         'bg.id',
         'bc.budget_category_group_id'
       )
+      .leftJoin('transaction as t', 't.monthly_budget_per_category_id', 'm.id')
       .where('bg.budget_id', '=', budgetId)
       .where('m.month', '=', root.month)
       .where('m.year', '=', root.year)

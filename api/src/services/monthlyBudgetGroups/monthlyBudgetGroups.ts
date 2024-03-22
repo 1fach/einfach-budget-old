@@ -9,8 +9,8 @@ export const MonthlyBudgetGroup: MonthlyBudgetGroupRelationResolvers = {
 
     const categories = await db.$kysely
       .selectFrom('monthly_budget_per_category as m')
+      .innerJoin('budget_category as bc', 'bc.id', 'm.budget_category_id')
       .leftJoin('transaction as t', 't.monthly_budget_per_category_id', 'm.id')
-      .leftJoin('budget_category as bc', 'bc.id', 'm.budget_category_id')
       .where('bc.budget_category_group_id', '=', groupId)
       .where('m.month', '=', root.month)
       .where('m.year', '=', root.year)
