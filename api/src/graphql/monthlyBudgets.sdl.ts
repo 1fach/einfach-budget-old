@@ -10,7 +10,7 @@ export const schema = gql`
   }
 
   type Query {
-    monthlyBudget(id: String!, month: Int!, year: Int!): MonthlyBudget!
+    monthlyBudget(id: String!, month: Int!, year: Int!): MonthlyBudget
       @requireAuth
   }
 
