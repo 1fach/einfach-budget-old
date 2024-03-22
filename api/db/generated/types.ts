@@ -31,7 +31,7 @@ export type MonthlyBudgetPerCategory = {
   id: string
   month: number
   year: number
-  assigned: Generated<string>
+  assigned: Generated<number>
   budget_category_id: string
 }
 export type Payee = {
@@ -43,8 +43,8 @@ export type Transaction = {
   id: string
   description: string
   date: Generated<Timestamp>
-  outflow: Generated<string>
-  inflow: Generated<string>
+  outflow: Generated<number>
+  inflow: Generated<number>
   cleared: Generated<boolean>
   updated_at: Timestamp
   account_id: string
