@@ -24,19 +24,19 @@ export const Spreadsheet = ({ budgetId }: Props) => {
   const month = useSelectedMonth()
   const year = useSelectedYear()
 
-  const [monthlyBudgetInit] = useMutation(MONTHLY_BUDGET_INIT, {
-    variables: {
-      input: {
-        budgetId,
-        month,
-        year,
-      },
-    },
-  })
+  const [monthlyBudgetInit] = useMutation(MONTHLY_BUDGET_INIT)
 
   useEffect(() => {
-    monthlyBudgetInit()
-  }, [monthlyBudgetInit])
+    monthlyBudgetInit({
+      variables: {
+        input: {
+          budgetId,
+          month,
+          year,
+        },
+      },
+    })
+  }, [monthlyBudgetInit, month, year, budgetId])
 
   return (
     <Grid gridTemplateColumns={4} minH="100vh">
