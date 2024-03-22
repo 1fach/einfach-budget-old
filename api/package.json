@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "dependencies": {
+    "@envelop/graphql-jit": "^8.0.2",
     "@redwoodjs/api": "7.1.3",
     "@redwoodjs/auth-dbauth-api": "7.1.3",
     "@redwoodjs/graphql-server": "7.1.3",

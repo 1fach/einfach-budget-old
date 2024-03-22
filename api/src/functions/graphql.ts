@@ -1,3 +1,5 @@
+import { useGraphQlJit } from '@envelop/graphql-jit'
+
 import { createAuthDecoder } from '@redwoodjs/auth-dbauth-api'
 import { createGraphQLHandler } from '@redwoodjs/graphql-server'
 
@@ -23,6 +25,7 @@ export const handler = createGraphQLHandler({
     typeDefs: [MoneyDefinition],
     resolvers: { Money: MoneyResolver },
   },
+  extraPlugins: [useGraphQlJit()],
   onException: () => {
     // Disconnect from your database with an unhandled exception.
     db.$disconnect()
