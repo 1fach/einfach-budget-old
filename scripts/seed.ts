@@ -212,7 +212,7 @@ function createTransactionFromAllAccounts(count) {
 
   for (const monthlyBudget of testData.monthlyBudgets) {
     for (const account of testData.accounts) {
-      const balance = 10000
+      const balance = 10000 * 1000000
       const inflow: Prisma.TransactionCreateManyInput = {
         id: nanoid(),
         description: 'Inflow Balance',
@@ -237,8 +237,8 @@ function createTransactionFromAllAccounts(count) {
             to: '2023-12-31T00:00:00.000Z',
           }),
           outflow: faker.number.bigInt({
-            min: 10,
-            max: 100,
+            min: 10 * 1000000,
+            max: 100 * 1000000,
           }),
           inflow: 0,
           cleared: faker.datatype.boolean(0.25),
@@ -296,7 +296,7 @@ function createMonthlyBudgetPerCategoryForCategory(monthStart, monthEnd, year) {
         id: nanoid(),
         month: i,
         year: year,
-        assigned: 3000,
+        assigned: 3000 * 1000000,
         budgetCategoryId: category.id,
       }
       monthlyBudgets.push(monthlyBudget)

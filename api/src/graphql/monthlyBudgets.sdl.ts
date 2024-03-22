@@ -5,7 +5,7 @@ export const schema = gql`
     userId: String!
     month: Int!
     year: Int!
-    readyToAssign: Float!
+    readyToAssign: Money!
     groups: [MonthlyBudgetGroup!]
   }
 
@@ -31,7 +31,7 @@ export const schema = gql`
   }
 
   input MonthlyBudgetAssignData {
-    assigned: Float!
+    assigned: Money!
   }
 
   input MonthlyBudgetAssignInput {

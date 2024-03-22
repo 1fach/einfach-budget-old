@@ -5,8 +5,8 @@ export const schema = gql`
     sortOrder: Int!
     month: Int!
     year: Int!
-    assigned: Float!
-    activity: Float!
-    available: Float!
+    assigned: Money!
+    activity: Money!
+    available: Money!
   }
 `

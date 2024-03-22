@@ -3,8 +3,8 @@ export const schema = gql`
     id: ID!
     description: String!
     date: DateTime!
-    outflow: Float!
-    inflow: Float!
+    outflow: Money!
+    inflow: Money!
     cleared: Boolean!
     accountId: String!
     payeeId: String
@@ -19,8 +19,8 @@ export const schema = gql`
   input TransactionCreateInput {
     description: String!
     date: DateTime!
-    outflow: Float!
-    inflow: Float!
+    outflow: Money!
+    inflow: Money!
     cleared: Boolean!
     accountId: String!
     payeeId: String
@@ -34,8 +34,8 @@ export const schema = gql`
   input TransactionUpdateData {
     description: String
     date: DateTime
-    outflow: Float
-    inflow: Float
+    outflow: Money
+    inflow: Money
     cleared: Boolean
     accountId: String
     payeeId: String

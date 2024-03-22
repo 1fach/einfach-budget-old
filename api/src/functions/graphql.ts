@@ -8,6 +8,7 @@ import services from 'src/services/**/*.{js,ts}'
 import { cookieName, getCurrentUser } from 'src/lib/auth'
 import { db } from 'src/lib/db'
 import { logger } from 'src/lib/logger'
+import { MoneyDefinition, MoneyResolver } from 'src/scalars/money'
 
 const authDecoder = createAuthDecoder(cookieName)
 
@@ -18,6 +19,10 @@ export const handler = createGraphQLHandler({
   directives,
   sdls,
   services,
+  schemaOptions: {
+    typeDefs: [MoneyDefinition],
+    resolvers: { Money: MoneyResolver },
+  },
   onException: () => {
     // Disconnect from your database with an unhandled exception.
     db.$disconnect()

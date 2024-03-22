@@ -2,7 +2,7 @@ export const schema = gql`
   type Account {
     id: ID!
     nickname: String!
-    balance: Float!
+    balance: Money!
     budgetId: String!
     payeeId: String!
     transactions: [Transaction]!
