@@ -24,11 +24,12 @@ const BudgetPage = ({ budget }: { budget: string }) => {
   })
   const { updateBudgetId } = useEinfachActions()
 
-  const getBudgetName = () => (data.budget === null ? '' : data.budget.name)
+  const getBudgetName = () =>
+    data?.budget === null ? 'Budget' : data?.budget.name
 
   useEffect(() => {
     if (!loading) {
-      if (data.budget && budget.trim() !== '') {
+      if (data?.budget && budget.trim() !== '') {
         updateBudgetId(budget)
       } else {
         navigate(routes.oops(), { replace: true })
@@ -39,10 +40,7 @@ const BudgetPage = ({ budget }: { budget: string }) => {
 
   return (
     <>
-      <Metadata
-        title={loading ? 'Budget' : getBudgetName()}
-        description="Budget page"
-      />
+      <Metadata title={getBudgetName()} description="Budget page" />
 
       {!loading ? <Spreadsheet budgetId={budget} /> : null}
     </>
