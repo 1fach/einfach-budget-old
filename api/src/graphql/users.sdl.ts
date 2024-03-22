@@ -16,7 +16,7 @@ export const schema = gql`
   }
 
   input UserUpdateInput {
-    update: PayeeUpdateData!
+    update: UserUpdateData!
   }
 
   type Mutation {
