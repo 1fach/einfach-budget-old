@@ -138,7 +138,7 @@ export const monthlyBudgetAssign: MutationResolvers['monthlyBudgetAssign'] =
         'bc.id as categoryId',
         'bc.name as categoryName',
         'bc.sort_order as categorySortOrder',
-        eb.fn.sum<number>('m.assigned').as('assigned'),
+        eb.fn.max<number>('m.assigned').as('assigned'),
         eb(
           eb.fn.coalesce(eb.fn.sum<number | null>('t.inflow'), sql<number>`0`),
           '-',
@@ -180,44 +180,87 @@ export const MonthlyBudget: MonthlyBudgetRelationResolvers = {
   groups: async (_obj, { root }) => {
     const budgetId = root.id.split('_')[0]
     const groups = await db.$kysely
-      .selectFrom('monthly_budget_per_category as m')
-      .innerJoin('budget_category as bc', 'bc.id', 'm.budget_category_id')
-      .innerJoin(
-        'budget_category_group as bg',
-        'bg.id',
-        'bc.budget_category_group_id'
+      .with('group_activities', (qb) =>
+        qb
+          .selectFrom('monthly_budget_per_category as m')
+          .innerJoin('budget_category as bc', 'bc.id', 'm.budget_category_id')
+          .innerJoin(
+            'budget_category_group as bg',
+            'bg.id',
+            'bc.budget_category_group_id'
+          )
+          .leftJoin(
+            'transaction as t',
+            't.monthly_budget_per_category_id',
+            'm.id'
+          )
+          .where('bg.budget_id', '=', budgetId)
+          .where('m.month', '=', root.month)
+          .where('m.year', '=', root.year)
+          .groupBy(['bg.id', 'bg.name', 'bg.sort_order'])
+          .orderBy('bg.sort_order')
+          .select((eb) => [
+            'bg.id',
+            'bg.name',
+            'bg.sort_order',
+            eb(
+              eb.fn.coalesce(
+                eb.fn.sum<number | null>('t.inflow'),
+                sql<number>`0`
+              ),
+              '-',
+              eb.fn.coalesce(
+                eb.fn.sum<number | null>('t.outflow'),
+                sql<number>`0`
+              )
+            ).as('activity'),
+            eb(
+              eb(
+                eb.fn.coalesce(
+                  eb.fn.sum<number | null>('t.inflow'),
+                  sql<number>`0`
+                ),
+                '-',
+                eb.fn.coalesce(
+                  eb.fn.sum<number | null>('t.outflow'),
+                  sql<number>`0`
+                )
+              ),
+              '+',
+              eb.fn.coalesce(
+                eb.fn.sum<number | null>('m.assigned'),
+                sql<number>`0`
+              )
+            ).as('available'),
+          ])
       )
-      .leftJoin('transaction as t', 't.monthly_budget_per_category_id', 'm.id')
-      .where('bg.budget_id', '=', budgetId)
+      .selectFrom('group_activities as ga')
+      .innerJoin(
+        'budget_category as bc',
+        'bc.budget_category_group_id',
+        'ga.id'
+      )
+      .innerJoin(
+        'monthly_budget_per_category as m',
+        'm.budget_category_id',
+        'bc.id'
+      )
       .where('m.month', '=', root.month)
       .where('m.year', '=', root.year)
-      .groupBy(['bg.id', 'bg.name', 'bg.sort_order'])
-      .orderBy('bg.sort_order')
+      .groupBy([
+        'ga.id',
+        'ga.name',
+        'ga.sort_order',
+        'ga.activity',
+        'ga.available',
+      ])
       .select((eb) => [
-        'bg.id',
-        'bg.name',
-        'bg.sort_order',
+        'ga.id',
+        'ga.name',
+        'ga.sort_order',
+        'ga.activity',
+        'ga.available',
         eb.fn.sum<number>('m.assigned').as('assigned'),
-        eb(
-          eb.fn.coalesce(eb.fn.sum<number | null>('t.inflow'), sql<number>`0`),
-          '-',
-          eb.fn.coalesce(eb.fn.sum<number | null>('t.outflow'), sql<number>`0`)
-        ).as('activity'),
-        eb(
-          eb(
-            eb.fn.coalesce(
-              eb.fn.sum<number | null>('t.inflow'),
-              sql<number>`0`
-            ),
-            '-',
-            eb.fn.coalesce(
-              eb.fn.sum<number | null>('t.outflow'),
-              sql<number>`0`
-            )
-          ),
-          '+',
-          eb.fn.coalesce(eb.fn.sum<number | null>('m.assigned'), sql<number>`0`)
-        ).as('available'),
       ])
       .execute()
 

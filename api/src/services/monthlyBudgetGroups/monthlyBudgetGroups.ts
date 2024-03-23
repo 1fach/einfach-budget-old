@@ -20,7 +20,7 @@ export const MonthlyBudgetGroup: MonthlyBudgetGroupRelationResolvers = {
         'bc.id',
         'bc.name',
         'bc.sort_order',
-        eb.fn.sum<number>('m.assigned').as('assigned'),
+        eb.fn.max<number>('m.assigned').as('assigned'),
         eb(
           eb.fn.coalesce(eb.fn.sum<number | null>('t.inflow'), sql<number>`0`),
           '-',
@@ -51,7 +51,7 @@ export const MonthlyBudgetGroup: MonthlyBudgetGroupRelationResolvers = {
         month: root.month,
         year: root.year,
         sortOrder: category.sort_order,
-        assigned: category.assigned,
+        assigned: Number(category.assigned),
         activity: category.activity,
         available: category.available,
       }
