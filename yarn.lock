@@ -2194,6 +2194,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@envelop/parser-cache@npm:^7.0.0":
+  version: 7.0.0
+  resolution: "@envelop/parser-cache@npm:7.0.0"
+  dependencies:
+    lru-cache: "npm:^10.0.0"
+    tslib: "npm:^2.5.0"
+  peerDependencies:
+    "@envelop/core": ^5.0.0
+    graphql: ^14.0.0 || ^15.0.0 || ^16.0.0
+  checksum: 10c0/78578d929a72600b74c5a3e5227e53a13424540cacad116417ab626840919efd3d27a73419d75aef0e4018825da58d9e01c1133d68428ffa5eccdc97f3bf06d8
+  languageName: node
+  linkType: hard
+
 "@envelop/types@npm:4.0.1":
   version: 4.0.1
   resolution: "@envelop/types@npm:4.0.1"
@@ -2209,6 +2222,20 @@ __metadata:
   dependencies:
     tslib: "npm:^2.5.0"
   checksum: 10c0/0cbaa68218cb6121b58c6d354b0a17913ded042673df7bfcf385cac6c3b42713b82719875f553b31e8f059727ff5478ed11b33b4febf8deeaf902f1a92b212a8
+  languageName: node
+  linkType: hard
+
+"@envelop/validation-cache@npm:^7.0.0":
+  version: 7.0.0
+  resolution: "@envelop/validation-cache@npm:7.0.0"
+  dependencies:
+    hash-it: "npm:^6.0.0"
+    lru-cache: "npm:^10.0.0"
+    tslib: "npm:^2.5.0"
+  peerDependencies:
+    "@envelop/core": ^5.0.0
+    graphql: ^14.0.0 || ^15.0.0 || ^16.0.0
+  checksum: 10c0/26ccbdce8691740b2891033b961bb885b7b4de0d58a39f4c373af05dcccbf36bea37983637bddc14f0b9330e6f3b4c68940631c0697f184f848337257a694b06
   languageName: node
   linkType: hard
 
@@ -11077,6 +11104,8 @@ __metadata:
   resolution: "api@workspace:api"
   dependencies:
     "@envelop/graphql-jit": "npm:^8.0.2"
+    "@envelop/parser-cache": "npm:^7.0.0"
+    "@envelop/validation-cache": "npm:^7.0.0"
     "@redwoodjs/api": "npm:7.1.3"
     "@redwoodjs/auth-dbauth-api": "npm:7.1.3"
     "@redwoodjs/graphql-server": "npm:7.1.3"
@@ -17328,6 +17357,13 @@ __metadata:
     readable-stream: "npm:^3.6.0"
     safe-buffer: "npm:^5.2.0"
   checksum: 10c0/663eabcf4173326fbb65a1918a509045590a26cc7e0964b754eef248d281305c6ec9f6b31cb508d02ffca383ab50028180ce5aefe013e942b44a903ac8dc80d0
+  languageName: node
+  linkType: hard
+
+"hash-it@npm:^6.0.0":
+  version: 6.0.0
+  resolution: "hash-it@npm:6.0.0"
+  checksum: 10c0/edac58ed7b7a9e8e39e9991e89c97b5ce8235f340af4018037b4f3fb873a1e631505411543f41659888392a84b3c95b05dfc751355924b8216b8a2291775ce50
   languageName: node
   linkType: hard
 
