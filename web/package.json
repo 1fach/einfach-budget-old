@@ -11,19 +11,19 @@
     ]
   },
   "dependencies": {
-    "@einfach-ui/panda-preset": "workspace:*",
-    "@einfach-ui/react": "workspace:*",
-    "@einfach-ui/styled": "workspace:*",
+    "@einfach-ui/panda-preset": "workspace:^",
+    "@einfach-ui/react": "workspace:^",
+    "@einfach-ui/styled": "workspace:^",
     "@hookform/resolvers": "^3.3.4",
     "@redwoodjs/auth-dbauth-web": "7.1.3",
     "@redwoodjs/forms": "7.1.3",
     "@redwoodjs/router": "7.1.3",
     "@redwoodjs/web": "7.1.3",
     "@sindresorhus/slugify": "^2.2.1",
-    "@tanstack/react-table": "^8.13.2",
+    "@tanstack/react-table": "^8.15.0",
     "expr-eval": "^2.0.2",
-    "immer": "^10.0.3",
-    "lucide-react": "^0.344.0",
+    "immer": "^10.0.4",
+    "lucide-react": "^0.363.0",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -31,11 +31,11 @@
     "zustand": "^4.5.2"
   },
   "devDependencies": {
-    "@pandacss/dev": "^0.35.0",
+    "@pandacss/dev": "^0.36.1",
     "@redwoodjs/vite": "7.1.3",
-    "@types/react": "^18.2.61",
-    "@types/react-dom": "^18.2.19",
-    "vite-tsconfig-paths": "^4.3.1"
+    "@types/react": "^18.2.70",
+    "@types/react-dom": "^18.2.22",
+    "vite-tsconfig-paths": "^4.3.2"
   },
   "scripts": {
     "prepare": "panda codegen"
